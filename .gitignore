@@ -1,0 +1,29 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# env (never commit secrets)
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+*.env
+
+# next
+.next
+out
+
+# prisma
+prisma/migrations/*_migration.sql
+
+# misc
+.DS_Store
+*.pem
+debug.log
+npm-debug.log*
+.vercel
+.idea
+*.tsbuildinfo
+next-env.d.ts

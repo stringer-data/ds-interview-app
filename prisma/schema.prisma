@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?   @map("password_hash")
+  tier          String    @default("free") // "free" | "paid"
+  createdAt     DateTime  @default(now()) @map("created_at")
+  firstLoginAt  DateTime? @map("first_login_at")
+  lastLoginAt   DateTime? @map("last_login_at")
+
+  attempts Attempt[]
+  invites   Invite[]   @relation("CreatedInvites")
+}
+
+model Attempt {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  questionId  String   @map("question_id")
+  followUpId   String?  @map("follow_up_id")
+  topic       String
+  theme       String
+  difficulty  Int
+  score       Int
+  maxScore    Int      @default(4) @map("max_score")
+  loggedAt    DateTime @default(now()) @map("logged_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+  @@index([userId, loggedAt])
+}
+
+model Invite {
+  id          String    @id @default(cuid())
+  createdBy   String    @map("created_by")
+  email       String?
+  inviteCode  String    @unique @map("invite_code")
+  tierToGrant String    @map("tier_to_grant") // "free" | "paid"
+  createdAt   DateTime  @default(now()) @map("created_at")
+  usedAt      DateTime? @map("used_at")
+
+  creator User @relation("CreatedInvites", fields: [createdBy], references: [id], onDelete: Cascade)
+  @@index([inviteCode])
+}

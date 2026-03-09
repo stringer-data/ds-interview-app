@@ -1,0 +1,147 @@
+:root,
+[data-theme="dark"] {
+  --bg: #0f0f12;
+  --surface: #18181c;
+  --border: #2a2a30;
+  --text: #e4e4e7;
+  --muted: #71717a;
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --success: #34d399;
+  --error: #f87171;
+}
+
+[data-theme="light"] {
+  --bg: #f4f4f5;
+  --surface: #ffffff;
+  --border: #e4e4e7;
+  --text: #18181b;
+  --muted: #71717a;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --success: #059669;
+  --error: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+input, textarea, button {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  background: var(--surface);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Feedback card (grading result) */
+.feedback-card .feedback-label {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.feedback-card .feedback-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+}
+.feedback-card .feedback-block {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  overflow-x: auto;
+}

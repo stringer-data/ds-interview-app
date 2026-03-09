@@ -1,0 +1,216 @@
+import fs from "fs";
+import path from "path";
+import YAML from "yaml";
+
+const QUESTIONS_PATH = process.env.QUESTIONS_PATH;
+if (!QUESTIONS_PATH) {
+  console.warn("QUESTIONS_PATH not set; question bank will be empty.");
+}
+
+export type QuestionMeta = {
+  id: string;
+  topic: string;
+  theme: string;
+  difficulty: number;
+  follow_ups?: string[];
+};
+
+export type Question = QuestionMeta & {
+  question: string;
+  reference_answer?: string;
+  category?: string;
+  tags?: string[];
+};
+
+// Resolve QUESTIONS_PATH relative to cwd (app root) if relative
+function getQuestionsDir(): string {
+  if (!QUESTIONS_PATH) return "";
+  return path.isAbsolute(QUESTIONS_PATH)
+    ? QUESTIONS_PATH
+    : path.resolve(process.cwd(), QUESTIONS_PATH);
+}
+
+let cachedBank: QuestionMeta[] | null = null;
+let cachedFullById: Map<string, Question> | null = null;
+let cachedParentByFollowUp: Map<string, string> | null = null;
+
+function loadBankAndMaps(): {
+  bank: QuestionMeta[];
+  fullById: Map<string, Question>;
+  parentByFollowUp: Map<string, string>;
+} {
+  if (cachedBank && cachedFullById && cachedParentByFollowUp) {
+    return { bank: cachedBank, fullById: cachedFullById, parentByFollowUp: cachedParentByFollowUp };
+  }
+  const dir = getQuestionsDir();
+  const bank: QuestionMeta[] = [];
+  const fullById = new Map<string, Question>();
+  const parentByFollowUp = new Map<string, string>();
+
+  if (!dir || !fs.existsSync(dir)) {
+    cachedBank = bank;
+    cachedFullById = fullById;
+    cachedParentByFollowUp = parentByFollowUp;
+    return { bank, fullById, parentByFollowUp };
+  }
+
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".yaml") && !f.startsWith(".")).sort();
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    const content = fs.readFileSync(filePath, "utf-8");
+    const list = YAML.parse(content);
+    if (!Array.isArray(list)) continue;
+    for (const q of list) {
+      if (!q?.id || q.topic == null || q.theme == null || q.difficulty == null) continue;
+      const meta: QuestionMeta = {
+        id: q.id,
+        topic: q.topic,
+        theme: q.theme,
+        difficulty: Number(q.difficulty),
+        follow_ups: Array.isArray(q.follow_ups) ? q.follow_ups : undefined,
+      };
+      bank.push(meta);
+      fullById.set(q.id, {
+        ...meta,
+        question: q.question ?? "",
+        reference_answer: q.reference_answer,
+        category: q.category,
+        tags: q.tags,
+      });
+      if (meta.follow_ups) {
+        for (const fid of meta.follow_ups) {
+          if (fid) parentByFollowUp.set(fid, q.id);
+        }
+      }
+    }
+  }
+
+  cachedBank = bank;
+  cachedFullById = fullById;
+  cachedParentByFollowUp = parentByFollowUp;
+  return { bank, fullById, parentByFollowUp };
+}
+
+export function getQuestionById(id: string): Question | null {
+  const { fullById } = loadBankAndMaps();
+  return fullById.get(id) ?? null;
+}
+
+export function getQuestionBank(): QuestionMeta[] {
+  return loadBankAndMaps().bank;
+}
+
+export type AttemptRow = {
+  questionId: string;
+  followUpId: string | null;
+  score: number;
+  loggedAt: Date;
+  topic: string;
+};
+
+/** Effective id for an attempt: follow_up_id if present else question_id */
+function effectiveId(a: AttemptRow): string {
+  return a.followUpId ?? a.questionId;
+}
+
+/** Last attempt per effective question id */
+function lastByEffectiveId(attempts: AttemptRow[]): Map<string, { score: number; questionId: string; followUpId: string | null; loggedAt: Date }> {
+  const map = new Map<string, { score: number; questionId: string; followUpId: string | null; loggedAt: Date }>();
+  for (const e of attempts) {
+    const eid = effectiveId(e);
+    const prev = map.get(eid);
+    if (!prev || e.loggedAt >= prev.loggedAt) {
+      map.set(eid, { score: e.score, questionId: e.questionId, followUpId: e.followUpId, loggedAt: e.loggedAt });
+    }
+  }
+  return map;
+}
+
+/** Compute weakest two topics by accuracy from attempts */
+function weakestTwoTopics(attempts: AttemptRow[]): string[] {
+  const byTopic: Record<string, { score: number; max: number }> = {};
+  for (const e of attempts) {
+    const t = e.topic ?? "Other";
+    if (!byTopic[t]) byTopic[t] = { score: 0, max: 0 };
+    byTopic[t].score += e.score;
+    byTopic[t].max += 4;
+  }
+  const accuracy: Record<string, number> = {};
+  for (const [t, d] of Object.entries(byTopic)) {
+    accuracy[t] = d.max ? d.score / d.max : 0;
+  }
+  const sorted = Object.keys(accuracy).sort((a, b) => accuracy[a] - accuracy[b]);
+  return sorted.slice(0, 2);
+}
+
+export type NextQuestionResult = {
+  questionId: string;
+  followUpId: string | null;
+  questionDisplayId: string;
+  topic: string;
+  theme: string;
+  difficulty: number;
+  question: string;
+  reference_answer?: string;
+};
+
+export function selectNextQuestion(attempts: AttemptRow[]): NextQuestionResult | null {
+  const { bank, fullById, parentByFollowUp } = loadBankAndMaps();
+  if (bank.length === 0) return null;
+
+  const lastById = lastByEffectiveId(attempts);
+  const neverAsked = bank.filter((q) => !lastById.has(q.id));
+  const retryPool = bank.filter((q) => {
+    const last = lastById.get(q.id);
+    return last && last.score >= 0 && last.score <= 2;
+  });
+  const weakest = weakestTwoTopics(attempts);
+
+  const pickFromNeverAsked = (): QuestionMeta | null => {
+    if (neverAsked.length === 0) return null;
+    if (weakest.length > 0) {
+      const weak = neverAsked.filter((q) => weakest.includes(q.topic));
+      if (weak.length > 0) return weak[Math.floor(Math.random() * weak.length)];
+    }
+    return neverAsked[Math.floor(Math.random() * neverAsked.length)];
+  };
+  const pickFromRetry = (): QuestionMeta | null => {
+    if (retryPool.length === 0) return null;
+    return retryPool[Math.floor(Math.random() * retryPool.length)];
+  };
+
+  let chosen: QuestionMeta | null = null;
+  const useRetry = retryPool.length > 0 && (neverAsked.length === 0 || Math.random() < 0.5);
+  if (useRetry) {
+    chosen = pickFromRetry();
+  } else {
+    chosen = pickFromNeverAsked();
+  }
+  if (!chosen) chosen = pickFromNeverAsked() ?? pickFromRetry();
+  if (!chosen) chosen = bank[Math.floor(Math.random() * bank.length)];
+
+  const parentId = parentByFollowUp.get(chosen.id);
+  const questionId = parentId ?? chosen.id;
+  const followUpId = parentId ? chosen.id : null;
+  const displayId = chosen.id;
+  const full = fullById.get(displayId);
+  if (!full) return null;
+
+  return {
+    questionId,
+    followUpId,
+    questionDisplayId: displayId,
+    topic: chosen.topic,
+    theme: chosen.theme,
+    difficulty: chosen.difficulty,
+    question: full.question,
+    reference_answer: full.reference_answer,
+  };
+}
+
+/** Invalidate cache (e.g. after QUESTIONS_PATH change); useful for dev */
+export function invalidateQuestionCache(): void {
+  cachedBank = null;
+  cachedFullById = null;
+  cachedParentByFollowUp = null;
+}
