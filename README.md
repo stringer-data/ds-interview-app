@@ -2,6 +2,8 @@
 
 Web app for the DS Interview Trainer: landing, auth, practice (scorecard + question → grade → next), free/paid tier, and admin (users, invites).
 
+**Before pushing:** Never commit `.env` (it’s in `.gitignore`). Use `.env.example` as a template; keep real keys and `DATABASE_URL` local only.
+
 **Spec:** See `../ds-interview-trainer-v1/web-app-ideas/build_brief.md` (and `ideas.md`, `marketing_ideas.md`).
 
 ## Setup
