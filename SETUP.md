@@ -98,3 +98,46 @@ If something fails, check:
 - `.env` has no typos and no spaces around `=`.  
 - For Neon/Supabase: `DATABASE_URL` includes `?sslmode=require` if they require it.  
 - You ran `npx prisma db push` from the `ds-trainer-app` folder.
+
+---
+
+## Pushing to GitHub
+
+The repo already has `origin` set to `https://github.com/stringer-data/ds-interview-app.git`. To push you need to authenticate once. Pick one option.
+
+### Option A — GitHub CLI (easiest)
+
+1. Install the CLI (if needed): `brew install gh`
+2. In Terminal, from any folder, run:
+   ```bash
+   gh auth login
+   ```
+3. Choose **GitHub.com** → **HTTPS** → **Login with a web browser**. Follow the prompts.
+4. Then push:
+   ```bash
+   cd /Users/stringer/Projects/ds-trainer-app
+   git push -u origin main
+   ```
+
+### Option B — Personal Access Token (HTTPS)
+
+1. Open **[github.com/settings/tokens](https://github.com/settings/tokens)** → **Generate new token (classic)**.
+2. Name it (e.g. “ds-interview-app”), check **repo**, then generate. Copy the token.
+3. In Terminal:
+   ```bash
+   cd /Users/stringer/Projects/ds-trainer-app
+   git push -u origin main
+   ```
+4. When prompted: **Username** = your GitHub username; **Password** = paste the token (not your GitHub password).
+
+### Option C — SSH
+
+1. If you don’t have an SSH key, create one: `ssh-keygen -t ed25519 -C "your@email.com"` (Enter to accept defaults).
+2. Add the key to the agent: `eval "$(ssh-agent -s)"` then `ssh-add ~/.ssh/id_ed25519`.
+3. Copy your **public** key: `pbcopy < ~/.ssh/id_ed25519.pub`. Add it at **[github.com/settings/keys](https://github.com/settings/keys)** → **New SSH key**.
+4. Use SSH for this repo and push:
+   ```bash
+   cd /Users/stringer/Projects/ds-trainer-app
+   git remote set-url origin git@github.com:stringer-data/ds-interview-app.git
+   git push -u origin main
+   ```
