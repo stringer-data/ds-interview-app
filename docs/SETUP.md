@@ -14,11 +14,11 @@ Do these steps once. You need: a **database URL** and an **OpenAI API key**.
    ```text
    postgresql://user:password@ep-xxx.region.aws.neon.tech/neondb?sslmode=require
    ```
-4. Copy that full URL — you’ll paste it in Step 2 as `DATABASE_URL`.
+4. Copy that full URL — you'll paste it in Step 2 as `DATABASE_URL`.
 
 ### Option B — Postgres on your Mac
 
-1. Install Postgres (if you don’t have it):
+1. Install Postgres (if you don't have it):
    ```bash
    brew install postgresql@16
    brew services start postgresql@16
@@ -40,7 +40,7 @@ Do these steps once. You need: a **database URL** and an **OpenAI API key**.
 
 1. Go to **[platform.openai.com](https://platform.openai.com)** and sign in (or create an account).
 2. Open **API keys** (in the menu or profile).
-3. Click **Create new secret key**. Copy the key (it starts with `sk-...`). You won’t see it again.
+3. Click **Create new secret key**. Copy the key (it starts with `sk-...`). You won't see it again.
 
 ---
 
@@ -59,7 +59,7 @@ Set these (replace the placeholders):
 | `OPENAI_API_KEY` | Your OpenAI key from Step 2, e.g. `sk-proj-...` |
 | `ADMIN_EMAILS` | Your email so you can open `/admin`, e.g. `you@gmail.com` |
 
-Save the file. Don’t commit `.env` (it’s in `.gitignore`).
+Save the file. Don't commit `.env` (it's in `.gitignore`).
 
 ---
 
@@ -72,7 +72,7 @@ cd /Users/stringer/Projects/ds-trainer-app
 npx prisma db push
 ```
 
-You should see something like: “Your database is now in sync with your schema.”  
+You should see something like: "Your database is now in sync with your schema."  
 If you get a connection error, check `DATABASE_URL` in `.env` (no extra spaces, correct password, correct host/db name).
 
 ---
@@ -83,7 +83,7 @@ If you get a connection error, check `DATABASE_URL` in `.env` (no extra spaces, 
 npm run dev
 ```
 
-You should see: “Ready on http://localhost:3000” (or similar).
+You should see: "Ready on http://localhost:3000" (or similar).
 
 ---
 
@@ -122,7 +122,7 @@ The repo already has `origin` set to `https://github.com/stringer-data/ds-interv
 ### Option B — Personal Access Token (HTTPS)
 
 1. Open **[github.com/settings/tokens](https://github.com/settings/tokens)** → **Generate new token (classic)**.
-2. Name it (e.g. “ds-interview-app”), check **repo**, then generate. Copy the token.
+2. Name it (e.g. "ds-interview-app"), check **repo**, then generate. Copy the token.
 3. In Terminal:
    ```bash
    cd /Users/stringer/Projects/ds-trainer-app
@@ -132,7 +132,7 @@ The repo already has `origin` set to `https://github.com/stringer-data/ds-interv
 
 ### Option C — SSH
 
-1. If you don’t have an SSH key, create one: `ssh-keygen -t ed25519 -C "your@email.com"` (Enter to accept defaults).
+1. If you don't have an SSH key, create one: `ssh-keygen -t ed25519 -C "your@email.com"` (Enter to accept defaults).
 2. Add the key to the agent: `eval "$(ssh-agent -s)"` then `ssh-add ~/.ssh/id_ed25519`.
 3. Copy your **public** key: `pbcopy < ~/.ssh/id_ed25519.pub`. Add it at **[github.com/settings/keys](https://github.com/settings/keys)** → **New SSH key**.
 4. Use SSH for this repo and push:

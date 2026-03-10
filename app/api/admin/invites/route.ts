@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 
 const bodySchema = z.object({
   email: z.string().email().optional().or(z.literal("")),
+  invitee_name: z.string().max(200).optional().transform((s) => s?.trim() || null),
   tier_to_grant: z.enum(["free", "paid"]),
 });
 
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
     data: {
       createdBy: result.user.id,
       email: body.email && body.email.length > 0 ? body.email.trim().toLowerCase() : null,
+      inviteeName: body.invitee_name || null,
       inviteCode,
       tierToGrant: body.tier_to_grant,
     },

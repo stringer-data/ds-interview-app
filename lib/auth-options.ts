@@ -25,6 +25,7 @@ export const authOptions: NextAuthOptions = {
           data: {
             firstLoginAt: user.firstLoginAt ?? now,
             lastLoginAt: now,
+            loginCount: { increment: 1 },
           },
         });
         return { id: user.id, email: user.email };

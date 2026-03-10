@@ -5,7 +5,12 @@ import { useState, useEffect } from "react";
 type UserRow = {
   id: string;
   email: string;
+  firstName: string | null;
+  lastName: string | null;
   tier: string;
+  newsletterOptIn: boolean;
+  signupSource: string;
+  loginCount: number;
   firstLoginAt: string | null;
   lastLoginAt: string | null;
   createdAt: string;
@@ -16,16 +21,29 @@ export default function AdminPage() {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [inviteTier, setInviteTier] = useState<"free" | "paid">("paid");
   const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteeName, setInviteeName] = useState("");
   const [createdInvite, setCreatedInvite] = useState<{ invite_link: string; invite_code: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const [editingUser, setEditingUser] = useState<UserRow | null>(null);
+  const [editFirstName, setEditFirstName] = useState("");
+  const [editLastName, setEditLastName] = useState("");
+  const [editTier, setEditTier] = useState<"free" | "paid">("free");
+  const [editSaving, setEditSaving] = useState(false);
 
   useEffect(() => {
+    setLoadError(null);
     fetch("/api/admin/users")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.users) setUsers(d.users);
+      .then(async (r) => {
+        const d = await r.json();
+        if (!r.ok) {
+          setLoadError(d?.error ?? r.statusText ?? "Failed to load users");
+          return;
+        }
+        setUsers(Array.isArray(d.users) ? d.users : []);
       })
+      .catch(() => setLoadError("Failed to load users"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -40,6 +58,7 @@ export default function AdminPage() {
         body: JSON.stringify({
           tier_to_grant: inviteTier,
           email: inviteEmail.trim() || undefined,
+          invitee_name: inviteeName.trim() || undefined,
         }),
       });
       const data = await res.json();
@@ -49,13 +68,39 @@ export default function AdminPage() {
     }
   }
 
-  async function setTier(userId: string, tier: "free" | "paid") {
-    await fetch(`/api/admin/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tier }),
-    });
-    setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, tier } : u)));
+  function openEdit(user: UserRow) {
+    setEditingUser(user);
+    setEditFirstName(user.firstName ?? "");
+    setEditLastName(user.lastName ?? "");
+    setEditTier(user.tier as "free" | "paid");
+  }
+
+  async function saveEdit() {
+    if (!editingUser) return;
+    setEditSaving(true);
+    try {
+      const res = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: editFirstName.trim() || null,
+          last_name: editLastName.trim() || null,
+          tier: editTier,
+        }),
+      });
+      if (res.ok) {
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id === editingUser.id
+              ? { ...u, firstName: editFirstName.trim() || null, lastName: editLastName.trim() || null, tier: editTier }
+              : u
+          )
+        );
+        setEditingUser(null);
+      }
+    } finally {
+      setEditSaving(false);
+    }
   }
 
   function formatDate(s: string | null) {
@@ -68,6 +113,16 @@ export default function AdminPage() {
       <section className="card" style={{ marginBottom: "1.5rem" }}>
         <h2 style={{ fontSize: "1.1rem", marginBottom: "1rem" }}>Create invite</h2>
         <form onSubmit={createInvite} style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "flex-end" }}>
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label>Invitee name (optional)</label>
+            <input
+              type="text"
+              value={inviteeName}
+              onChange={(e) => setInviteeName(e.target.value)}
+              placeholder="e.g. Jane Doe"
+              style={{ width: "160px" }}
+            />
+          </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label>Email (optional)</label>
             <input
@@ -105,24 +160,36 @@ export default function AdminPage() {
         <h2 style={{ fontSize: "1.1rem", marginBottom: "1rem" }}>Users</h2>
         {loading ? (
           <p style={{ color: "var(--muted)" }}>Loading…</p>
+        ) : loadError ? (
+          <p style={{ color: "var(--error, #c00)" }}>{loadError}</p>
+        ) : users.length === 0 ? (
+          <p style={{ color: "var(--muted)" }}>No users yet.</p>
         ) : (
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", textAlign: "left" }}>
+                  <th style={{ padding: "0.5rem 0.75rem" }}>Name</th>
                   <th style={{ padding: "0.5rem 0.75rem" }}>Email</th>
                   <th style={{ padding: "0.5rem 0.75rem" }}>Tier</th>
+                  <th style={{ padding: "0.5rem 0.75rem" }}>Source</th>
+                  <th style={{ padding: "0.5rem 0.75rem" }}>Newsletter</th>
+                  <th style={{ padding: "0.5rem 0.75rem" }}>Logins</th>
                   <th style={{ padding: "0.5rem 0.75rem" }}>First login</th>
                   <th style={{ padding: "0.5rem 0.75rem" }}>Last login</th>
                   <th style={{ padding: "0.5rem 0.75rem" }}>Questions</th>
-                  <th style={{ padding: "0.5rem 0.75rem" }}>Set tier</th>
+                  <th style={{ padding: "0.5rem 0.75rem" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((u) => (
                   <tr key={u.id} style={{ borderBottom: "1px solid var(--border)" }}>
+                    <td style={{ padding: "0.5rem 0.75rem" }}>{[u.firstName, u.lastName].filter(Boolean).join(" ") || "—"}</td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>{u.email}</td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>{u.tier}</td>
+                    <td style={{ padding: "0.5rem 0.75rem", color: "var(--muted)" }}>{u.signupSource}</td>
+                    <td style={{ padding: "0.5rem 0.75rem" }}>{u.newsletterOptIn ? "Yes" : "—"}</td>
+                    <td style={{ padding: "0.5rem 0.75rem" }}>{u.loginCount}</td>
                     <td style={{ padding: "0.5rem 0.75rem", color: "var(--muted)" }}>{formatDate(u.firstLoginAt)}</td>
                     <td style={{ padding: "0.5rem 0.75rem", color: "var(--muted)" }}>{formatDate(u.lastLoginAt)}</td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>{u.questionsAnswered}</td>
@@ -131,9 +198,9 @@ export default function AdminPage() {
                         type="button"
                         className="btn btn-ghost"
                         style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem" }}
-                        onClick={() => setTier(u.id, u.tier === "paid" ? "free" : "paid")}
+                        onClick={() => openEdit(u)}
                       >
-                        Set {u.tier === "paid" ? "Free" : "Paid"}
+                        Edit
                       </button>
                     </td>
                   </tr>
@@ -143,6 +210,67 @@ export default function AdminPage() {
           </div>
         )}
       </section>
+
+      {editingUser && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10,
+          }}
+          onClick={() => !editSaving && setEditingUser(null)}
+        >
+          <div
+            className="card"
+            style={{ minWidth: "320px", maxWidth: "90vw" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ marginBottom: "1rem" }}>Edit user</h3>
+            <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginBottom: "1rem" }}>{editingUser.email}</p>
+            <div className="form-group">
+              <label>First name</label>
+              <input
+                type="text"
+                value={editFirstName}
+                onChange={(e) => setEditFirstName(e.target.value)}
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="form-group">
+              <label>Last name</label>
+              <input
+                type="text"
+                value={editLastName}
+                onChange={(e) => setEditLastName(e.target.value)}
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="form-group">
+              <label>Tier</label>
+              <select
+                value={editTier}
+                onChange={(e) => setEditTier(e.target.value as "free" | "paid")}
+                style={{ width: "100%", padding: "0.6rem 0.75rem", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 8, color: "var(--text)" }}
+              >
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+            <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+              <button type="button" className="btn btn-primary" onClick={saveEdit} disabled={editSaving}>
+                {editSaving ? "Saving…" : "Save"}
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={() => setEditingUser(null)} disabled={editSaving}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
