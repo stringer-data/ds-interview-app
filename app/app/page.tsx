@@ -161,13 +161,14 @@ export default function AppPage() {
         });
         return;
       }
-      setFeedback(data as Feedback);
+      const feedback = data as Feedback;
+      setFeedback(feedback);
       await fetchScorecard();
-      if (data.upsell && !data.nextQuestion) {
-        setUpsell({ questionsUsed: data.questionsUsed, cap: 10 });
+      if (feedback.upsell && !feedback.nextQuestion) {
+        setUpsell({ questionsUsed: feedback.questionsUsed, cap: 10 });
         setQuestion(null);
-      } else if (data.nextQuestion) {
-        setQuestion(data.nextQuestion);
+      } else if (feedback.nextQuestion) {
+        setQuestion(feedback.nextQuestion);
         setAnswer("");
       } else {
         await fetchNextQuestion();
