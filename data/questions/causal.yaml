@@ -1,0 +1,205 @@
+- id: causal_confound_01
+  topic: Causal
+  theme: Foundations
+  difficulty: 3
+  category: "Causal Inference"
+  question: What is a confounder? Give a simple example in product analytics.
+  tags:
+  - confounding
+  - causal
+- id: causal_did_01
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 4
+  category: "Causal Inference"
+  question: What is difference-in-differences and when would you use it instead of
+    an A/B test?
+  tags:
+  - did
+  - quasi_experiment
+- id: causal_basic_01
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is causation (vs correlation)?
+  tags:
+  - causation
+  - correlation
+- id: causal_basic_02
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is a confounder in one sentence?
+  reference_answer: |
+    In causal terms, a confounder is a variable that's related to both the
+    exposure/treatment (X) and the outcome (Y). Because of that, it can create
+    a spurious association or distort the real effect of X on Y. Stressing
+    "correlates with Y" is good; adding "and is also related to the
+    treatment/exposure" would make it complete.
+  tags:
+  - confounder
+  - bias
+- id: causal_basic_03
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is selection bias?
+  tags:
+  - selection_bias
+  - causal
+- id: causal_basic_04
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is the causal effect of a treatment?
+  tags:
+  - causal_effect
+  - treatment
+- id: causal_basic_05
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is counterfactual reasoning?
+  tags:
+  - counterfactual
+  - causal
+- id: causal_basic_06
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is an observational study?
+  tags:
+  - observational
+  - experiment
+- id: causal_basic_07
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is a quasi-experiment?
+  tags:
+  - quasi_experiment
+  - causal
+- id: causal_basic_08
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is difference-in-differences (DiD) in one sentence?
+  tags:
+  - did
+  - quasi
+- id: causal_basic_09
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is a control group in causal inference?
+  tags:
+  - control
+  - causal
+- id: causal_basic_10
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is unobserved confounding?
+  tags:
+  - unobserved
+  - confounder
+- id: causal_basic_11
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is the average treatment effect (ATE)?
+  tags:
+  - ate
+  - effect
+- id: causal_basic_12
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is instrumental variables (IV) in one sentence?
+  tags:
+  - iv
+  - causal
+- id: causal_basic_13
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is regression discontinuity design (RDD)?
+  tags:
+  - rdd
+  - quasi
+- id: causal_basic_14
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is propensity score?
+  tags:
+  - propensity
+  - causal
+- id: causal_basic_15
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is matching in causal inference?
+  tags:
+  - matching
+  - causal
+- id: causal_basic_16
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: Why can't we always run a randomized experiment?
+  tags:
+  - experiment
+  - constraints
+- id: causal_basic_17
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is external validity?
+  tags:
+  - external_validity
+  - generalization
+- id: causal_basic_18
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is internal validity?
+  tags:
+  - internal_validity
+  - causal
+- id: causal_basic_19
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is a natural experiment?
+  tags:
+  - natural_experiment
+  - quasi
+- id: causal_basic_20
+  topic: Causal
+  theme: Foundations
+  difficulty: 1
+  category: "Causal Inference"
+  question: What is the parallel trends assumption in DiD?
+  tags:
+  - parallel_trends
+  - did

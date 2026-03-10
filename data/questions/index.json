@@ -1,0 +1,37 @@
+{
+  "description": "Themed question banks. Load all YAML files under data/questions/ and concatenate. Each question has a category (name) for curriculum ordering. Difficulty 1 = easiest, 5 = hardest. Question selection is done by scripts/next_question.py (50% never-asked, 50% retry 0–2; weak-topic bias).",
+  "authoring": "Prefer main question at lower (foundational) difficulty; follow-ups can be harder. **Follow-ups**: each question's follow_ups field is a list of question **ids** (e.g. follow_ups: [def_pvalue_01_interpret, def_pvalue_01_conclude]). Each follow-up must exist as a top-level question in the same format (id, topic, theme, difficulty, category, question, tags, optional reference_answer). Write follow-up questions so they stand on their own without needing the parent context.",
+  "categories": [
+    "Probability & Statistics",
+    "Hypothesis Testing",
+    "A/B Testing Mechanics",
+    "Experiment Design",
+    "Advanced Experimentation",
+    "Causal Inference",
+    "Experimentation Strategy",
+    "Machine Learning"
+  ],
+  "themes": {
+    "Design": [
+      "experiment_design.yaml"
+    ],
+    "Interpretation": [
+      "interpretation.yaml"
+    ],
+    "Math/Stats": [
+      "math_stats.yaml"
+    ],
+    "Causal": [
+      "causal.yaml"
+    ],
+    "Product Strategy": [
+      "product_strategy.yaml"
+    ],
+    "Case Studies": [
+      "case_studies.yaml"
+    ],
+    "Machine Learning": [
+      "machine_learning.yaml"
+    ]
+  }
+}

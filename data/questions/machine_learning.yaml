@@ -1,0 +1,165 @@
+# Machine learning — classification, metrics, generalization, trees
+# Topic: Machine Learning. Used by scripts/next_question.py and orchestrator.
+
+- id: def_precision_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 1
+  category: "Machine Learning"
+  question: What is precision (in classification) and how do you compute it?
+  tags:
+  - precision
+  - classification
+  - metrics
+
+- id: def_recall_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 1
+  category: "Machine Learning"
+  question: What is recall (in classification) and how do you compute it?
+  tags:
+  - recall
+  - classification
+  - metrics
+
+- id: def_accuracy_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 1
+  category: "Machine Learning"
+  question: What is accuracy (in classification)? When is it a misleading metric?
+  tags:
+  - accuracy
+  - classification
+  - metrics
+  - class_imbalance
+
+- id: def_fp_fn_examples_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 3
+  category: "Machine Learning"
+  question: Describe one example of a classification problem where the cost of a
+    false positive is much higher than a false negative, and one where the cost
+    of a false negative is much higher than a false positive.
+  reference_answer: |
+    At the start of any DS project, clarify whether the cost of a false positive
+    is much higher, lower, or similar to the cost of a false negative. This
+    drives model choice, loss function, prediction cutoff, and possibly the
+    training set.
+
+    FP cost >> FN cost — Recruiting. Hiring a bad candidate is much costlier
+    than passing on a good one (low value, morale, firing, re-hiring). Passing
+    on a good candidate is less bad if you have more good candidates in the
+    pipeline. (Optional: interviewers as ensemble classifiers, each focusing on
+    a subset of skills—similar to trees in a Random Forest.)
+
+    FN cost >> FP cost — Cancer detection. Predicting cancer when there is none
+    causes anxiety until follow-up; missing cancer delays treatment and can be
+    fatal. So we tolerate more false positives to avoid false negatives.
+
+    Reducing FP/FN cost is also a product problem. Design three paths: low
+    probability (one experience), high probability (another), in-between (e.g.
+    extra step). Examples: recruiting — offer / reject / internship; fraud
+    risk — normal flow / block / additional verification.
+  tags:
+  - precision
+  - recall
+  - false_positive
+  - false_negative
+  - classification
+  - tradeoff
+
+- id: def_roc_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 1
+  category: "Machine Learning"
+  question: What is the ROC curve?
+  reference_answer: |
+    The ROC (Receiver Operating Characteristic) curve plots the true positive
+    rate (TPR, recall) on the y-axis against the false positive rate (FPR) on
+    the x-axis, as the classification threshold is varied. Each point corresponds
+    to a different threshold; the curve shows the tradeoff between TPR and FPR.
+  tags:
+  - roc
+  - classification
+  - metrics
+  - threshold
+
+- id: def_auc_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 1
+  category: "Machine Learning"
+  question: What is AUC and how do you interpret it?
+  reference_answer: |
+    AUC (Area Under the ROC Curve) is the area under the ROC curve, a single
+    number between 0 and 1. It measures the model's ability to rank positive
+    instances above negative ones across all thresholds. AUC = 0.5 is random;
+    AUC = 1 is perfect; higher AUC means better discrimination.
+  tags:
+  - auc
+  - roc
+  - classification
+  - metrics
+
+- id: def_auc_imbalance_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 2
+  category: "Machine Learning"
+  question: Why is AUC often preferred over accuracy for imbalanced
+    classification?
+  reference_answer: |
+    Accuracy can be misleading when classes are imbalanced: a model that always
+    predicts the majority class can have high accuracy but no useful
+    discrimination. AUC measures how well the model separates the two classes
+    across thresholds and is insensitive to class prevalence, so it reflects
+    ranking ability rather than a single fixed-threshold accuracy.
+  tags:
+  - auc
+  - accuracy
+  - class_imbalance
+  - classification
+
+- id: def_roc_threshold_01
+  topic: Machine Learning
+  theme: Classification
+  difficulty: 2
+  category: "Machine Learning"
+  question: How would you choose a decision threshold using the ROC curve?
+  reference_answer: |
+    The ROC curve shows TPR vs FPR for every threshold; no single point is
+    "best" without a cost for FP vs FN. You pick a threshold by (1) defining
+    the cost or preference for false positives vs false negatives, (2) choosing
+    a point on the curve that matches that tradeoff (e.g. maximize profit, or
+    fix one of TPR/FPR and optimize the other), or (3) using a criterion like
+    Youden's index (maximize TPR - FPR) or the point closest to (0,1). Business
+    context should drive the choice.
+  tags:
+  - roc
+  - threshold
+  - classification
+  - tradeoff
+
+- id: math_tree_overfitting_01
+  topic: Machine Learning
+  theme: Generalization
+  difficulty: 2
+  category: "Machine Learning"
+  question: How would you combat overfitting when building tree-based models?
+  reference_answer: |
+    Common approaches: (1) Limit tree complexity—max depth, min samples per
+    leaf, min samples to split; (2) Pruning—grow then prune with a validation
+    set or cost-complexity; (3) Regularization—penalize complexity (e.g.
+    CART cost-complexity); (4) Ensembles with many weak trees (random forest,
+    GBM) and tune number of trees, depth, learning rate; (5) Cross-validation
+    to tune hyperparameters; (6) Early stopping in boosting. The key is
+    constraining model complexity so it doesn't memorize the training set.
+  tags:
+  - overfitting
+  - trees
+  - modeling
+  - regularization
