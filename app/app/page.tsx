@@ -47,6 +47,8 @@ export default function AppPage() {
   const [question, setQuestion] = useState<Question | null>(null);
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [followUpAnswer, setFollowUpAnswer] = useState("");
+  const [lastTopic, setLastTopic] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [upsell, setUpsell] = useState<{ questionsUsed: number; cap: number } | null>(null);
@@ -60,8 +62,9 @@ export default function AppPage() {
     }
   }, []);
 
-  const fetchNextQuestion = useCallback(async () => {
-    const res = await fetch("/api/next-question");
+  const fetchNextQuestion = useCallback(async (randomTopic = false) => {
+    const url = randomTopic ? "/api/next-question?random_topic=true" : "/api/next-question";
+    const res = await fetch(url);
     const data = await res.json();
     if (data.upsell) {
       setUpsell({ questionsUsed: data.questionsUsed, cap: data.cap });
@@ -76,6 +79,7 @@ export default function AppPage() {
     setQuestion(data);
     setAnswer("");
     setFeedback(null);
+    setFollowUpAnswer("");
   }, []);
 
   useEffect(() => {
@@ -122,6 +126,10 @@ export default function AppPage() {
           question_id: question.questionId,
           follow_up_id: question.followUpId,
           answer: answer.trim(),
+          ...(question.questionId === "custom" && {
+            custom_question: question.question,
+            custom_topic: question.topic,
+          }),
         }),
       });
       const text = await res.text();
@@ -161,14 +169,15 @@ export default function AppPage() {
         });
         return;
       }
-      const feedback = data as Feedback;
-      setFeedback(feedback);
+      const feedbackData = data as Feedback;
+      setLastTopic(question.topic);
+      setFeedback(feedbackData);
       await fetchScorecard();
-      if (feedback.upsell && !feedback.nextQuestion) {
-        setUpsell({ questionsUsed: feedback.questionsUsed, cap: 10 });
+      if (feedbackData.upsell && !feedbackData.nextQuestion) {
+        setUpsell({ questionsUsed: feedbackData.questionsUsed, cap: 10 });
         setQuestion(null);
-      } else if (feedback.nextQuestion) {
-        setQuestion(feedback.nextQuestion);
+      } else if (feedbackData.nextQuestion) {
+        setQuestion(feedbackData.nextQuestion);
         setAnswer("");
       } else {
         await fetchNextQuestion();
@@ -290,19 +299,108 @@ export default function AppPage() {
 
           {feedback.followUpQuestion && feedback.followUpQuestion.trim() !== "—" && (
             <section style={{ marginBottom: "1.25rem" }}>
-              <h4 className="feedback-label">Follow-up question</h4>
+              <h4 className="feedback-label">Suggested follow-up</h4>
               <p className="feedback-text">{feedback.followUpQuestion}</p>
+              <textarea
+                value={followUpAnswer}
+                onChange={(e) => setFollowUpAnswer(e.target.value)}
+                placeholder="Type your answer here"
+                rows={3}
+                style={{
+                  width: "100%",
+                  padding: "0.6rem 0.75rem",
+                  background: "var(--bg)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 8,
+                  color: "var(--text)",
+                  resize: "vertical",
+                  marginTop: "0.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              />
             </section>
           )}
 
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+            {feedback.followUpQuestion && feedback.followUpQuestion.trim() !== "—" && (
+              <button
+                type="button"
+                className="btn btn-primary"
+                disabled={actionLoading || !followUpAnswer.trim()}
+                onClick={async () => {
+                  const text = followUpAnswer.trim();
+                  if (!text || !feedback.followUpQuestion) return;
+                  setActionLoading(true);
+                  setFollowUpAnswer("");
+                  try {
+                    const res = await fetch("/api/submit-answer", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        question_id: "custom",
+                        custom_question: feedback.followUpQuestion,
+                        custom_topic: lastTopic ?? "Custom",
+                        answer: text,
+                      }),
+                    });
+                    const responseData = await res.json().catch(() => null);
+                    if (!res.ok) {
+                      const errMsg = responseData?.error ?? "Please try again.";
+                      setFeedback((prev) => prev ? { ...prev, verdict: "Error", missingWrong: errMsg } : null);
+                      return;
+                    }
+                    const feedbackData = responseData as Feedback;
+                    setLastTopic(lastTopic ?? "Custom");
+                    setFeedback(feedbackData);
+                    await fetchScorecard();
+                    if (feedbackData.upsell && !feedbackData.nextQuestion) {
+                      setUpsell({ questionsUsed: feedbackData.questionsUsed, cap: 10 });
+                      setQuestion(null);
+                    } else if (feedbackData.nextQuestion) {
+                      setQuestion(feedbackData.nextQuestion);
+                      setAnswer("");
+                    } else {
+                      await fetchNextQuestion();
+                    }
+                  } finally {
+                    setActionLoading(false);
+                  }
+                }}
+              >
+                Submit answer
+              </button>
+            )}
+            <button
+              type="button"
+              className="btn btn-ghost"
+              disabled={actionLoading}
+              onClick={async () => {
+                setActionLoading(true);
+                setFeedback(null);
+                setFollowUpAnswer("");
+                await fetchNextQuestion(true);
+                setActionLoading(false);
+              }}
+            >
+              New random topic
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={handleHelp}
+              disabled={actionLoading || !question}
+            >
+              Help
+            </button>
             {feedback.nextQuestion ? (
               <button
+                type="button"
                 className="btn btn-primary"
                 onClick={() => {
                   setQuestion(feedback!.nextQuestion!);
                   setAnswer("");
                   setFeedback(null);
+                  setFollowUpAnswer("");
                 }}
                 disabled={actionLoading}
               >
@@ -310,6 +408,7 @@ export default function AppPage() {
               </button>
             ) : (
               <button
+                type="button"
                 className="btn btn-primary"
                 onClick={() => {
                   setFeedback(null);
@@ -317,7 +416,7 @@ export default function AppPage() {
                 }}
                 disabled={actionLoading}
               >
-                Get next question
+                Next question
               </button>
             )}
           </div>

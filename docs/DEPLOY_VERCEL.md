@@ -58,6 +58,7 @@ Optional (defaults are fine for Phase 1):
 
 - `PAYMENTS_ENABLED` = `false`
 - `FREE_QUESTION_CAP` = `10`
+- `NPM_CONFIG_LOGLEVEL` = `error` — Hides npm deprecation warnings (e.g. `node-domexception`) from the build log. That warning comes from the OpenAI SDK and is harmless.
 
 ---
 

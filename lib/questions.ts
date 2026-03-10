@@ -154,13 +154,28 @@ export type NextQuestionResult = {
   reference_answer?: string;
 };
 
-export function selectNextQuestion(attempts: AttemptRow[]): NextQuestionResult | null {
+export type SelectNextQuestionOptions = {
+  /** When set, exclude questions from this topic (e.g. to force a new random topic). */
+  excludeTopic?: string;
+};
+
+export function selectNextQuestion(
+  attempts: AttemptRow[],
+  options: SelectNextQuestionOptions = {}
+): NextQuestionResult | null {
   const { bank, fullById, parentByFollowUp } = loadBankAndMaps();
   if (bank.length === 0) return null;
 
+  const { excludeTopic } = options;
+  const bankFiltered =
+    excludeTopic != null && excludeTopic !== ""
+      ? bank.filter((q) => q.topic !== excludeTopic)
+      : bank;
+  if (bankFiltered.length === 0) return null;
+
   const lastById = lastByEffectiveId(attempts);
-  const neverAsked = bank.filter((q) => !lastById.has(q.id));
-  const retryPool = bank.filter((q) => {
+  const neverAsked = bankFiltered.filter((q) => !lastById.has(q.id));
+  const retryPool = bankFiltered.filter((q) => {
     const last = lastById.get(q.id);
     return last && last.score >= 0 && last.score <= 2;
   });
@@ -172,11 +187,11 @@ export function selectNextQuestion(attempts: AttemptRow[]): NextQuestionResult |
       const weak = neverAsked.filter((q) => weakest.includes(q.topic));
       if (weak.length > 0) return weak[Math.floor(Math.random() * weak.length)];
     }
-    return neverAsked[Math.floor(Math.random() * neverAsked.length)];
+    return neverAsked[Math.floor(Math.random() * neverAsked.length)] ?? null;
   };
   const pickFromRetry = (): QuestionMeta | null => {
     if (retryPool.length === 0) return null;
-    return retryPool[Math.floor(Math.random() * retryPool.length)];
+    return retryPool[Math.floor(Math.random() * retryPool.length)] ?? null;
   };
 
   let chosen: QuestionMeta | null = null;
@@ -187,7 +202,7 @@ export function selectNextQuestion(attempts: AttemptRow[]): NextQuestionResult |
     chosen = pickFromNeverAsked();
   }
   if (!chosen) chosen = pickFromNeverAsked() ?? pickFromRetry();
-  if (!chosen) chosen = bank[Math.floor(Math.random() * bank.length)];
+  if (!chosen) chosen = bankFiltered[Math.floor(Math.random() * bankFiltered.length)];
 
   const parentId = parentByFollowUp.get(chosen.id);
   const questionId = parentId ?? chosen.id;

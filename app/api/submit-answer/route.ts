@@ -9,6 +9,9 @@ const bodySchema = z.object({
   question_id: z.string(),
   follow_up_id: z.string().nullable().optional(),
   answer: z.string().min(1),
+  /** For custom follow-up questions (question_id === "custom") */
+  custom_question: z.string().min(1).optional(),
+  custom_topic: z.string().max(100).optional(),
 });
 
 const PAYMENTS_ENABLED = process.env.PAYMENTS_ENABLED === "true";
@@ -26,24 +29,50 @@ export async function POST(req: Request) {
     } catch {
       return NextResponse.json({ error: "Invalid body" }, { status: 400 });
     }
-    const displayId = body.follow_up_id ?? body.question_id;
-    const question = getQuestionById(displayId);
-    if (!question) {
-      return NextResponse.json({ error: "Question not found" }, { status: 404 });
+    const isCustom = body.question_id === "custom";
+    if (isCustom && !body.custom_question?.trim()) {
+      return NextResponse.json({ error: "custom_question required when question_id is custom" }, { status: 400 });
     }
+
+    let questionText: string;
+    let topic: string;
+    let theme: string;
+    let difficulty: number;
+
+    if (isCustom) {
+      questionText = body.custom_question!.trim();
+      topic = body.custom_topic?.trim() || "Custom";
+      theme = "Follow-up";
+      difficulty = 1;
+    } else {
+      const displayId = body.follow_up_id ?? body.question_id;
+      const question = getQuestionById(displayId);
+      if (!question) {
+        return NextResponse.json({ error: "Question not found" }, { status: 404 });
+      }
+      questionText = question.question;
+      topic = question.topic;
+      theme = question.theme;
+      difficulty = question.difficulty;
+    }
+
     const grade = await gradeAnswer({
-      question: question.question,
+      question: questionText,
       answer: body.answer,
-      referenceAnswer: question.reference_answer,
+      referenceAnswer: isCustom ? undefined : (() => {
+        const displayId = body.follow_up_id ?? body.question_id;
+        const q = getQuestionById(displayId);
+        return q?.reference_answer;
+      })(),
     });
     await prisma.attempt.create({
       data: {
         userId: user.id,
-        questionId: body.question_id,
-        followUpId: body.follow_up_id ?? null,
-        topic: question.topic,
-        theme: question.theme,
-        difficulty: question.difficulty,
+        questionId: isCustom ? "custom" : body.question_id,
+        followUpId: isCustom ? null : (body.follow_up_id ?? null),
+        topic,
+        theme,
+        difficulty,
         score: grade.score,
         maxScore: grade.maxScore,
       },
