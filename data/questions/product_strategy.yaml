@@ -1,0 +1,271 @@
+- id: prod_fb_eng_01
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 3
+  category: "Experimentation Strategy"
+  question: 'How would you improve engagement on Facebook? Use: Objective → Drivers
+    → Levers → Experiments → Tradeoffs.'
+  tags:
+  - engagement
+  - framework
+- id: prod_driver_app_01
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 4
+  category: "Experimentation Strategy"
+  question: We’re launching a new driver app UI to increase driver earnings by increasing
+    trips. Outline a testing strategy.
+  tags:
+  - marketplace
+  - experimentation_strategy
+- id: prod_fb_marketplace_01
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 3
+  category: "Experimentation Strategy"
+  question: How would we measure the success of the Facebook Marketplace?
+  tags:
+  - marketplace
+  - metrics
+  - success_metrics
+- id: prod_yelp_reviews_01
+  topic: Product Strategy
+  theme: Reviews
+  difficulty: 3
+  category: "Experimentation Strategy"
+  question: How would we measure the success of a reviews platform (e.g. user-generated reviews for local businesses)?
+  tags:
+  - reviews
+  - metrics
+  - success_metrics
+- id: prod_basic_01
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a product metric?
+  tags:
+  - metric
+  - product
+- id: prod_basic_02
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is engagement?
+  tags:
+  - engagement
+  - metric
+- id: prod_basic_03
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a marketplace in product terms?
+  tags:
+  - marketplace
+  - product
+- id: prod_basic_04
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is retention?
+  tags:
+  - retention
+  - metric
+- id: prod_basic_05
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is churn?
+  tags:
+  - churn
+  - retention
+- id: prod_basic_06
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is GMV?
+  tags:
+  - gmv
+  - marketplace
+- id: prod_basic_07
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is DAU?
+  tags:
+  - dau
+  - engagement
+- id: prod_basic_08
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is MAU?
+  tags:
+  - mau
+  - engagement
+- id: prod_basic_09
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a leading indicator?
+  tags:
+  - leading_indicator
+  - metric
+- id: prod_basic_10
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a lagging indicator? Give two examples.
+  reference_answer: |
+    A lagging indicator is a metric that moves or is observed after a key
+    outcome or leading metric. Examples: revenue as a lagging indicator for
+    new starters or growth initiatives; customer retention or churn as a
+    lagging indicator for product engagement changes.
+  tags:
+  - lagging_indicator
+  - metric
+- id: prod_basic_11
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a funnel?
+  tags:
+  - funnel
+  - metric
+- id: prod_basic_12
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is supply and demand in a marketplace?
+  tags:
+  - supply
+  - demand
+  - marketplace
+- id: prod_basic_13
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is A/B testing strategy?
+  tags:
+  - strategy
+  - ab_test
+- id: prod_basic_14
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a rollout?
+  tags:
+  - rollout
+  - launch
+- id: prod_basic_15
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a feature flag?
+  tags:
+  - feature_flag
+  - experiment
+- id: prod_basic_16
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is statistical significance in a business context?
+  tags:
+  - significance
+  - business
+- id: prod_basic_17
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is practical significance?
+  tags:
+  - practical_significance
+  - decision
+- id: prod_basic_18
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a two-sided marketplace?
+  tags:
+  - two_sided
+  - marketplace
+- id: prod_basic_19
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a cohort?
+  tags:
+  - cohort
+  - analysis
+- id: prod_basic_20
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a KPI?
+  tags:
+  - kpi
+  - metric
+- id: prod_basic_21
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is activation?
+  tags:
+  - activation
+  - funnel
+- id: prod_basic_22
+  topic: Product Strategy
+  theme: Marketplace
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is liquidity in a marketplace?
+  tags:
+  - liquidity
+  - marketplace
+- id: prod_basic_23
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a baseline in an experiment?
+  tags:
+  - baseline
+  - experiment
+- id: prod_basic_24
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is a treatment effect?
+  tags:
+  - treatment_effect
+  - experiment
+- id: prod_basic_25
+  topic: Product Strategy
+  theme: Engagement
+  difficulty: 1
+  category: "Experimentation Strategy"
+  question: What is experiment velocity?
+  tags:
+  - velocity
+  - experimentation
