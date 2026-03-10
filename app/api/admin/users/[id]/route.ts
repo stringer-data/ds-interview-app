@@ -3,7 +3,11 @@ import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
-const bodySchema = z.object({ tier: z.enum(["free", "paid"]) });
+const bodySchema = z.object({
+  tier: z.enum(["free", "paid"]).optional(),
+  first_name: z.string().max(100).optional().transform((s) => s?.trim() || null),
+  last_name: z.string().max(100).optional().transform((s) => s?.trim() || null),
+});
 
 export async function PATCH(
   req: Request,
@@ -20,9 +24,16 @@ export async function PATCH(
   } catch {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
+  const data: { tier?: string; firstName?: string | null; lastName?: string | null } = {};
+  if (body.tier !== undefined) data.tier = body.tier;
+  if (body.first_name !== undefined) data.firstName = body.first_name;
+  if (body.last_name !== undefined) data.lastName = body.last_name;
+  if (Object.keys(data).length === 0) {
+    return NextResponse.json({ error: "No fields to update" }, { status: 400 });
+  }
   const user = await prisma.user.update({
     where: { id },
-    data: { tier: body.tier },
+    data,
   });
   return NextResponse.json(user);
 }

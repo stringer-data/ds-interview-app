@@ -8,13 +8,18 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  passwordHash  String?   @map("password_hash")
-  tier          String    @default("free") // "free" | "paid"
-  createdAt     DateTime  @default(now()) @map("created_at")
-  firstLoginAt  DateTime? @map("first_login_at")
-  lastLoginAt   DateTime? @map("last_login_at")
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String?   @map("password_hash")
+  firstName        String?   @map("first_name")
+  lastName         String?   @map("last_name")
+  tier             String    @default("free") // "free" | "paid"
+  newsletterOptIn  Boolean   @default(false) @map("newsletter_opt_in")
+  signupSource     String    @default("organic") @map("signup_source") // "organic" | "invite" | future: "referral", "campaign", etc.
+  loginCount       Int       @default(0) @map("login_count")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  firstLoginAt     DateTime? @map("first_login_at")
+  lastLoginAt      DateTime? @map("last_login_at")
 
   attempts Attempt[]
   invites   Invite[]   @relation("CreatedInvites")
@@ -38,13 +43,14 @@ model Attempt {
 }
 
 model Invite {
-  id          String    @id @default(cuid())
-  createdBy   String    @map("created_by")
-  email       String?
-  inviteCode  String    @unique @map("invite_code")
-  tierToGrant String    @map("tier_to_grant") // "free" | "paid"
-  createdAt   DateTime  @default(now()) @map("created_at")
-  usedAt      DateTime? @map("used_at")
+  id           String    @id @default(cuid())
+  createdBy    String    @map("created_by")
+  email        String?
+  inviteeName  String?   @map("invitee_name") // optional name for who the invite is for
+  inviteCode   String    @unique @map("invite_code")
+  tierToGrant  String    @map("tier_to_grant") // "free" | "paid"
+  createdAt    DateTime  @default(now()) @map("created_at")
+  usedAt       DateTime? @map("used_at")
 
   creator User @relation("CreatedInvites", fields: [createdBy], references: [id], onDelete: Cascade)
   @@index([inviteCode])

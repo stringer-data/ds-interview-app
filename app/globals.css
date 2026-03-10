@@ -101,7 +101,7 @@ button {
   color: var(--muted);
   font-size: 0.9rem;
 }
-.form-group input,
+.form-group input:not([type="checkbox"]),
 .form-group textarea {
   width: 100%;
   padding: 0.6rem 0.75rem;
@@ -109,6 +109,16 @@ button {
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text);
+}
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+.form-group .newsletter-label {
+  margin: 0;
+  padding: 0;
 }
 .form-group textarea {
   min-height: 120px;
