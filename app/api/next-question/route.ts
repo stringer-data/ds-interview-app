@@ -44,7 +44,7 @@ export async function GET(req: Request) {
 
   const excludeTopic =
     randomTopic && rows.length > 0 ? rows[rows.length - 1].topic ?? undefined : undefined;
-  const next = selectNextQuestion(rows, { excludeTopic, topic: topicFilter });
+  const next = selectNextQuestion(rows, { excludeTopic, topic: topicFilter ?? undefined });
   if (!next) {
     return NextResponse.json({ error: "no_questions" }, { status: 404 });
   }
