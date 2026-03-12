@@ -32,6 +32,9 @@ export default function AdminPage() {
   const [editLastName, setEditLastName] = useState("");
   const [editTier, setEditTier] = useState<"free" | "paid">("free");
   const [editSaving, setEditSaving] = useState(false);
+  const [deletingUser, setDeletingUser] = useState<UserRow | null>(null);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleteSaving, setDeleteSaving] = useState(false);
 
   useEffect(() => {
     setLoadError(null);
@@ -74,6 +77,33 @@ export default function AdminPage() {
     setEditFirstName(user.firstName ?? "");
     setEditLastName(user.lastName ?? "");
     setEditTier(user.tier as "free" | "paid");
+  }
+
+  function openDelete(user: UserRow) {
+    setDeletingUser(user);
+    setDeleteConfirmText("");
+  }
+
+  async function confirmDelete() {
+    if (!deletingUser || deleteConfirmText !== "DELETE") return;
+    setDeleteSaving(true);
+    try {
+      const res = await fetch(`/api/admin/users/${deletingUser.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: "DELETE" }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUsers((prev) => prev.filter((u) => u.id !== deletingUser.id));
+        setDeletingUser(null);
+        setDeleteConfirmText("");
+      } else {
+        alert(data?.error ?? "Failed to delete user");
+      }
+    } finally {
+      setDeleteSaving(false);
+    }
   }
 
   async function saveEdit() {
@@ -214,6 +244,14 @@ export default function AdminPage() {
                       >
                         Edit
                       </button>
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", color: "var(--error, #c00)" }}
+                        onClick={() => openDelete(u)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -277,6 +315,62 @@ export default function AdminPage() {
                 {editSaving ? "Saving…" : "Save"}
               </button>
               <button type="button" className="btn btn-ghost" onClick={() => setEditingUser(null)} disabled={editSaving}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deletingUser && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10,
+          }}
+          onClick={() => !deleteSaving && setDeletingUser(null)}
+        >
+          <div
+            className="card"
+            style={{ minWidth: "320px", maxWidth: "90vw" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ marginBottom: "0.5rem" }}>Delete user</h3>
+            <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginBottom: "1rem" }}>{deletingUser.email}</p>
+            <p style={{ fontSize: "0.9rem", marginBottom: "1rem" }}>
+              This will permanently delete the user and their attempt history. Type <strong>DELETE</strong> to confirm.
+            </p>
+            <div className="form-group">
+              <input
+                type="text"
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder="Type DELETE"
+                style={{ width: "100%", fontFamily: "monospace" }}
+                autoComplete="off"
+              />
+            </div>
+            <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{ background: "var(--error, #c00)" }}
+                onClick={confirmDelete}
+                disabled={deleteSaving || deleteConfirmText !== "DELETE"}
+              >
+                {deleteSaving ? "Deleting…" : "Delete user"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => setDeletingUser(null)}
+                disabled={deleteSaving}
+              >
                 Cancel
               </button>
             </div>

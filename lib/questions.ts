@@ -26,7 +26,7 @@ export type Question = QuestionMeta & {
   tags?: string[];
 };
 
-// Resolve QUESTIONS_PATH relative to cwd (app root) if relative
+// Resolve QUESTIONS_PATH relative to cwd (run "npm run dev" from ds-trainer-app so cwd is correct)
 function getQuestionsDir(): string {
   if (!QUESTIONS_PATH) return "";
   return path.isAbsolute(QUESTIONS_PATH)

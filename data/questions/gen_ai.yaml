@@ -1,0 +1,116 @@
+# Gen AI — evaluation, metrics, RAG, hallucinations, production, drift
+# Level 1 = definition, 2 = intuition, 3 = applied product, 4 = technical/assumptions, 5 = hard case
+
+- id: genai_eval_product_01
+  topic: Gen AI
+  theme: Evaluation
+  difficulty: 3
+  category: Gen AI
+  question: How would you evaluate a generative AI product?
+  tags:
+    - evaluation
+    - gen_ai
+    - product
+
+- id: genai_measure_hallucinations_01
+  topic: Gen AI
+  theme: Quality & Safety
+  difficulty: 3
+  category: Gen AI
+  question: How do you measure hallucinations?
+  tags:
+    - hallucinations
+    - metrics
+    - gen_ai
+
+- id: genai_llm_quality_metrics_01
+  topic: Gen AI
+  theme: Metrics
+  difficulty: 3
+  category: Gen AI
+  question: What metrics would you use for LLM quality?
+  tags:
+    - llm
+    - metrics
+    - quality
+    - gen_ai
+
+- id: genai_rag_performance_01
+  topic: Gen AI
+  theme: RAG
+  difficulty: 2
+  category: Gen AI
+  question: How does RAG improve LLM performance?
+  tags:
+    - rag
+    - retrieval
+    - gen_ai
+
+- id: genai_ab_test_chatbot_01
+  topic: Gen AI
+  theme: Experimentation
+  difficulty: 3
+  category: Gen AI
+  question: How would you run an A/B test for a chatbot?
+  tags:
+    - ab_test
+    - chatbot
+    - experimentation
+    - gen_ai
+
+- id: genai_risks_production_01
+  topic: Gen AI
+  theme: Production
+  difficulty: 2
+  category: Gen AI
+  question: What are the risks of deploying generative AI in production?
+  tags:
+    - production
+    - risk
+    - gen_ai
+
+- id: genai_embeddings_vs_llm_01
+  topic: Gen AI
+  theme: Foundations
+  difficulty: 1
+  category: Gen AI
+  question: What is the difference between embeddings and LLMs?
+  tags:
+    - embeddings
+    - llm
+    - definition
+    - gen_ai
+
+- id: genai_reduce_hallucinations_01
+  topic: Gen AI
+  theme: Quality & Safety
+  difficulty: 3
+  category: Gen AI
+  question: How do you reduce hallucinations?
+  tags:
+    - hallucinations
+    - safety
+    - gen_ai
+
+- id: genai_model_drift_01
+  topic: Gen AI
+  theme: Monitoring
+  difficulty: 4
+  category: Gen AI
+  question: How would you detect model drift in an LLM system?
+  tags:
+    - drift
+    - monitoring
+    - llm
+    - gen_ai
+
+- id: genai_assistant_analysts_01
+  topic: Gen AI
+  theme: Product
+  difficulty: 3
+  category: Gen AI
+  question: How would you build an AI assistant for analysts?
+  tags:
+    - product
+    - assistant
+    - gen_ai

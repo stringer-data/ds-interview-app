@@ -37,3 +37,40 @@ export async function PATCH(
   });
   return NextResponse.json(user);
 }
+
+const deleteBodySchema = z.object({
+  confirm: z.literal("DELETE"),
+});
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const result = await requireAdmin();
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
+  }
+  const { id } = await params;
+  let body: z.infer<typeof deleteBodySchema>;
+  try {
+    body = deleteBodySchema.parse(await _req.json());
+  } catch {
+    return NextResponse.json(
+      { error: "Body must be { confirm: \"DELETE\" } to confirm deletion." },
+      { status: 400 }
+    );
+  }
+  if (body.confirm !== "DELETE") {
+    return NextResponse.json({ error: "Confirmation required." }, { status: 400 });
+  }
+  try {
+    await prisma.user.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/Record to delete does not exist|record not found/i.test(msg)) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
+}
