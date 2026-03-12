@@ -65,18 +65,39 @@ export async function POST(req: Request) {
         return q?.reference_answer;
       })(),
     });
-    await prisma.attempt.create({
-      data: {
-        userId: user.id,
-        questionId: isCustom ? "custom" : body.question_id,
-        followUpId: isCustom ? null : (body.follow_up_id ?? null),
-        topic,
-        theme,
-        difficulty,
-        score: grade.score,
-        maxScore: grade.maxScore,
-      },
-    });
+    const attemptData = {
+      userId: user.id,
+      questionId: isCustom ? "custom" : body.question_id,
+      followUpId: isCustom ? null : (body.follow_up_id ?? null),
+      topic,
+      theme,
+      difficulty,
+      score: grade.score,
+      maxScore: grade.maxScore,
+      questionText,
+      answer: body.answer.trim(),
+    };
+    const maxTries = 3;
+    for (let tryCount = 1; tryCount <= maxTries; tryCount++) {
+      try {
+        await prisma.attempt.create({ data: attemptData });
+        break;
+      } catch (dbError) {
+        const msg = dbError instanceof Error ? dbError.message : String(dbError);
+        const isConnectionError = /closed|connection|ECONNRESET|ETIMEDOUT|connect/i.test(msg);
+        if (isConnectionError && tryCount < maxTries) {
+          await new Promise((r) => setTimeout(r, 300 * tryCount));
+          continue;
+        }
+        if (isConnectionError) {
+          return NextResponse.json(
+            { error: "Database connection issue. Please try again." },
+            { status: 503 }
+          );
+        }
+        throw dbError;
+      }
+    }
     const attempts = await prisma.attempt.findMany({
       where: { userId: user.id },
       select: { questionId: true, followUpId: true, score: true, loggedAt: true, topic: true },

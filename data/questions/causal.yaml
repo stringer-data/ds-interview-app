@@ -2,35 +2,38 @@
   topic: Causal
   theme: Foundations
   difficulty: 3
-  category: "Causal Inference"
+  dimension: interpretation
+  category: Causal Inference
   question: What is a confounder? Give a simple example in product analytics.
   tags:
-  - confounding
-  - causal
+    - confounding
+    - causal
 - id: causal_did_01
   topic: Causal
   theme: Quasi-experiments
-  difficulty: 4
-  category: "Causal Inference"
+  difficulty: 1
+  dimension: math
+  category: Causal Inference
   question: What is difference-in-differences and when would you use it instead of
     an A/B test?
   tags:
-  - did
-  - quasi_experiment
+    - did
+    - quasi_experiment
 - id: causal_basic_01
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  dimension: interpretation
+  category: Causal Inference
   question: What is causation (vs correlation)?
   tags:
-  - causation
-  - correlation
+    - causation
+    - correlation
 - id: causal_basic_02
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is a confounder in one sentence?
   reference_answer: |
     In causal terms, a confounder is a variable that's related to both the
@@ -39,167 +42,1177 @@
     "correlates with Y" is good; adding "and is also related to the
     treatment/exposure" would make it complete.
   tags:
-  - confounder
-  - bias
+    - confounder
+    - bias
 - id: causal_basic_03
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is selection bias?
   tags:
-  - selection_bias
-  - causal
+    - selection_bias
+    - causal
 - id: causal_basic_04
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is the causal effect of a treatment?
   tags:
-  - causal_effect
-  - treatment
+    - causal_effect
+    - treatment
 - id: causal_basic_05
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is counterfactual reasoning?
   tags:
-  - counterfactual
-  - causal
+    - counterfactual
+    - causal
 - id: causal_basic_06
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is an observational study?
   tags:
-  - observational
-  - experiment
+    - observational
+    - experiment
 - id: causal_basic_07
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is a quasi-experiment?
   tags:
-  - quasi_experiment
-  - causal
+    - quasi_experiment
+    - causal
 - id: causal_basic_08
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is difference-in-differences (DiD) in one sentence?
   tags:
-  - did
-  - quasi
+    - did
+    - quasi
 - id: causal_basic_09
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is a control group in causal inference?
   tags:
-  - control
-  - causal
+    - control
+    - causal
 - id: causal_basic_10
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is unobserved confounding?
   tags:
-  - unobserved
-  - confounder
+    - unobserved
+    - confounder
 - id: causal_basic_11
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is the average treatment effect (ATE)?
   tags:
-  - ate
-  - effect
+    - ate
+    - effect
 - id: causal_basic_12
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is instrumental variables (IV) in one sentence?
   tags:
-  - iv
-  - causal
+    - iv
+    - causal
 - id: causal_basic_13
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
+  dimension: strategy
   question: What is regression discontinuity design (RDD)?
   tags:
-  - rdd
-  - quasi
+    - rdd
+    - quasi
 - id: causal_basic_14
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is propensity score?
   tags:
-  - propensity
-  - causal
+    - propensity
+    - causal
 - id: causal_basic_15
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is matching in causal inference?
   tags:
-  - matching
-  - causal
+    - matching
+    - causal
 - id: causal_basic_16
   topic: Causal
   theme: Foundations
-  difficulty: 1
-  category: "Causal Inference"
+  difficulty: 2
+  category: Causal Inference
   question: Why can't we always run a randomized experiment?
   tags:
-  - experiment
-  - constraints
+    - experiment
+    - constraints
 - id: causal_basic_17
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is external validity?
   tags:
-  - external_validity
-  - generalization
+    - external_validity
+    - generalization
 - id: causal_basic_18
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is internal validity?
   tags:
-  - internal_validity
-  - causal
+    - internal_validity
+    - causal
 - id: causal_basic_19
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is a natural experiment?
   tags:
-  - natural_experiment
-  - quasi
+    - natural_experiment
+    - quasi
 - id: causal_basic_20
   topic: Causal
   theme: Foundations
   difficulty: 1
-  category: "Causal Inference"
+  category: Causal Inference
   question: What is the parallel trends assumption in DiD?
   tags:
-  - parallel_trends
-  - did
+    - parallel_trends
+    - did
+- id: causal_did_01
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: What problem does Difference-in-Differences solve?
+  reference_answer: Estimating causal effects when treatment is not randomized by
+    comparing changes over time between treatment and control groups.
+  tags:
+    - did
+    - causal
+- id: causal_did_02
+  topic: Causal
+  theme: DiD
+  difficulty: 1
+  category: Causal Inference
+  question: What are the treatment and control groups in a DiD setup?
+  reference_answer: Treatment receives the intervention; control does not and
+    serves as the counterfactual trend.
+  tags:
+    - did
+    - causal
+- id: causal_did_03
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: What does the “difference” represent in DiD?
+  reference_answer: The change in outcomes before vs after treatment within a group.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_01
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why do we need both pre and post treatment data?
+  reference_answer: To observe trends before intervention and measure how outcomes
+    change afterward.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_04
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: In one sentence, what does the DiD estimator measure?
+  reference_answer: The difference in outcome changes between treatment and control groups.
+  tags:
+    - did
+    - causal
+- id: causal_did_05
+  topic: Causal
+  theme: DiD
+  difficulty: 2
+  category: Causal Inference
+  question: Why is DiD better than simply comparing post-treatment outcomes?
+  reference_answer: It removes baseline differences between groups by focusing on
+    changes over time.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_02
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 1
+  category: Causal Inference
+  question: What does the parallel trends assumption mean?
+  reference_answer: Without treatment, treatment and control groups would have
+    followed the same trend.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_03
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What would happen if treatment and control had different pre-trends?
+  reference_answer: The estimated treatment effect would be biased.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_06
+  topic: Causal
+  theme: DiD
+  difficulty: 2
+  category: Causal Inference
+  question: Why is DiD often used in policy analysis?
+  reference_answer: Policies are implemented in some regions but not others,
+    allowing natural comparisons.
+  tags:
+    - did
+    - causal
+- id: causal_did_07
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: How does DiD control for time-invariant confounders?
+  reference_answer: Those confounders affect both periods equally and cancel out
+    when differencing.
+  tags:
+    - did
+    - causal
+- id: causal_did_08
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: Airbnb launches a new host tool in Spain but not Italy. How would you
+    evaluate impact using DiD?
+  reference_answer: Compare booking trends in Spain vs Italy before and after launch.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_04
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: A city introduces short-term rental taxes. How measure effect on bookings?
+  reference_answer: Compare booking changes in that city vs similar cities before and after tax.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_05
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Uber changes pricing in New York but not Boston. How estimate demand impact?
+  reference_answer: Measure demand changes in NY vs Boston pre and post pricing change.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_06
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: A payment feature launches only in emerging markets. How measure effect?
+  reference_answer: Compare usage trends in treated markets vs untreated markets
+    before and after.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_09
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: Airbnb launches translation improvements in Japan only. Design DiD analysis.
+  reference_answer: Compare Japanese bookings vs similar countries before and after rollout.
+  tags:
+    - did
+    - causal
+- id: causal_did_10
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: Write the regression equation for a DiD model.
+  reference_answer: Outcome = β0 + β1Treatment + β2Post + β3(Treatment×Post) + ε.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_07
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: How would you test the parallel trends assumption?
+  reference_answer: Check if treatment and control have similar trends before intervention.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_11
+  topic: Causal
+  theme: DiD
+  difficulty: 1
+  category: Causal Inference
+  question: What is interpretation of interaction term in DiD?
+  reference_answer: The causal effect of treatment.
+  tags:
+    - did
+    - causal
+- id: causal_did_12
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: How extend DiD to multiple treatment periods?
+  reference_answer: Use event-study or multi-period DiD models.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_08
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What happens if treatment adoption is staggered across regions?
+  reference_answer: Use staggered DiD estimators or event-study frameworks.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_13
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: Airbnb launches feature in multiple countries at different times. Modify DiD.
+  reference_answer: Use staggered adoption DiD or event-study models.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_09
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Bias if treated cities were growing faster before treatment?
+  reference_answer: Parallel trends violated causing upward bias.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_14
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: How use event studies to validate DiD?
+  reference_answer: Plot coefficients for leads and lags around treatment time.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_10
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What if treatment spills over to control regions?
+  reference_answer: Spillover contaminates control group and biases estimates.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_15
+  topic: Causal
+  theme: DiD
+  difficulty: 3
+  category: Causal Inference
+  question: How design DiD if control markets differ substantially?
+  reference_answer: Use matching or synthetic control to create better comparison.
+  tags:
+    - did
+    - causal
+- id: causal_rdd_01
+  topic: Causal
+  theme: RDD
+  difficulty: 1
+  category: Causal Inference
+  question: What is Regression Discontinuity?
+  reference_answer: A causal method exploiting a cutoff rule that assigns treatment.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_02
+  topic: Causal
+  theme: RDD
+  difficulty: 1
+  category: Causal Inference
+  question: What is the running variable in RDD?
+  reference_answer: The variable determining treatment assignment relative to a threshold.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_11
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 1
+  category: Causal Inference
+  question: What is the treatment threshold?
+  reference_answer: The cutoff value where treatment assignment changes.
+  tags:
+    - quasi
+    - causal
+- id: causal_rdd_03
+  topic: Causal
+  theme: RDD
+  difficulty: 2
+  category: Causal Inference
+  question: Why is RDD considered a quasi-experiment?
+  reference_answer: Units near the threshold are assumed comparable.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_12
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What does the discontinuity represent?
+  reference_answer: The causal treatment effect at the cutoff.
+  tags:
+    - quasi
+    - causal
+- id: causal_rdd_04
+  topic: Causal
+  theme: RDD
+  difficulty: 2
+  category: Causal Inference
+  question: Why are observations near cutoff comparable?
+  reference_answer: Small differences around threshold approximate random assignment.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_05
+  topic: Causal
+  theme: RDD
+  difficulty: 2
+  category: Causal Inference
+  question: Why does RDD approximate randomized experiment near threshold?
+  reference_answer: Units just above and below cutoff are nearly identical.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_06
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: What assumptions must hold for RDD?
+  reference_answer: No manipulation of running variable and smooth potential outcomes.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_07
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: Difference between sharp and fuzzy RDD?
+  reference_answer: "Sharp: treatment fully determined by cutoff; fuzzy: probability jumps."
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_08
+  topic: Causal
+  theme: RDD
+  difficulty: 2
+  category: Causal Inference
+  question: Why focus on local effects near cutoff?
+  reference_answer: Causal identification is strongest close to threshold.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_13
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Airbnb promotes listings above rating 4.8. Estimate promotion impact.
+  reference_answer: Compare outcomes just above and below rating threshold.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_14
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Drivers get bonus after 100 trips. Estimate effect.
+  reference_answer: Use trip count cutoff as running variable.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_15
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Hosts with 10 reviews unlock status. Measure impact.
+  reference_answer: Compare listings just below and above 10 reviews.
+  tags:
+    - quasi
+    - causal
+- id: causal_rdd_09
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: Loans only above credit score cutoff. Estimate impact.
+  reference_answer: Use score threshold for regression discontinuity.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_16
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Premium placement below $200 price. Estimate ranking impact.
+  reference_answer: Compare listings just below and above price threshold.
+  tags:
+    - quasi
+    - causal
+- id: causal_rdd_10
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: What bandwidth should you choose around cutoff?
+  reference_answer: Optimal bandwidth balancing bias and variance.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_17
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: How test manipulation near threshold?
+  reference_answer: Use density tests like McCrary test.
+  tags:
+    - quasi
+    - causal
+- id: causal_rdd_11
+  topic: Causal
+  theme: RDD
+  difficulty: 2
+  category: Causal Inference
+  question: Why should covariates be smooth at cutoff?
+  reference_answer: Ensures groups differ only due to treatment.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_12
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: What functional forms used in RDD?
+  reference_answer: Local linear or polynomial regressions.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_13
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: How validate RDD assumptions using density tests?
+  reference_answer: Check for discontinuities in running variable distribution.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_14
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: What if users manipulate running variable?
+  reference_answer: RDD validity breaks due to selection around threshold.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_18
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: How test discontinuity is real?
+  reference_answer: Estimate jump in outcome at cutoff.
+  tags:
+    - quasi
+    - causal
+- id: causal_rdd_15
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: How does RDD estimate local treatment effect?
+  reference_answer: Effect applies to units near cutoff.
+  tags:
+    - rdd
+    - causal
+- id: causal_rdd_16
+  topic: Causal
+  theme: RDD
+  difficulty: 3
+  category: Causal Inference
+  question: Extend RDD to multiple thresholds?
+  reference_answer: Estimate separate local effects at each threshold.
+  tags:
+    - rdd
+    - causal
+- id: causal_quasi_19
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What happens if assignment imperfect?
+  reference_answer: Use fuzzy RDD estimating treatment probability change.
+  tags:
+    - quasi
+    - causal
+- id: causal_iv_01
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: What problem do Instrumental Variables solve?
+  reference_answer: Endogeneity bias from omitted variables or reverse causality.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_02
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 1
+  category: Causal Inference
+  question: What is an instrument?
+  reference_answer: Variable affecting treatment but not outcome directly.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_03
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 1
+  category: Causal Inference
+  question: What is endogeneity?
+  reference_answer: Correlation between treatment and error term.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_04
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 1
+  category: Causal Inference
+  question: What is exclusion restriction?
+  reference_answer: Instrument influences outcome only through treatment.
+  tags:
+    - iv
+    - causal
+- id: causal_quasi_20
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 1
+  category: Causal Inference
+  question: What is relevance condition?
+  reference_answer: Instrument must correlate with treatment.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_21
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why correlation between treatment and outcome misleading?
+  reference_answer: Confounders may influence both variables.
+  tags:
+    - quasi
+    - causal
+- id: causal_iv_05
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: How instrument isolate causal variation?
+  reference_answer: Uses exogenous variation affecting treatment only.
+  tags:
+    - iv
+    - causal
+- id: causal_quasi_22
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Intuition behind two-stage least squares?
+  reference_answer: Predict treatment using instrument then regress outcome.
+  tags:
+    - quasi
+    - causal
+- id: causal_iv_06
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 1
+  category: Causal Inference
+  question: What is weak instrument?
+  reference_answer: Instrument weakly correlated with treatment.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_07
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 2
+  category: Causal Inference
+  question: Why instrument must not affect outcome directly?
+  reference_answer: Otherwise exclusion restriction violated.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_08
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: Airbnb estimate price effect on bookings but price endogenous. Instrument?
+  reference_answer: Use external factors like demand shocks or weather.
+  tags:
+    - iv
+    - causal
+- id: causal_quasi_23
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Host lowers price when demand weak. How IV help?
+  reference_answer: Instrument isolates exogenous price variation.
+  tags:
+    - quasi
+    - causal
+- id: causal_iv_09
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: Drivers choose when to work. Weather instrument?
+  reference_answer: Weather affects supply but not demand directly.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_10
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: Distance to city center instrument supply?
+  reference_answer: Location influences supply availability but not booking directly.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_11
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: Algorithm ranking changes as instrument?
+  reference_answer: Ranking affects visibility influencing bookings.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_12
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: Write two stages of 2SLS regression.
+  reference_answer: "Stage1: treatment ~ instrument; Stage2: outcome ~ predicted treatment."
+  tags:
+    - iv
+    - causal
+- id: causal_quasi_24
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 1
+  category: Causal Inference
+  question: What is Local Average Treatment Effect?
+  reference_answer: Effect for individuals whose treatment is influenced by instrument.
+  tags:
+    - quasi
+    - causal
+- id: causal_iv_13
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: How test weak instruments?
+  reference_answer: Check first-stage F-statistic.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_14
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: What if exclusion restriction fails?
+  reference_answer: IV estimate becomes biased.
+  tags:
+    - iv
+    - causal
+- id: causal_quasi_25
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why IV estimates differ from OLS?
+  reference_answer: IV isolates exogenous variation.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_26
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What population does IV estimate apply to?
+  reference_answer: Compliers influenced by instrument.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_27
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why IV estimate LATE not ATE?
+  reference_answer: Instrument affects only subset of population.
+  tags:
+    - quasi
+    - causal
+- id: causal_iv_15
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: What if instrument affects outcome through multiple channels?
+  reference_answer: Exclusion restriction violated causing bias.
+  tags:
+    - iv
+    - causal
+- id: causal_iv_16
+  topic: Causal
+  theme: Instrumental Variables
+  difficulty: 3
+  category: Causal Inference
+  question: How validate instrument strength?
+  reference_answer: Evaluate strong first-stage relationship.
+  tags:
+    - iv
+    - causal
+- id: causal_quasi_28
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Dangers of overidentification?
+  reference_answer: Invalid instruments may bias results.
+  tags:
+    - quasi
+    - causal
+- id: causal_sc_01
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 1
+  category: Causal Inference
+  question: What is Synthetic Control method?
+  reference_answer: Creates weighted combination of control units to match treated unit.
+  tags:
+    - sc
+    - causal
+- id: causal_sc_02
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 2
+  category: Causal Inference
+  question: Why construct synthetic control unit?
+  reference_answer: To approximate counterfactual outcome.
+  tags:
+    - sc
+    - causal
+- id: causal_sc_03
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 3
+  category: Causal Inference
+  question: What problem does Synthetic Control solve?
+  reference_answer: Estimating causal effects when only one treated unit exists.
+  tags:
+    - sc
+    - causal
+- id: causal_sc_04
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 1
+  category: Causal Inference
+  question: What is donor pool?
+  reference_answer: Set of untreated units used to build synthetic control.
+  tags:
+    - sc
+    - causal
+- id: causal_quasi_29
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What does weighted combination represent?
+  reference_answer: Best pre-treatment match to treated unit.
+  tags:
+    - quasi
+    - causal
+- id: causal_did_16
+  topic: Causal
+  theme: DiD
+  difficulty: 2
+  category: Causal Inference
+  question: Why synthetic control better than DiD sometimes?
+  reference_answer: Provides closer pre-treatment fit.
+  tags:
+    - did
+    - causal
+- id: causal_quasi_30
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why match pre-treatment trends?
+  reference_answer: Ensures treated and synthetic unit comparable before treatment.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_31
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What good pre-treatment fit indicate?
+  reference_answer: Synthetic control approximates true counterfactual.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_32
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why weights positive?
+  reference_answer: Ensures interpretable convex combination.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_33
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 2
+  category: Causal Inference
+  question: Why used for policy evaluation?
+  reference_answer: Policies often affect single region.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_34
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Airbnb launches in new country. Estimate impact.
+  reference_answer: Construct synthetic market using similar countries.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_35
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: City bans short-term rentals. Estimate demand loss.
+  reference_answer: Compare treated city vs synthetic control.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_36
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Host insurance program launches in one region.
+  reference_answer: Create synthetic control using other regions.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_37
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Marketing campaign launches in Brazil.
+  reference_answer: Compare Brazil to weighted combination of other markets.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_38
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Regulation affects one market.
+  reference_answer: Use synthetic control for counterfactual bookings.
+  tags:
+    - quasi
+    - causal
+- id: causal_sc_05
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 3
+  category: Causal Inference
+  question: How synthetic control weights determined?
+  reference_answer: Optimization minimizing pre-treatment error.
+  tags:
+    - sc
+    - causal
+- id: causal_quasi_39
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What variables matched pre-treatment?
+  reference_answer: Outcome history and relevant covariates.
+  tags:
+    - quasi
+    - causal
+- id: causal_sc_06
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 3
+  category: Causal Inference
+  question: How test significance in synthetic control?
+  reference_answer: Placebo tests across control units.
+  tags:
+    - sc
+    - causal
+- id: causal_sc_07
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 2
+  category: Causal Inference
+  question: Why placebo testing important?
+  reference_answer: Determines if observed effect unusual.
+  tags:
+    - sc
+    - causal
+- id: causal_quasi_40
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What if pre-treatment fit poor?
+  reference_answer: Method unreliable for causal inference.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_41
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: What if treated unit outside convex hull?
+  reference_answer: Synthetic control cannot replicate treated trajectory.
+  tags:
+    - quasi
+    - causal
+- id: causal_sc_08
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 3
+  category: Causal Inference
+  question: How perform placebo tests across units?
+  reference_answer: Apply method to each control as if treated.
+  tags:
+    - sc
+    - causal
+- id: causal_quasi_42
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Handle multiple treated units?
+  reference_answer: Extend to generalized synthetic control.
+  tags:
+    - quasi
+    - causal
+- id: causal_quasi_43
+  topic: Causal
+  theme: Quasi-experiments
+  difficulty: 3
+  category: Causal Inference
+  question: Role of regularization?
+  reference_answer: Prevents overfitting when selecting weights.
+  tags:
+    - quasi
+    - causal
+- id: causal_sc_09
+  topic: Causal
+  theme: Synthetic Control
+  difficulty: 3
+  category: Causal Inference
+  question: Extend synthetic control to time-varying treatments?
+  reference_answer: Use dynamic synthetic control methods.
+  tags:
+    - sc
+    - causal

@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
+import { topicFromSlug } from "@/lib/topics";
 
 type Scorecard = {
   tier: string;
@@ -43,6 +45,9 @@ type Feedback = {
 };
 
 export default function AppPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const topicSlug = searchParams.get("topic");
   const [scorecard, setScorecard] = useState<Scorecard | null>(null);
   const [question, setQuestion] = useState<Question | null>(null);
   const [answer, setAnswer] = useState("");
@@ -52,6 +57,7 @@ export default function AppPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [upsell, setUpsell] = useState<{ questionsUsed: number; cap: number } | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
 
   const fetchScorecard = useCallback(async () => {
     const tz = typeof Intl !== "undefined" && Intl.DateTimeFormat ? Intl.DateTimeFormat().resolvedOptions().timeZone : "UTC";
@@ -62,25 +68,32 @@ export default function AppPage() {
     }
   }, []);
 
-  const fetchNextQuestion = useCallback(async (randomTopic = false) => {
-    const url = randomTopic ? "/api/next-question?random_topic=true" : "/api/next-question";
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data.upsell) {
-      setUpsell({ questionsUsed: data.questionsUsed, cap: data.cap });
-      setQuestion(null);
-      return;
-    }
-    if (data.error === "no_questions") {
-      setQuestion(null);
-      return;
-    }
-    setUpsell(null);
-    setQuestion(data);
-    setAnswer("");
-    setFeedback(null);
-    setFollowUpAnswer("");
-  }, []);
+  const fetchNextQuestion = useCallback(
+    async (randomTopic = false) => {
+      const params = new URLSearchParams();
+      if (randomTopic) params.set("random_topic", "true");
+      else if (topicSlug) params.set("topic", topicSlug);
+      const url = "/api/next-question" + (params.toString() ? "?" + params.toString() : "");
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.upsell) {
+        setUpsell({ questionsUsed: data.questionsUsed, cap: data.cap });
+        setQuestion(null);
+        return;
+      }
+      if (data.error === "no_questions") {
+        setQuestion(null);
+        return;
+      }
+      setUpsell(null);
+      setQuestion(data);
+      setAnswer("");
+      setFeedback(null);
+      setFollowUpAnswer("");
+      setHint(null);
+    },
+    [topicSlug]
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -97,17 +110,18 @@ export default function AppPage() {
   async function handleNext() {
     setActionLoading(true);
     await fetchScorecard();
-    await fetchNextQuestion();
+    await fetchNextQuestion(false);
     setActionLoading(false);
   }
 
   async function handleHelp() {
     if (!question) return;
     setActionLoading(true);
+    setHint(null);
     try {
       const res = await fetch(`/api/help?question_id=${encodeURIComponent(question.questionDisplayId)}`);
       const data = await res.json();
-      if (data.hint) alert(data.hint);
+      if (data.hint) setHint(data.hint);
     } finally {
       setActionLoading(false);
     }
@@ -118,6 +132,7 @@ export default function AppPage() {
     if (!question || !answer.trim()) return;
     setActionLoading(true);
     setFeedback(null);
+    setHint(null);
     try {
       const res = await fetch("/api/submit-answer", {
         method: "POST",
@@ -226,12 +241,40 @@ export default function AppPage() {
         </div>
       )}
 
+      {hint && (
+        <div
+          className="card"
+          style={{
+            marginBottom: "1rem",
+            padding: "0.75rem 1rem",
+          }}
+        >
+          <p style={{ margin: "0 0 0.5rem 0", fontWeight: 600, fontSize: "0.8rem", color: "var(--muted)" }}>
+            Hint
+          </p>
+          <p style={{ margin: 0, whiteSpace: "pre-wrap", fontSize: "0.9rem" }}>{hint}</p>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            style={{ marginTop: "0.5rem", padding: "0.25rem 0.5rem", fontSize: "0.8rem" }}
+            onClick={() => setHint(null)}
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {!question && !feedback && !upsell && (
         <p style={{ color: "var(--muted)" }}>No questions available. Check QUESTIONS_PATH.</p>
       )}
 
       {question && !feedback && (
         <div className="card">
+          {topicSlug && topicFromSlug(topicSlug) && (
+            <p style={{ color: "var(--muted)", fontSize: "0.8rem", marginBottom: "0.25rem" }}>
+              Practicing: {topicFromSlug(topicSlug)} · <Link href="/app" style={{ color: "var(--muted)" }}>all topics</Link>
+            </p>
+          )}
           <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
             {question.topic} · {question.theme} · Difficulty {question.difficulty}
           </p>
@@ -349,20 +392,21 @@ export default function AppPage() {
                       setFeedback((prev) => prev ? { ...prev, verdict: "Error", missingWrong: errMsg } : null);
                       return;
                     }
-                    const feedbackData = responseData as Feedback;
-                    setLastTopic(lastTopic ?? "Custom");
-                    setFeedback(feedbackData);
-                    await fetchScorecard();
-                    if (feedbackData.upsell && !feedbackData.nextQuestion) {
-                      setUpsell({ questionsUsed: feedbackData.questionsUsed, cap: 10 });
-                      setQuestion(null);
-                    } else if (feedbackData.nextQuestion) {
-                      setQuestion(feedbackData.nextQuestion);
-                      setAnswer("");
-                    } else {
-                      await fetchNextQuestion();
-                    }
-                  } finally {
+                      const feedbackData = responseData as Feedback;
+                      setLastTopic(lastTopic ?? "Custom");
+                      setFeedback(feedbackData);
+                      setHint(null);
+                      await fetchScorecard();
+                      if (feedbackData.upsell && !feedbackData.nextQuestion) {
+                        setUpsell({ questionsUsed: feedbackData.questionsUsed, cap: 10 });
+                        setQuestion(null);
+                      } else if (feedbackData.nextQuestion) {
+                        setQuestion(feedbackData.nextQuestion);
+                        setAnswer("");
+                      } else {
+                        await fetchNextQuestion();
+                      }
+                    } finally {
                     setActionLoading(false);
                   }
                 }}
@@ -378,6 +422,7 @@ export default function AppPage() {
                 setActionLoading(true);
                 setFeedback(null);
                 setFollowUpAnswer("");
+                if (topicSlug) router.replace("/app");
                 await fetchNextQuestion(true);
                 setActionLoading(false);
               }}
@@ -401,6 +446,7 @@ export default function AppPage() {
                   setAnswer("");
                   setFeedback(null);
                   setFollowUpAnswer("");
+                  setHint(null);
                 }}
                 disabled={actionLoading}
               >
@@ -412,6 +458,7 @@ export default function AppPage() {
                 className="btn btn-primary"
                 onClick={() => {
                   setFeedback(null);
+                  setHint(null);
                   fetchNextQuestion();
                 }}
                 disabled={actionLoading}

@@ -1,0 +1,2192 @@
+- id: design_control_treatment_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What are the control and treatment in an experiment?
+  tags:
+    - control
+    - treatment
+    - experiment
+- id: design_ab_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  dimension: strategy
+  category: A/B Testing Mechanics
+  question: How would you design an A/B test for a new checkout flow?
+  tags:
+    - ab_test
+    - metrics
+    - randomization
+- id: design_unit_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: For a ranking change, what unit of randomization would you choose and why?
+  tags:
+    - randomization_unit
+    - ranking
+    - interference
+- id: design_simple_rand_bias_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why might simple randomization lead to biased experiment results in
+    some cases?
+  tags:
+    - randomization
+    - bias
+    - imbalance
+    - stratification
+- id: design_covariate_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What is a covariate?
+  tags:
+    - covariate
+    - randomization
+    - stratification
+- id: design_stratified_blocked_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 3
+  category: Experiment Design
+  question: What is stratified or blocked randomization?
+  tags:
+    - stratification
+    - blocking
+    - randomization
+- id: design_stratify_marketplace_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 3
+  category: Experiment Design
+  question: If you were running an experiment on a marketplace like Uber, what
+    variables might you stratify on?
+  tags:
+    - stratification
+    - marketplace
+    - randomization
+- id: design_experiment_vs_triggered_01
+  topic: Experimentation
+  theme: Triggered analysis
+  difficulty: 1
+  category: Experiment Design
+  question: What is the difference between the experiment population and the
+    triggered population?
+  tags:
+    - triggered_analysis
+    - experiment_population
+    - analysis
+- id: design_mab_01
+  topic: Experimentation
+  theme: Multi-armed bandits
+  difficulty: 1
+  category: Experiment Design
+  question: What is a multi-armed bandit?
+  tags:
+    - bandit
+    - experimentation
+    - exploration_exploitation
+- id: design_guardrails_01
+  topic: Experimentation
+  theme: Metrics
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: If conversion rate is the primary metric for checkout, name 2–3
+    guardrail metrics and why.
+  tags:
+    - guardrails
+    - metrics
+- id: design_variance_reduction_01
+  topic: Experimentation
+  theme: Variance reduction / Sensitivity
+  difficulty: 3
+  category: Experiment Design
+  question: How would you modify the experiment or metric to reduce variance and
+    make the experiment more sensitive, while still measuring meaningful
+    business impact?
+  follow_ups:
+    - design_var_01_tradeoffs
+    - design_var_01_cuped
+    - design_var_01_variance_doubles
+    - design_var_01_when_not_change
+  tags:
+    - variance_reduction
+    - cuped
+    - stratification
+    - power
+    - mde
+    - metric_design
+- id: design_var_01_tradeoffs
+  topic: Experimentation
+  theme: Variance reduction / Sensitivity
+  difficulty: 3
+  category: Experiment Design
+  question: What are the tradeoffs of changing the primary metric?
+  tags:
+    - variance_reduction
+    - metric_design
+- id: design_var_01_cuped
+  topic: Experimentation
+  theme: Variance reduction / Sensitivity
+  difficulty: 3
+  category: Experiment Design
+  question: How would CUPED help reduce variance in an experiment?
+  tags:
+    - cuped
+    - variance_reduction
+- id: design_var_01_variance_doubles
+  topic: Experimentation
+  theme: Variance reduction / Sensitivity
+  difficulty: 4
+  category: Experiment Design
+  question: If the variance of a metric doubles, how does that affect the required
+    sample size?
+  tags:
+    - variance
+    - sample_size
+    - power
+- id: design_var_01_sd_doubles
+  topic: Experimentation
+  theme: Variance reduction / Sensitivity
+  difficulty: 4
+  category: Experiment Design
+  question: |
+    A metric has standard deviation 12 and the detectable lift is 1.
+    How does sample size change if the standard deviation doubles?
+  reference_answer: |
+    Sample size scales with variance. If the standard deviation doubles then the
+    variance increases by four times. That means the required sample size also
+    increases by about four times.
+  tags:
+    - variance
+    - sample_size
+    - standard_deviation
+    - power
+- id: design_var_01_when_not_change
+  topic: Experimentation
+  theme: Variance reduction / Sensitivity
+  difficulty: 4
+  category: Experiment Design
+  question: When would you not change the primary metric even if it has high variance?
+  tags:
+    - metric_design
+    - variance_reduction
+- id: design_ab_traffic_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: What does 50/50 traffic split mean in an A/B test?
+  tags:
+    - traffic
+    - split
+    - ab_test
+- id: design_ab_primary_01
+  topic: Experimentation
+  theme: Metrics
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: What is a primary metric?
+  tags:
+    - primary_metric
+    - metric
+- id: design_ab_guardrail_01
+  topic: Experimentation
+  theme: Metrics
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: What is a guardrail metric?
+  tags:
+    - guardrail
+    - metric
+- id: design_ab_conversion_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is conversion rate in the context of an experiment?
+  tags:
+    - conversion
+    - rate
+- id: design_ab_duration_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: Why do we run experiments for a fixed duration or sample size?
+  tags:
+    - duration
+    - peeking
+- id: design_ab_srm_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is sample ratio mismatch (SRM) in one sentence?
+  tags:
+    - srm
+    - integrity
+- id: design_ab_peeking_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why is peeking at results before the experiment ends a problem?
+  tags:
+    - peeking
+    - sequential
+- id: design_ab_variant_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is a variant in an A/B test?
+  tags:
+    - variant
+    - ab_test
+- id: design_ab_exposure_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is the experiment exposure or population?
+  tags:
+    - exposure
+    - population
+- id: design_ab_trigger_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: What does it mean to trigger an experiment (triggered experiment)?
+  tags:
+    - trigger
+    - experiment
+- id: design_ab_unit_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is the unit of randomization?
+  tags:
+    - unit
+    - randomization
+- id: design_ab_double_blind_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: What does double-blind mean in an experiment?
+  tags:
+    - blind
+    - bias
+- id: design_ab_launch_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: What does it mean to ship or launch a winning variant?
+  tags:
+    - launch
+    - decision
+- id: design_ab_novelty_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is novelty effect in experiments?
+  tags:
+    - novelty
+    - validity
+- id: design_ab_segment_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is segmenting results in an experiment?
+  tags:
+    - segment
+    - analysis
+- id: design_ab_aa_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is an A/A test?
+  tags:
+    - aa_test
+    - sanity
+- id: design_ab_instrumentation_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why is correct instrumentation important in experiments?
+  tags:
+    - instrumentation
+    - logging
+- id: design_ab_holdout_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is a holdout group?
+  tags:
+    - holdout
+    - control
+- id: design_exp_randomization_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 2
+  category: Experiment Design
+  question: Why do we randomize assignment in an experiment?
+  tags:
+    - randomization
+    - bias
+- id: design_exp_stratify_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 3
+  category: Experiment Design
+  question: What is stratification in experiment design?
+  tags:
+    - stratification
+    - balance
+- id: design_exp_block_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 1
+  category: Experiment Design
+  question: What is blocking in an experiment?
+  tags:
+    - blocking
+    - design
+- id: design_exp_mde_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 2
+  category: Experiment Design
+  question: Why do we specify a minimum detectable effect (MDE) before running an
+    experiment?
+  tags:
+    - mde
+    - power
+- id: design_exp_power_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 2
+  category: Experiment Design
+  question: Why do we want high statistical power when designing an experiment?
+  tags:
+    - power
+    - design
+- id: design_exp_sample_size_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  dimension: math
+  category: Experiment Design
+  question: >
+    Baseline conversion rate is 10 percent.
+
+    You want to detect a plus 1 percent absolute lift with alpha 0.05 and power
+    80 percent.
+
+    Roughly how many users per group do you need?
+  reference_answer: >
+    For a binary conversion metric the variance is p times (1 minus p). With a
+    baseline
+
+    of 10 percent the variance is about 0.09. A rough rule of thumb is that
+    detecting
+
+    a one percentage point absolute lift at this baseline requires on the order
+    of about
+
+    15k to 25k users per group.
+  tags:
+    - sample_size
+    - power
+    - conversion
+    - mde
+- id: design_exp_sample_size_02
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: Experiment Design
+  question: |
+    An experiment requires 40k users per group to detect a 2 percent lift.
+    How many users would you need to detect a 1 percent lift?
+  reference_answer: >
+    Sample size scales with one over the effect squared. If the effect is cut in
+    half
+
+    from 2 percent to 1 percent the required sample size increases by about four
+    times.
+
+    So it would be roughly 160k users per group.
+  tags:
+    - sample_size
+    - power
+    - mde
+    - scaling
+- id: design_exp_duration_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: Experiment Design
+  question: |
+    An experiment requires 200k users per group.
+    Daily traffic is 50k users and the experiment splits traffic 50/50.
+    How long will the experiment run?
+  reference_answer: >
+    Each group gets 25k users per day. To reach 200k users per group it takes
+    200k
+
+    divided by 25k which equals about 8 days. In practice you would often run
+    about
+
+    one to two weeks to cover weekly patterns.
+  tags:
+    - duration
+    - sample_size
+    - traffic
+- id: design_exp_cuped_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What is CUPED in one sentence?
+  tags:
+    - cuped
+    - variance_reduction
+- id: design_exp_preperiod_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What is a pre-period in an experiment?
+  tags:
+    - pre_period
+    - baseline
+- id: design_exp_parallel_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: Experiment Design
+  question: What does it mean for treatment and control to run in parallel?
+  tags:
+    - parallel
+    - design
+- id: design_exp_crossover_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What is a crossover experiment?
+  tags:
+    - crossover
+    - design
+- id: design_exp_factorial_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What is a factorial experiment?
+  tags:
+    - factorial
+    - design
+- id: design_exp_eligibility_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What is experiment eligibility?
+  tags:
+    - eligibility
+    - population
+- id: design_exp_inclusion_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What are inclusion criteria for an experiment?
+  tags:
+    - inclusion
+    - criteria
+- id: design_exp_exclusion_01
+  topic: Experimentation
+  theme: Foundations
+  difficulty: 1
+  category: Experiment Design
+  question: What are exclusion criteria?
+  tags:
+    - exclusion
+    - criteria
+- id: design_exp_spillover_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 1
+  category: Experiment Design
+  question: What is spillover or interference in an experiment?
+  tags:
+    - spillover
+    - interference
+- id: design_exp_network_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 2
+  category: Experiment Design
+  question: Why are experiments on social networks tricky?
+  tags:
+    - network
+    - interference
+- id: design_exp_metric_def_01
+  topic: Experimentation
+  theme: Metrics
+  difficulty: 2
+  category: Experiment Design
+  question: Why do we define metrics before launching an experiment?
+  tags:
+    - metric
+    - design
+- id: design_exp_sensitivity_01
+  topic: Experimentation
+  theme: Metrics
+  difficulty: 1
+  category: Experiment Design
+  question: What does metric sensitivity mean?
+  tags:
+    - sensitivity
+    - metric
+- id: design_exp_north_star_01
+  topic: Experimentation
+  theme: Metrics
+  difficulty: 1
+  category: Experiment Design
+  question: What is a North Star metric?
+  tags:
+    - north_star
+    - metric
+- id: pit_srm_01
+  topic: Experimentation
+  theme: Integrity
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is sample ratio mismatch (SRM) and what do you do when you see it?
+  tags:
+    - srm
+    - integrity
+- id: pit_peeking_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why is repeatedly peeking at results dangerous?
+  tags:
+    - peeking
+    - type1
+    - sequential
+- id: pit_peek_stop_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why is it statistically invalid to repeatedly check experiment results
+    and stop when p < 0.05?
+  tags:
+    - peeking
+    - type1
+    - sequential
+- id: pit_sequential_testing_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 3
+  category: Advanced Experimentation
+  question: How does sequential testing allow us to monitor experiments
+    continuously without inflating the false positive rate?
+  tags:
+    - sequential
+    - peeking
+    - type1
+- id: pit_sequential_design_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 3
+  category: Advanced Experimentation
+  question: You want to check results daily and stop early if the experiment
+    clearly wins or loses. How would you design this test?
+  tags:
+    - sequential
+    - early_stopping
+    - design
+- id: pit_sequential_vs_fixed_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What are the advantages and disadvantages of sequential testing
+    compared to fixed-horizon testing?
+  tags:
+    - sequential
+    - fixed_horizon
+    - tradeoffs
+- id: pit_postlaunch_01
+  topic: Experimentation
+  theme: Post-launch / Validity
+  difficulty: 5
+  category: Experiment Design
+  question: We ran an A/B test. Test won, so we made the change on the site for
+    all users. After some time, the new version is not performing better than
+    the old one. What could be the reason? Assume there was no technical or
+    statistical problem with the test; the reason has to do with user behavior.
+  reference_answer: >
+    The main reason is novelty effect. When a site adds a small new feature,
+
+    users at first engage with it a lot out of curiosity. As novelty wears off,
+
+    they return to normal behavior. This hurts test reliability, since tests
+
+    measure impact over a short period and extrapolate to the long run.
+
+
+    As a DS, validate with data. A good proxy for novelty effect:
+
+    - Restrict to users for whom it was the first experience on the site
+    (first-time
+      users are not affected by novelty).
+    - Compare test results: new users in control vs new users in test.
+
+    - If the test wins overall but does not win for the new-user subset, that is
+      a strong warning of novelty effect—especially when we already see no
+      improvement after full rollout.
+    Comparing new vs old users can also give an estimate of the novelty effect
+
+    and be used to control for it in future tests.
+  tags:
+    - post_launch
+    - novelty
+    - interference
+    - selection
+    - validity
+- id: pit_adv_sequential_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is sequential testing?
+  tags:
+    - sequential
+    - testing
+- id: pit_adv_fixed_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is fixed-horizon testing?
+  tags:
+    - fixed
+    - horizon
+- id: pit_adv_early_stop_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 2
+  category: Advanced Experimentation
+  question: Why might we want to stop an experiment early?
+  tags:
+    - early_stop
+    - sequential
+- id: pit_adv_mab_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is a multi-armed bandit in one sentence?
+  tags:
+    - mab
+    - bandit
+- id: pit_adv_epsilon_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is epsilon-greedy in bandits?
+  tags:
+    - epsilon
+    - bandit
+- id: pit_adv_thompson_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is Thompson sampling in one sentence?
+  tags:
+    - thompson_sampling
+    - bandit
+- id: pit_adv_guardrail_adv_01
+  topic: Experimentation
+  theme: Post-launch / Validity
+  difficulty: 3
+  category: Advanced Experimentation
+  question: Why monitor guardrail metrics after launch?
+  tags:
+    - guardrail
+    - post_launch
+- id: pit_adv_invariant_01
+  topic: Experimentation
+  theme: Integrity
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is an invariant metric?
+  tags:
+    - invariant
+    - sanity
+- id: pit_adv_sensitivity_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is sensitivity analysis?
+  tags:
+    - sensitivity
+    - analysis
+- id: pit_adv_ci_sequential_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 3
+  category: Advanced Experimentation
+  question: How do confidence intervals change with sequential testing?
+  tags:
+    - ci
+    - sequential
+- id: pit_adv_stopping_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is a stopping rule?
+  tags:
+    - stopping_rule
+    - sequential
+- id: pit_adv_allocation_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is adaptive allocation?
+  tags:
+    - adaptive
+    - allocation
+- id: pit_adv_regression_01
+  topic: Experimentation
+  theme: Post-launch / Validity
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is regression to the mean?
+  tags:
+    - regression
+    - validity
+- id: pit_adv_long_term_01
+  topic: Experimentation
+  theme: Post-launch / Validity
+  difficulty: 2
+  category: Advanced Experimentation
+  question: Why might short-term experiment results not hold long-term?
+  tags:
+    - long_term
+    - validity
+- id: pit_adv_ttr_01
+  topic: Experimentation
+  theme: Sequential / Peeking
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is time to result in experiments?
+  tags:
+    - ttr
+    - sequential
+- id: interp_ci_cross_01
+  topic: Experimentation
+  theme: Confidence Intervals
+  difficulty: 3
+  dimension: interpretation
+  category: Hypothesis Testing
+  question: Lift = +2%, 95% CI = [-0.5%, +4.5%]. What does this mean and what
+    would you recommend?
+  tags:
+    - ci
+    - inconclusive
+- id: interp_coin_fair_01
+  topic: Experimentation
+  theme: Hypothesis Testing
+  difficulty: 3
+  category: Hypothesis Testing
+  question: You flip a coin 10 times and observe only one heads. What would be
+    your null hypothesis and p-value for testing whether the coin is fair?
+  reference_answer: |
+    The null hypothesis is that the coin is fair and the alternative hypothesis
+    is that the coin is biased to tails. (Note that this is a one-sided test.)
+
+    Since the sample size here is 10, you cannot apply the central limit
+    theorem (and so you cannot approximate a binomial using a normal
+    distribution).
+
+    The p-value here is the probability of observing the results obtained
+    given that the null hypothesis is true, i.e. under the assumption that the
+    coin is fair. In total for 10 flips of a coin, there are 2^10 = 1024
+    possible outcomes, and in only 10 of these are there 9 tails and one head.
+    Hence the exact probability of the given result is the p-value, which is
+    10/1024. Therefore, with a significance level set, for example, at 0.05,
+    we can reject the null hypothesis.
+  tags:
+    - null_hypothesis
+    - pvalue
+    - binomial
+    - fairness
+- id: def_ht_pvalue_layman_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Hypothesis Testing
+  question: Describe hypothesis testing and p-values in layman's terms.
+  tags:
+    - hypothesis_testing
+    - pvalue
+    - communication
+    - inference
+- id: def_type1_type2_tradeoff_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 3
+  category: Hypothesis Testing
+  question: Describe what Type I and Type II errors are, and the trade-off between them.
+  reference_answer: |
+    Both errors are relevant in the context of hypothesis testing. Type I error
+    is when one rejects the null hypothesis when it is correct, and is known as
+    a false positive. Type II error is when the null hypothesis is not rejected
+    when the alternative hypothesis is correct; this is known as a false
+    negative. In layman's terms, a Type I error is when we detect a difference
+    when in reality there is no significant difference in the experiment.
+    Similarly, a Type II error occurs when we fail to detect a difference, when
+    in reality there is a significant difference in an experiment.
+
+    Type I error is given by the level of significance alpha; Type II error is
+    given by beta. Usually 1-alpha is referred to as the confidence level,
+    and 1-beta is referred to as the statistical power of the test. In any
+    well-conducted statistical procedure we want both alpha and beta to be
+    small. However, based on the definition of the two, it is impossible to
+    make both errors small simultaneously.
+  tags:
+    - type1
+    - type2
+    - errors
+    - tradeoff
+- id: def_ztest_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is a z-test and when would you use it instead of a t-test?
+  tags:
+    - ztest
+    - hypothesis_test
+    - asymptotic
+- id: def_ttest_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is a t-test and why do we use the t-distribution instead of the normal?
+  tags:
+    - ttest
+    - hypothesis_test
+    - small_sample
+- id: def_chisq_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is a chi-square test used for? Give one typical use case.
+  tags:
+    - chi_square
+    - hypothesis_test
+    - categorical
+- id: def_ab_nonnormal_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What are some acceptable ways to deal with A/B testing on a
+    non-normally distributed population?
+  tags:
+    - ab_test
+    - normality
+    - hypothesis_test
+    - nonparametric
+- id: def_ht_reject_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Hypothesis Testing
+  question: What does it mean to reject the null hypothesis?
+  tags:
+    - reject
+    - significance
+- id: def_ht_fail_reject_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Hypothesis Testing
+  question: What does it mean to fail to reject the null?
+  tags:
+    - fail_to_reject
+    - null
+- id: def_ht_statistic_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is a test statistic?
+  tags:
+    - test_statistic
+    - hypothesis
+- id: def_ht_alpha_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is alpha (α) in hypothesis testing?
+  tags:
+    - alpha
+    - significance_level
+- id: def_ht_two_tailed_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is a two-tailed test?
+  tags:
+    - two_tailed
+    - direction
+- id: def_ht_one_tailed_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is a one-tailed test?
+  tags:
+    - one_tailed
+    - direction
+- id: def_ht_confidence_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Hypothesis Testing
+  question: What does 95% confidence mean in a confidence interval?
+  tags:
+    - confidence
+    - interval
+- id: def_ht_sig_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Hypothesis Testing
+  question: When do we say a result is statistically significant?
+  tags:
+    - significance
+    - pvalue
+- id: def_ht_effect_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is an effect size?
+  tags:
+    - effect_size
+    - magnitude
+- id: def_ht_lift_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Hypothesis Testing
+  question: What is lift in an A/B test?
+  tags:
+    - lift
+    - ab_test
+- id: def_ht_proportion_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 2
+  category: Hypothesis Testing
+  question: When would you use a test for proportions (e.g. conversion rate)?
+  tags:
+    - proportion
+    - conversion
+- id: def_ht_continuous_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 2
+  category: Hypothesis Testing
+  question: When would you use a t-test instead of a z-test?
+  tags:
+    - t_test
+    - continuous
+- id: def_ht_independence_01
+  topic: Experimentation
+  theme: Hypothesis Tests
+  difficulty: 3
+  category: Hypothesis Testing
+  question: What does independence of observations mean in an experiment?
+  tags:
+    - independence
+    - experiment
+- id: def_ht_sample_size_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 3
+  category: Hypothesis Testing
+  question: Why does sample size matter for hypothesis testing?
+  tags:
+    - sample_size
+    - power
+- id: pit_simpson_01
+  topic: Experimentation
+  theme: Aggregation
+  difficulty: 1
+  category: Experiment Design
+  question: What is Simpson’s paradox and how can it mislead experiment conclusions?
+  tags:
+    - simpson
+    - confounding
+    - segmentation
+- id: def_statistics_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is statistics?
+  reference_answer: |
+    The science of planning studies and experiments, obtaining data, and then
+    organizing, summarizing, presenting, analyzing, interpreting, and drawing
+    conclusions based on the data.
+  tags:
+    - statistics
+    - definition
+- id: def_nominal_data_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is nominal data?
+  reference_answer: |
+    A level of measurement characterized by data that consist of names, labels,
+    or categories only, and the data cannot be arranged in an ordering scheme
+    (such as low to high). Example: survey responses of "yes", "no", or
+    "undecided".
+  tags:
+    - nominal
+    - measurement
+    - categorical
+- id: def_nominal_examples_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What are some examples of nominal-level data?
+  reference_answer: |
+    Survey responses of "yes", "no", or "undecided".
+  tags:
+    - nominal
+    - measurement
+    - examples
+- id: def_ordinal_data_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is ordinal level (ordinal data)?
+  reference_answer: |
+    A level of measurement characterized by data that can be arranged in some
+    order, but differences between data values either cannot be determined or
+    are meaningless. Example: course grades A, B, C, D, or F.
+  tags:
+    - ordinal
+    - measurement
+    - categorical
+- id: def_categorical_examples_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What are some examples of categorical data?
+  reference_answer: |
+    Gender of athletes, shirt number on uniforms.
+  tags:
+    - categorical
+    - measurement
+    - examples
+- id: def_quantitative_examples_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What are some examples of quantitative data?
+  reference_answer: |
+    Weight of supermodels, the age of respondents, etc.
+  tags:
+    - quantitative
+    - measurement
+    - examples
+- id: def_discrete_examples_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What are some examples of discrete data?
+  reference_answer: |
+    The number of possible values (1, 2, 3, 4, …), the number of eggs that a
+    hen lays, etc.—things you can count.
+  tags:
+    - discrete
+    - measurement
+    - examples
+- id: def_continuous_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What are continuous data types?
+  reference_answer: |
+    Continuous data can take any value within an interval—no gaps. You
+    measure it (e.g. height, weight, time) rather than count; it's on a
+    continuum, unlike discrete counts.
+  tags:
+    - continuous
+    - measurement
+    - quantitative
+- id: def_ab_test_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is an A/B test?
+  follow_ups:
+    - def_ab_test_01_randomize_variance
+  tags:
+    - ab_test
+    - experiment
+- id: def_ab_test_01_randomize_variance
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: How would you randomize or design the experiment when the population
+    has a lot of variance?
+  tags:
+    - randomization
+    - stratification
+    - variance
+    - experiment
+- id: def_null_hypothesis_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is the null and the alternative hypothesis?
+  tags:
+    - null_hypothesis
+    - alternative_hypothesis
+    - inference
+- id: def_metric_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: In one sentence, what is a metric in the context of an experiment?
+  tags:
+    - metric
+    - experiment
+- id: def_pvalue_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: In one sentence, what is a p-value?
+  follow_ups:
+    - def_pvalue_01_interpret
+    - def_pvalue_01_conclude
+    - def_pvalue_01_large_n
+  tags:
+    - pvalue
+    - inference
+- id: def_pvalue_01_interpret
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: If the p-value is 0.03, what does that mean?
+  reference_answer: |
+    If the null hypothesis were true, there would be a 3% probability of
+    observing data at least as extreme as what we saw.
+  tags:
+    - pvalue
+    - inference
+- id: def_pvalue_01_conclude
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: If your p-value is 0.06 and your significance level is 0.05, what do
+    you conclude?
+  reference_answer: |
+    Expected reasoning: fail to reject the null, not statistically
+    significant, does not prove the null is true.
+  tags:
+    - pvalue
+    - significance_level
+    - inference
+- id: def_pvalue_01_large_n
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 2
+  category: Probability & Statistics
+  question: Why might a p-value be misleading in large experiments?
+  reference_answer: |
+    Expected reasoning: huge sample sizes, tiny effects become statistically
+    significant, practical impact might be negligible.
+  tags:
+    - pvalue
+    - sample_size
+    - inference
+- id: def_ci_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a confidence interval? Give both a technical definition and a
+    non-technical explanation you could use with a non-technical audience.
+  tags:
+    - confidence_interval
+    - communication
+    - inference
+- id: def_significance_level_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a significance level?
+  follow_ups:
+    - def_significance_level_01_conclude
+    - def_significance_level_01_choose
+  tags:
+    - significance_level
+    - alpha
+    - inference
+- id: def_significance_level_01_conclude
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: If your p-value is 0.06 and your significance level is 0.05, what do
+    you conclude?
+  reference_answer: |
+    Expected reasoning: fail to reject the null, not statistically
+    significant, does not prove the null is true.
+  tags:
+    - pvalue
+    - significance_level
+    - inference
+- id: def_significance_level_01_choose
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: How would you choose the significance level in an experiment?
+  tags:
+    - significance_level
+    - alpha
+    - inference
+- id: def_clt_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 2
+  category: Probability & Statistics
+  question: Explain the central limit theorem. Why is it useful?
+  tags:
+    - clt
+    - inference
+    - sampling
+- id: def_power_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is statistical power?
+  tags:
+    - power
+    - errors
+- id: def_power_background_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 2
+  category: Probability & Statistics
+  question: Explain the statistical background behind power.
+  tags:
+    - power
+    - type2
+    - errors
+    - distributions
+- id: def_mde_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is MDE (minimum detectable effect)?
+  tags:
+    - mde
+    - power
+- id: def_type1_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a Type I error?
+  tags:
+    - type1
+    - errors
+- id: def_type2_01
+  topic: Experimentation
+  theme: Power & Errors
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a Type II error?
+  tags:
+    - type2
+    - errors
+- id: def_prob_sample_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a sample (as opposed to a population)?
+  tags:
+    - sample
+    - population
+    - inference
+- id: def_stratified_sample_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: What is a stratified sample?
+  reference_answer: |
+    We subdivide the population into at least two different subgroups (or
+    strata) so that the subjects within the same subgroup share the same
+    characteristic, then we draw a sample from each subgroup (e.g. break down
+    into groups like men vs women and then draw so many from each group).
+  tags:
+    - stratified_sample
+    - sampling
+    - population
+    - inference
+- id: def_prob_variance_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: In one sentence, what is variance?
+  tags:
+    - variance
+    - variability
+- id: def_prob_random_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 3
+  category: Probability & Statistics
+  question: What does it mean to assign users randomly in an experiment?
+  tags:
+    - randomization
+    - experiment
+- id: def_prob_bias_01
+  topic: Experimentation
+  theme: Inference Basics
+  difficulty: 1
+  category: Probability & Statistics
+  question: In one sentence, what is statistical bias?
+  tags:
+    - bias
+    - inference
+- id: math_standard_error_01
+  topic: Experimentation
+  theme: Uncertainty
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a standard error?
+  follow_ups:
+    - math_standard_error_01_calc
+  tags:
+    - standard_error
+    - calculation
+- id: math_standard_error_01_calc
+  topic: Experimentation
+  theme: Uncertainty
+  difficulty: 1
+  category: Probability & Statistics
+  question: Std dev = 10, n = 100. What is the standard error of the mean?
+  tags:
+    - standard_error
+    - calculation
+- id: math_var_01
+  topic: Experimentation
+  theme: Variance
+  difficulty: 1
+  category: Probability & Statistics
+  question: Values are 8, 10, 12. What is the sample mean and sample variance?
+  tags:
+    - variance
+    - calculation
+- id: math_mde_scale_01
+  topic: Experimentation
+  theme: Scaling Laws
+  difficulty: 4
+  category: Probability & Statistics
+  question: If you halve the MDE, roughly how does required sample size change and why?
+  tags:
+    - mde
+    - sample_size
+    - scaling
+- id: math_cov_corr_01
+  topic: Experimentation
+  theme: Association
+  difficulty: 2
+  category: Probability & Statistics
+  question: Explain both covariance and correlation formulaically. Compare and
+    contrast them.
+  follow_ups:
+    - math_cov_corr_01_interpret
+  tags:
+    - covariance
+    - correlation
+    - formula
+    - scaling
+- id: math_cov_corr_01_interpret
+  topic: Experimentation
+  theme: Association
+  difficulty: 3
+  category: Probability & Statistics
+  question: How would you interpret a correlation of 0.8 between two metrics when
+    deciding what to optimize in an A/B test?
+  tags:
+    - correlation
+    - ab_test
+    - metric
+- id: math_portfolio_vol_01
+  topic: Experimentation
+  theme: Variance
+  difficulty: 3
+  category: Probability & Statistics
+  question: A portfolio consists of two assets with identical volatility x and
+    covariance y, each making up 50% of the portfolio. Which formula would you
+    use to calculate the overall volatility of this portfolio?
+  tags:
+    - portfolio
+    - variance
+    - covariance
+    - formula
+- id: def_prob_mean_01
+  topic: Experimentation
+  theme: Variance
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is the mean of a set of numbers?
+  tags:
+    - mean
+    - descriptive
+- id: def_prob_median_01
+  topic: Experimentation
+  theme: Variance
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is the median and when might you use it instead of the mean?
+  tags:
+    - median
+    - descriptive
+    - robustness
+- id: def_prob_std_01
+  topic: Experimentation
+  theme: Variance
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is standard deviation?
+  tags:
+    - standard_deviation
+    - variance
+- id: def_zscore_01
+  topic: Experimentation
+  theme: Variance
+  difficulty: 1
+  category: Probability & Statistics
+  question: What is a z-score?
+  reference_answer: |
+    A z-score (standard score) is the number of standard deviations a value
+    is from the mean. Formula: z = (x - μ) / σ (or use sample mean and SD).
+    It standardizes values so they can be compared across different scales;
+    z = 0 is the mean, z = ±1 is one SD away. Used in normality, hypothesis
+    tests, and identifying outliers.
+  tags:
+    - z_score
+    - variance
+    - standardization
+- id: pit_multiple_comparisons_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 5
+  category: A/B Testing Mechanics
+  question: Your manager reconfigured an A/B test from 2 to 20 different variants,
+    while keeping all other parameters unchanged. They come back to you that one
+    of the variants is significant. Is this conclusion likely to be correct? Why
+    or why not?
+  follow_ups:
+    - pit_multiple_comparisons_01_correct
+  tags:
+    - multiple_comparisons
+    - type1
+    - multiple_testing
+- id: pit_multiple_comparisons_01_correct
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: A/B Testing Mechanics
+  question: How would you correct for the multiple comparisons problem when
+    running many A/B test variants?
+  reference_answer: |
+    Adjust the significance threshold to control the overall false positive
+    rate. Bonferroni: divide α by the number of tests (e.g. α = 0.05, 19
+    variants → threshold 0.05/19 ≈ 0.0026; only consider significant if
+    p < this). Bonferroni can be overly conservative and reduce power. False
+    Discovery Rate methods (e.g. Benjamini–Hochberg) control the expected
+    proportion of false positives while preserving more power. Alternatively,
+    redesign: fewer variants, or multi-armed bandit to allocate traffic more
+    efficiently.
+  tags:
+    - multiple_comparisons
+    - type1
+    - multiple_testing
+- id: pit_multiple_bonferroni_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: A/B Testing Mechanics
+  question: What is Bonferroni correction and when would you use it?
+  reference_answer: |
+    Bonferroni correction controls the family-wise error rate when doing
+    multiple tests: use a significance threshold of α / n (e.g. α = 0.05,
+    n = 20 tests → reject only if p < 0.0025). Use it when you want to be
+    conservative and limit the chance of any false positive across the family.
+    Drawback: can be very conservative and reduce power when n is large.
+  tags:
+    - bonferroni
+    - multiple_comparisons
+- id: pit_multiple_fdr_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: A/B Testing Mechanics
+  question: What is FDR (false discovery rate) correction, e.g.
+    Benjamini–Hochberg, and how does it differ from Bonferroni?
+  reference_answer: |
+    FDR methods control the expected proportion of false positives among
+    rejections (e.g. 5% of the effects we call significant are false positives),
+    rather than the probability of at least one false positive (family-wise).
+    Benjamini–Hochberg is a common FDR procedure: order p-values, find the
+    largest k such that p_(k) ≤ (k/n)α, reject the first k. Less conservative
+    than Bonferroni, so more power when many tests; appropriate when you can
+    tolerate some false discoveries.
+  tags:
+    - fdr
+    - benjamini_hochberg
+    - multiple_comparisons
+- id: pit_multiple_primary_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: A/B Testing Mechanics
+  question: Why pre-specify a small set of primary metrics in an experiment, and
+    how does that help with multiple comparisons?
+  reference_answer: |
+    Pre-specifying a small set of primary metrics (e.g. 1–3) limits the number
+    of confirmatory tests, so you don't inflate the false positive rate by
+    testing many outcomes. You apply your significance threshold only to these;
+    other metrics are secondary or exploratory. This is a design-based way to
+    avoid the multiple comparisons problem without heavy correction.
+  tags:
+    - primary_metrics
+    - multiple_comparisons
+    - pre_specification
+- id: pit_multiple_exploratory_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: A/B Testing Mechanics
+  question: What does it mean to treat some analyses as exploratory vs
+    confirmatory, and why does that matter for multiple comparisons?
+  reference_answer: |
+    Confirmatory: you pre-specify hypotheses and apply a strict significance
+    threshold; you claim statistical significance only there. Exploratory:
+    you look at many outcomes or segments without the same guarantee; you
+    don't claim strict significance—you generate hypotheses for future tests.
+    Treating extra looks as exploratory avoids inflating Type I error while
+    still allowing learning.
+  tags:
+    - exploratory
+    - confirmatory
+    - multiple_comparisons
+- id: pit_adv_bonferroni_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: Advanced Experimentation
+  question: What is the Bonferroni correction?
+  tags:
+    - bonferroni
+    - multiple_testing
+- id: pit_adv_fdr_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: Advanced Experimentation
+  question: What is false discovery rate (FDR)?
+  tags:
+    - fdr
+    - multiple_testing
+- id: pit_adv_multiple_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 4
+  category: Advanced Experimentation
+  question: What is the multiple comparisons problem?
+  tags:
+    - multiple_comparisons
+    - type1
+- id: pit_adv_family_01
+  topic: Experimentation
+  theme: Multiple testing
+  difficulty: 1
+  category: Advanced Experimentation
+  question: What is family-wise error rate?
+  tags:
+    - family_wise
+    - multiple_testing
+- id: prod_fb_eng_01
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 3
+  category: Experimentation Strategy
+  question: "How would you improve engagement on Facebook? Use: Objective →
+    Drivers → Levers → Experiments → Tradeoffs."
+  tags:
+    - engagement
+    - framework
+- id: prod_driver_app_01
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 3
+  category: Experimentation Strategy
+  question: We’re launching a new driver app UI to increase driver earnings by
+    increasing trips. Outline a testing strategy.
+  tags:
+    - marketplace
+    - experimentation_strategy
+- id: prod_fb_marketplace_01
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 3
+  category: Experimentation Strategy
+  question: How would we measure the success of the Facebook Marketplace?
+  tags:
+    - marketplace
+    - metrics
+    - success_metrics
+- id: prod_yelp_reviews_01
+  topic: Experimentation
+  theme: Reviews
+  difficulty: 3
+  category: Experimentation Strategy
+  question: How would we measure the success of a reviews platform (e.g.
+    user-generated reviews for local businesses)?
+  tags:
+    - reviews
+    - metrics
+    - success_metrics
+- id: prod_basic_01
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a product metric?
+  tags:
+    - metric
+    - product
+- id: prod_basic_02
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is engagement?
+  tags:
+    - engagement
+    - metric
+- id: prod_basic_03
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 3
+  category: Experimentation Strategy
+  question: What is a marketplace in product terms?
+  tags:
+    - marketplace
+    - product
+- id: prod_basic_04
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is retention?
+  tags:
+    - retention
+    - metric
+- id: prod_basic_05
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is churn?
+  tags:
+    - churn
+    - retention
+- id: prod_basic_06
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is GMV?
+  tags:
+    - gmv
+    - marketplace
+- id: prod_basic_07
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is DAU?
+  tags:
+    - dau
+    - engagement
+- id: prod_basic_08
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is MAU?
+  tags:
+    - mau
+    - engagement
+- id: prod_basic_09
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a leading indicator?
+  tags:
+    - leading_indicator
+    - metric
+- id: prod_basic_10
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a lagging indicator? Give two examples.
+  reference_answer: |
+    A lagging indicator is a metric that moves or is observed after a key
+    outcome or leading metric. Examples: revenue as a lagging indicator for
+    new starters or growth initiatives; customer retention or churn as a
+    lagging indicator for product engagement changes.
+  tags:
+    - lagging_indicator
+    - metric
+- id: prod_basic_11
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a funnel?
+  tags:
+    - funnel
+    - metric
+- id: prod_basic_12
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 3
+  category: Experimentation Strategy
+  question: What is supply and demand in a marketplace?
+  tags:
+    - supply
+    - demand
+    - marketplace
+- id: prod_basic_13
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is A/B testing strategy?
+  tags:
+    - strategy
+    - ab_test
+- id: prod_basic_14
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a rollout?
+  tags:
+    - rollout
+    - launch
+- id: prod_basic_15
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a feature flag?
+  tags:
+    - feature_flag
+    - experiment
+- id: prod_basic_16
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is statistical significance in a business context?
+  tags:
+    - significance
+    - business
+- id: prod_basic_17
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is practical significance?
+  tags:
+    - practical_significance
+    - decision
+- id: prod_basic_18
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 3
+  category: Experimentation Strategy
+  question: What is a two-sided marketplace?
+  tags:
+    - two_sided
+    - marketplace
+- id: prod_basic_19
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a cohort?
+  tags:
+    - cohort
+    - analysis
+- id: prod_basic_20
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a KPI?
+  tags:
+    - kpi
+    - metric
+- id: prod_basic_21
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is activation?
+  tags:
+    - activation
+    - funnel
+- id: prod_basic_22
+  topic: Experimentation
+  theme: Marketplace
+  difficulty: 3
+  category: Experimentation Strategy
+  question: What is liquidity in a marketplace?
+  tags:
+    - liquidity
+    - marketplace
+- id: prod_basic_23
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a baseline in an experiment?
+  tags:
+    - baseline
+    - experiment
+- id: prod_basic_24
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is a treatment effect?
+  tags:
+    - treatment_effect
+    - experiment
+- id: prod_basic_25
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 1
+  category: Experimentation Strategy
+  question: What is experiment velocity?
+  tags:
+    - velocity
+    - experimentation
+- id: case_fb_engagement_01
+  topic: Experimentation
+  theme: Engagement
+  difficulty: 5
+  category: Experimentation Strategy
+  question: How would you improve engagement on Facebook?
+  reference_answer: >
+    There are two valid routes: (1) Analyze more—build models, find segments,
+
+    infer what might work from data. (2) Try things out—form hypotheses, run
+
+    experiments (A/B tests), ship and see what works. You can use one or both;
+
+    the template below is the "analyze" route; the "experiment" route is
+
+    equally valid (metric → hypotheses → design tests → iterate).
+
+
+    1. Define the metric. Pretty much all case studies start with a vague goal;
+       the first step is translating that into a metric that can be optimized.
+       E.g. "I define engagement on FB as the proportion of users who take at
+       least one action per day, where action means interacting with the site
+       (posting, liking, uploading a picture, etc.)." As long as it makes
+       sense, the exact definition (thresholds, which actions, or avg actions
+       per user vs. pct above threshold) matters less than having a concrete,
+       evaluable metric. Tie the metric to company mission (FB = interactions;
+       Quora = quality content; Airbnb = belonging anywhere).
+
+    2. Pick the variables you think would matter to move that metric. Usually
+       a combination of user characteristics (sex, age, country, # of friends)
+       and browsing/online behavior (device, traffic source, session time, etc.).
+
+    3. Pick a model to predict the metric from those variables. Tree-based
+       classifiers (e.g. Random Forest) are often a good choice; justify (e.g.
+       high dimension, categoricals, outliers). Get insights via partial
+       dependence and variable importance.
+
+    4. Come up with a couple of example segments from the model—one "good" and
+       one "bad" (e.g. users from Argentina less engaged; young Indians highly
+       engaged but under-represented). Use product knowledge to make them
+       realistic; otherwise make them actionable and note that with real data
+       you'd find the actual segments.
+
+    5. Define next steps. E.g. check Spanish localization for Argentina; tell
+       marketing to reach more young Indian users. Always end with actionable
+       next steps to improve the metric. With minor changes, this template
+       works for most "How do you increase X on site Y?" case studies.
+  tags:
+    - engagement
+    - product_sense
+    - framework
+- id: case_ebay_fake_01
+  topic: Experimentation
+  theme: Trust & Safety / Fraud
+  difficulty: 5
+  category: Experimentation Strategy
+  question: Which variables are important to predict a fake listing on eBay?
+  reference_answer: |
+    General advice for fraud:
+    - Fraudsters rarely commit just one fraud; they scale once a strategy works.
+      To do that they need new accounts, so variables that should be unique per
+      user but can be tracked across IDs are very useful: device ID, IP address,
+      physical address, credit card number, etc. They allow tracking the same
+      user across different profiles.
+    - Most users are not fraudulent, so looking at variable distributions and
+      outliers (anomalies) is a good strategy to flag suspect behavior. In
+      practice, variables are about "something that should be unique and is
+      not" or "extreme values."
+
+    For a peer-to-peer marketplace like eBay, break the answer into: (1)
+    characteristics of the listing and (2) characteristics of the seller.
+
+    Listing: picture quality (e.g. very low resolution); whether the image is
+    original or taken from the internet (image search / similarity); price
+    (especially if too low); description text (e.g. same wording as other
+    listings).
+
+    Seller: device ID, IP, bank/PayPal account, any sign-up PII—check if
+    matchable to other sellers; ratings (especially no ratings + brand-new
+    account); browsing behavior before/after account creation. A new seller
+    is expected to spend time on the site learning how it works; one who
+    behaves like an expert immediately is suspect.
+  tags:
+    - fraud
+    - trust_safety
+    - prediction
+    - feature_importance
+- id: case_fraud_threshold_01
+  topic: Experimentation
+  theme: Trust & Safety / Fraud
+  difficulty: 5
+  category: Experimentation Strategy
+  question: |
+    You are a data scientist working on fraud detection for a payment platform.
+    A new machine learning model flags transactions as fraudulent or legitimate.
+    The current model has the following performance:
+
+    Metric                    | Value
+    Sensitivity (Recall)      | 92%
+    Specificity              | 70%
+
+    Additional context:
+    - 1% of all transactions are actually fraudulent.
+    - When fraud is missed, the average loss is $120.
+    - When a legitimate transaction is incorrectly flagged, the user must go
+      through a manual verification flow that causes friction and drop-off
+      worth an estimated $8 cost to the company.
+
+    Your product manager asks: "Can we increase the fraud detection threshold
+    to improve specificity? Customers are complaining about legitimate
+    transactions getting blocked."
+
+    How would you respond? Should you increase the threshold?
+  follow_ups:
+    - case_fraud_threshold_01_sens_spec
+    - case_fraud_threshold_01_evaluate
+    - case_fraud_threshold_01_daily_cost
+  reference_answer: |
+    Key points:
+    - Raising the threshold (flag fewer as fraud) increases specificity
+      (fewer false positives, fewer legitimate users blocked) but decreases
+      sensitivity (more fraud missed).
+    - The decision should be driven by expected cost, not just specificity.
+      Cost of a missed fraud (FN) = $120; cost of a false flag (FP) = $8.
+      With 1% prevalence, the expected cost per transaction depends on how many
+      FN vs FP the threshold produces. A back-of-envelope: if the model flags
+      too many today (70% specificity means 30% of legitimate tx flagged),
+      FP cost can dominate in volume; raising threshold reduces FP and may
+      reduce total cost even if some fraud is missed.
+    - Candidate should either (1) reason about the tradeoff and cost ratio
+      (120 vs 8 and prevalence), or (2) suggest computing expected cost at
+      current vs higher threshold using the model's score distribution, or
+      (3) note that the answer depends on the exact ROC/score distribution
+      and recommend evaluating expected cost at different thresholds.
+    - Saying "yes, increase threshold to reduce customer friction" or "no,
+      we'll miss more fraud" without considering the cost balance is partial;
+      the strong answer ties threshold choice to expected cost and possibly
+      recommends a sensitivity analysis or A/B test on threshold.
+  tags:
+    - fraud
+    - threshold
+    - sensitivity
+    - specificity
+    - cost_sensitive
+    - classification
+- id: case_fraud_threshold_01_sens_spec
+  topic: Experimentation
+  theme: Trust & Safety / Fraud
+  difficulty: 5
+  category: Experimentation Strategy
+  question: >
+    Explain in your own words the difference between Sensitivity and
+    Specificity.
+
+    Why do these two metrics typically move in opposite directions?
+  reference_answer: |
+    Sensitivity (recall) = proportion of actual positives that the model
+    correctly flags (TP / (TP + FN)). For fraud: of all true fraud, what % do
+    we catch? Specificity = proportion of actual negatives correctly identified
+    as negative (TN / (TN + FP)). For fraud: of all legitimate transactions,
+    what % do we leave alone?
+
+    They move in opposite directions because both are determined by the same
+    decision threshold. Raising the threshold (flag fewer as positive):
+    fewer TP and more FN → sensitivity goes down; fewer FP and more TN →
+    specificity goes up. Lowering the threshold: more TP, fewer FN →
+    sensitivity goes up; more FP, fewer TN → specificity goes down. So
+    sensitivity and specificity trade off as you move the threshold along
+    the ROC curve.
+  tags:
+    - sensitivity
+    - specificity
+    - classification
+    - threshold
+- id: case_fraud_threshold_01_evaluate
+  topic: Experimentation
+  theme: Trust & Safety / Fraud
+  difficulty: 5
+  category: Experimentation Strategy
+  question: |
+    Should we increase the threshold? Describe how you would evaluate this
+    decision quantitatively.
+  reference_answer: |
+    Evaluate by expected cost (or profit) at different thresholds.
+
+    1. For each candidate threshold, use the model's score distribution (on a
+       validation set or recent data) to estimate: (a) how many transactions
+       are flagged vs not, (b) implied TP, FP, FN, TN given the known/labeled
+       prevalence (or use calibrated probabilities). Alternatively, use the
+       ROC curve and prevalence to get FP rate and FN rate at each threshold.
+
+    2. Compute expected cost per transaction (or total): Cost = (FN count ×
+       $120) + (FP count × $8). Or per-decision: P(fraud)×(1−sensitivity)×120
+       + P(legit)×(1−specificity)×8 at that threshold.
+
+    3. Choose the threshold that minimizes expected cost. Compare current
+       threshold vs higher threshold; if expected cost drops when you raise
+       the threshold, recommend increasing it; otherwise recommend keeping or
+       lowering. Optionally run a sensitivity analysis on the cost assumptions
+       ($120, $8) and prevalence.
+  tags:
+    - threshold
+    - expected_cost
+    - fraud
+    - classification
+- id: case_fraud_threshold_01_daily_cost
+  topic: Experimentation
+  theme: Trust & Safety / Fraud
+  difficulty: 5
+  category: Experimentation Strategy
+  question: >
+    Assume 1M transactions per day. Estimate the daily cost of the current
+    model.
+
+    What additional information would help you make a better decision?
+  reference_answer: |
+    Daily cost estimate (with 1% fraud, 92% sensitivity, 70% specificity):
+    - True fraud: 1% × 1M = 10,000. Missed (FN): 8% × 10,000 = 800. FN cost:
+      800 × $120 = $96,000.
+    - Legitimate: 990,000. False positives: (1 − 0.70) × 990,000 = 297,000. FP
+      cost: 297,000 × $8 = $2,376,000.
+    - Total daily cost ≈ $96,000 + $2,376,000 = $2,472,000. (FP cost dominates
+      because of volume and 30% FP rate.)
+
+    Additional information that would help: (1) Full ROC or score distribution
+    so we can compute cost at other thresholds; (2) confidence in the $120 and
+    $8 cost estimates (sensitivity analysis); (3) whether prevalence or costs
+    vary by segment; (4) capacity constraints on manual review; (5) long-term
+    impact of friction (e.g. churn) beyond the $8; (6) labeled validation data
+    to confirm sensitivity/specificity at the current threshold.
+  tags:
+    - fraud
+    - expected_cost
+    - estimation
+    - classification
