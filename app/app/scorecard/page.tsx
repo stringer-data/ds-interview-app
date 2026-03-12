@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ALL_TOPICS, topicToSlug } from "@/lib/topics";
 
 type Breakdown = {
   topics: string[];
@@ -24,26 +25,16 @@ export default function ScorecardPage() {
   if (loading) {
     return <p style={{ color: "var(--muted)" }}>Loading scorecard…</p>;
   }
-  if (!breakdown?.topics?.length) {
-    return (
-      <div className="card">
-        <p style={{ color: "var(--muted)", marginBottom: "1rem" }}>
-          No attempts yet. Your scorecard will appear here once you answer some questions.
-        </p>
-        <Link href="/app" className="btn btn-primary">
-          Practice
-        </Link>
-      </div>
-    );
-  }
 
-  const levels = breakdown.levels?.length ? breakdown.levels : [1, 2, 3, 4, 5];
+  const levels = breakdown?.levels?.length ? breakdown.levels : [1, 2, 3, 4, 5];
+  const data = breakdown?.data ?? {};
+  const hasAttempts = breakdown?.topics?.length ? true : false;
 
   return (
     <div>
       <h1 style={{ fontSize: "1.35rem", marginBottom: "1rem" }}>Scorecard</h1>
       <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-        Average score by topic and difficulty (score out of 4).
+        Average score by topic and difficulty (score out of 4). Click a topic to practice that topic.
       </p>
       <div className="card" style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
@@ -58,13 +49,20 @@ export default function ScorecardPage() {
             </tr>
           </thead>
           <tbody>
-            {breakdown.topics.map((topic) => (
+            {ALL_TOPICS.map((topic) => (
               <tr key={topic} style={{ borderBottom: "1px solid var(--border)" }}>
-                <td style={{ padding: "0.6rem 0.75rem" }}>{topic}</td>
+                <td style={{ padding: "0.6rem 0.75rem" }}>
+                  <Link
+                    href={`/app?topic=${encodeURIComponent(topicToSlug(topic))}`}
+                    style={{ color: "var(--text)", textDecoration: "underline", fontWeight: 500 }}
+                  >
+                    {topic}
+                  </Link>
+                </td>
                 {levels.map((level) => {
-                  const cell = breakdown.data[topic]?.[level];
+                  const cell = data[topic]?.[level];
                   const value = cell
-                    ? `${cell.avgScore.toFixed(1)}${cell.count > 1 ? ` (${cell.count})` : ""}`
+                    ? `${cell.avgScore.toFixed(1)} (${cell.count})`
                     : "—";
                   return (
                     <td key={level} style={{ padding: "0.6rem 0.75rem", textAlign: "center" }}>
@@ -78,8 +76,14 @@ export default function ScorecardPage() {
         </table>
       </div>
       <p style={{ marginTop: "1rem", color: "var(--muted)", fontSize: "0.85rem" }}>
-        Numbers in parentheses are attempt counts for that cell.
+        {hasAttempts ? "Numbers in parentheses are attempt counts for that cell. " : ""}
+        Levels: 1 = definition, 2 = intuition, 3 = applied product, 4 = technical/assumptions, 5 = hard case.
       </p>
+      {!hasAttempts && (
+        <p style={{ marginTop: "1rem", color: "var(--muted)", fontSize: "0.85rem" }}>
+          No attempts yet. Click a topic above to start practicing.
+        </p>
+      )}
       <Link href="/app" className="btn btn-ghost" style={{ marginTop: "1rem" }}>
         ← Back to practice
       </Link>

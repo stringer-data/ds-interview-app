@@ -36,6 +36,8 @@ model Attempt {
   score       Int
   maxScore    Int      @default(4) @map("max_score")
   loggedAt    DateTime @default(now()) @map("logged_at")
+  questionText String?  @map("question_text")  // question as shown to user
+  answer       String?  // user's response
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@index([userId])

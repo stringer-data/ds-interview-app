@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 type UserRow = {
   id: string;
@@ -184,7 +185,11 @@ export default function AdminPage() {
               <tbody>
                 {users.map((u) => (
                   <tr key={u.id} style={{ borderBottom: "1px solid var(--border)" }}>
-                    <td style={{ padding: "0.5rem 0.75rem" }}>{[u.firstName, u.lastName].filter(Boolean).join(" ") || "—"}</td>
+                    <td style={{ padding: "0.5rem 0.75rem" }}>
+                      <Link href={`/admin/users/${u.id}`} style={{ color: "var(--text)", textDecoration: "underline" }}>
+                        {[u.firstName, u.lastName].filter(Boolean).join(" ") || "—"}
+                      </Link>
+                    </td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>{u.email}</td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>{u.tier}</td>
                     <td style={{ padding: "0.5rem 0.75rem", color: "var(--muted)" }}>{u.signupSource}</td>
@@ -194,6 +199,13 @@ export default function AdminPage() {
                     <td style={{ padding: "0.5rem 0.75rem", color: "var(--muted)" }}>{formatDate(u.lastLoginAt)}</td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>{u.questionsAnswered}</td>
                     <td style={{ padding: "0.5rem 0.75rem" }}>
+                      <Link
+                        href={`/admin/users/${u.id}`}
+                        className="btn btn-ghost"
+                        style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", marginRight: "0.25rem" }}
+                      >
+                        History
+                      </Link>
                       <button
                         type="button"
                         className="btn btn-ghost"

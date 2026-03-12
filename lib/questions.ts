@@ -7,11 +7,15 @@ if (!QUESTIONS_PATH) {
   console.warn("QUESTIONS_PATH not set; question bank will be empty.");
 }
 
+export type Dimension = "strategy" | "interpretation" | "math";
+
 export type QuestionMeta = {
   id: string;
   topic: string;
   theme: string;
   difficulty: number;
+  /** Strategy, interpretation, or math – so each topic can mix all three. */
+  dimension?: Dimension;
   follow_ups?: string[];
 };
 
@@ -62,11 +66,15 @@ function loadBankAndMaps(): {
     if (!Array.isArray(list)) continue;
     for (const q of list) {
       if (!q?.id || q.topic == null || q.theme == null || q.difficulty == null) continue;
+      const dim = q.dimension;
+      const dimension: Dimension | undefined =
+        dim === "strategy" || dim === "interpretation" || dim === "math" ? dim : undefined;
       const meta: QuestionMeta = {
         id: q.id,
         topic: q.topic,
         theme: q.theme,
         difficulty: Number(q.difficulty),
+        dimension,
         follow_ups: Array.isArray(q.follow_ups) ? q.follow_ups : undefined,
       };
       bank.push(meta);
@@ -154,9 +162,13 @@ export type NextQuestionResult = {
   reference_answer?: string;
 };
 
+export { ALL_TOPICS, topicToSlug, topicFromSlug } from "./topics";
+
 export type SelectNextQuestionOptions = {
   /** When set, exclude questions from this topic (e.g. to force a new random topic). */
   excludeTopic?: string;
+  /** When set, only choose questions from this topic (display name). */
+  topic?: string;
 };
 
 export function selectNextQuestion(
@@ -166,11 +178,14 @@ export function selectNextQuestion(
   const { bank, fullById, parentByFollowUp } = loadBankAndMaps();
   if (bank.length === 0) return null;
 
-  const { excludeTopic } = options;
-  const bankFiltered =
-    excludeTopic != null && excludeTopic !== ""
-      ? bank.filter((q) => q.topic !== excludeTopic)
-      : bank;
+  const { excludeTopic, topic: topicFilter } = options;
+  let bankFiltered = bank;
+  if (topicFilter != null && topicFilter !== "") {
+    bankFiltered = bankFiltered.filter((q) => q.topic === topicFilter);
+  }
+  if (excludeTopic != null && excludeTopic !== "") {
+    bankFiltered = bankFiltered.filter((q) => q.topic !== excludeTopic);
+  }
   if (bankFiltered.length === 0) return null;
 
   const lastById = lastByEffectiveId(attempts);

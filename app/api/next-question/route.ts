@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import {
   selectNextQuestion,
+  topicFromSlug,
   type AttemptRow,
 } from "@/lib/questions";
 
@@ -16,6 +17,8 @@ export async function GET(req: Request) {
   }
   const { searchParams } = new URL(req.url);
   const randomTopic = searchParams.get("random_topic") === "true";
+  const topicSlug = searchParams.get("topic");
+  const topicFilter = topicSlug ? topicFromSlug(topicSlug) : undefined;
 
   const attempts = await prisma.attempt.findMany({
     where: { userId: user.id },
@@ -41,7 +44,7 @@ export async function GET(req: Request) {
 
   const excludeTopic =
     randomTopic && rows.length > 0 ? rows[rows.length - 1].topic ?? undefined : undefined;
-  const next = selectNextQuestion(rows, { excludeTopic });
+  const next = selectNextQuestion(rows, { excludeTopic, topic: topicFilter });
   if (!next) {
     return NextResponse.json({ error: "no_questions" }, { status: 404 });
   }
