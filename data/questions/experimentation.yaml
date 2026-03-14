@@ -8,6 +8,214 @@
     - control
     - treatment
     - experiment
+- id: design_itt_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is ITT and what does it measure in an experiment?
+  reference_answer: >
+    Intent-to-Treat (ITT) measures the causal effect of being assigned to the
+    treatment group versus the control group, regardless of whether participants
+    actually receive or comply with the treatment.
+  tags:
+    - itt
+    - intent_to_treat
+    - experiment
+    - causal
+- id: design_itt_02
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why does ITT include users who never saw the treatment?
+  reference_answer: >
+    Because excluding them would break randomization and introduce selection bias.
+  tags:
+    - itt
+    - intent_to_treat
+    - randomization
+    - selection_bias
+- id: design_itt_03
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: A company randomizes users into a new checkout flow, but 20 percent of treated users never load the page. Should those users be included in the analysis?
+  reference_answer: >
+    Yes, because the ITT estimate compares all assigned users and preserves randomization.
+  tags:
+    - itt
+    - intent_to_treat
+    - randomization
+    - checkout
+- id: design_itt_04
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 3
+  category: A/B Testing Mechanics
+  question: In a push notification experiment, some users assigned to treatment have notifications disabled. Should they be excluded?
+  reference_answer: >
+    No, because excluding them would introduce bias. They remain part of the ITT estimate.
+  tags:
+    - itt
+    - intent_to_treat
+    - selection_bias
+    - push_notifications
+- id: design_itt_05
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 4
+  category: A/B Testing Mechanics
+  question: In an experiment, 40 percent of treatment users never see the feature and 10 percent of control users accidentally see it due to a logging bug. What happens to the ITT estimate?
+  reference_answer: >
+    The estimate is biased toward zero because contamination reduces the treatment contrast.
+  tags:
+    - itt
+    - intent_to_treat
+    - contamination
+    - bias
+- id: design_cluster_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What is a clustered sample in an experiment?
+  reference_answer: >
+    A clustered sample occurs when observations are grouped into clusters and observations within the same cluster are correlated.
+  tags:
+    - clustering
+    - randomization
+    - experiment
+    - correlation
+- id: design_independence_01
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why do multiple sessions from the same user violate independence assumptions?
+  reference_answer: >
+    Sessions from the same user tend to behave similarly, creating correlation.
+  tags:
+    - independence
+    - correlation
+    - sessions
+    - randomization
+- id: design_cluster_02
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: In an experiment randomizing by user but measuring sessions, why must clustering be considered?
+  reference_answer: >
+    Because sessions within the same user are correlated.
+  tags:
+    - clustering
+    - randomization
+    - sessions
+    - correlation
+- id: design_independence_02
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Airbnb users may have multiple booking sessions during a test. Why shouldn't each session be treated as independent?
+  reference_answer: >
+    Because the behavior of sessions from the same user is correlated.
+  tags:
+    - independence
+    - correlation
+    - sessions
+    - randomization
+    - airbnb
+- id: design_cluster_03
+  topic: Experimentation
+  theme: Randomization
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: A marketplace randomizes at the city level. What type of experiment is this?
+  reference_answer: >
+    A cluster randomized experiment.
+  tags:
+    - clustering
+    - randomization
+    - marketplace
+    - experiment
+- id: design_quasi_01
+  topic: Experimentation
+  theme: Quasi-experiments
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What does a quasi-experimental fallback mean in experimentation?
+  reference_answer: >
+    It refers to using causal inference methods to estimate treatment effects when a randomized experiment fails or cannot be run.
+  tags:
+    - quasi_experiment
+    - causal_inference
+    - experiment
+- id: design_quasi_02
+  topic: Experimentation
+  theme: Quasi-experiments
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why might companies need quasi-experimental methods?
+  reference_answer: >
+    Because experiments can fail due to technical issues, legal constraints, or rollout limitations.
+  tags:
+    - quasi_experiment
+    - causal_inference
+    - experiment
+- id: design_quasi_03
+  topic: Experimentation
+  theme: Quasi-experiments
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: Name three quasi-experimental methods.
+  reference_answer: >
+    Difference-in-differences, regression discontinuity, and instrumental variables.
+  tags:
+    - quasi_experiment
+    - did
+    - rdd
+    - iv
+    - causal_inference
+- id: design_rand_01
+  topic: Experimentation
+  theme: A/B Fundamentals
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why are randomized experiments considered the gold standard for causal inference?
+  reference_answer: >
+    Randomization removes systematic differences between treatment and control groups.
+  tags:
+    - randomization
+    - causal_inference
+    - experiment
+- id: design_quasi_04
+  topic: Experimentation
+  theme: Quasi-experiments
+  difficulty: 1
+  category: A/B Testing Mechanics
+  question: What problem do quasi-experiments try to solve?
+  reference_answer: >
+    They attempt to estimate causal effects despite non-random treatment assignment.
+  tags:
+    - quasi_experiment
+    - causal_inference
+    - experiment
+- id: design_preperiod_01
+  topic: Experimentation
+  theme: Quasi-experiments
+  difficulty: 2
+  category: A/B Testing Mechanics
+  question: Why might pre-period data help in causal inference?
+  reference_answer: >
+    It allows us to control for baseline differences between groups.
+  tags:
+    - quasi_experiment
+    - causal_inference
+    - pre_period
+    - did
 - id: design_ab_01
   topic: Experimentation
   theme: A/B Fundamentals

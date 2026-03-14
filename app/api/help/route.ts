@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   if (!questionId) {
     return NextResponse.json({ error: "question_id required" }, { status: 400 });
   }
-  const question = getQuestionById(questionId);
+  const question = await getQuestionById(questionId);
   if (!question) {
     return NextResponse.json({ error: "Question not found" }, { status: 404 });
   }

@@ -7,6 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// --- Question system enums ---
+
+enum DifficultyStep {
+  STEP1_DEFINITION
+  STEP2_INTUITION
+  STEP3_APPLIED_PRODUCT
+  STEP4_TECHNICAL_ASSUMPTIONS
+  STEP5_HARD_CASE
+}
+
+enum Dimension {
+  STRATEGY
+  INTERPRETATION
+  MATH
+}
+
+enum QuestionFlagReason {
+  UNCLEAR
+  WRONG
+  TOO_EASY
+  TOO_HARD
+  OTHER
+}
+
+enum QuestionFlagStatus {
+  OPEN
+  RESOLVED
+  IGNORED
+}
+
 model User {
   id               String    @id @default(cuid())
   email            String    @unique
@@ -28,7 +58,7 @@ model User {
 model Attempt {
   id          String   @id @default(cuid())
   userId      String   @map("user_id")
-  questionId  String   @map("question_id")
+  questionId  String   @map("question_id") // legacy: YAML id or slug; later can point at Question.slug
   followUpId   String?  @map("follow_up_id")
   topic       String
   theme       String
@@ -56,4 +86,105 @@ model Invite {
 
   creator User @relation("CreatedInvites", fields: [createdBy], references: [id], onDelete: Cascade)
   @@index([inviteCode])
+}
+
+// --- Question system core models ---
+
+model Topic {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  slug      String     @unique
+  questions Question[]
+}
+
+model Theme {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  slug      String     @unique
+  questions Question[]
+}
+
+model Question {
+  id              Int              @id @default(autoincrement())
+  slug            String           @unique              // e.g. "design_itt_01"
+
+  topicId         Int
+  themeId         Int
+  topic           Topic            @relation(fields: [topicId], references: [id])
+  theme           Theme            @relation(fields: [themeId], references: [id])
+
+  difficultyStep  DifficultyStep
+  difficultyLevel Int                                  // 1–5
+
+  dimension       Dimension?
+
+  question        String
+  referenceAnswer String?          @map("reference_answer")
+  category        String?
+  tags            String[]         @default([])         // Postgres text[]
+
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  revisions       QuestionRevision[]
+  ratings         QuestionRating[]
+  flags           QuestionFlag[]
+  comments        QuestionComment[]
+}
+
+model QuestionRevision {
+  id         Int      @id @default(autoincrement())
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+  editorUserId String
+  oldValue     Json
+  newValue     Json
+  createdAt    DateTime @default(now())
+}
+
+model QuestionRating {
+  id         Int      @id @default(autoincrement())
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+  userId     String   // FK to User.id
+  rating     Int      // 1–5, optional at UX level
+
+  createdAt  DateTime @default(now())
+
+  @@index([questionId])
+  @@index([userId, questionId])
+}
+
+model QuestionFlag {
+  id          Int                @id @default(autoincrement())
+  questionId  Int
+  question    Question           @relation(fields: [questionId], references: [id])
+
+  userId      String
+  reason      QuestionFlagReason
+  notes       String?
+
+  status      QuestionFlagStatus @default(OPEN)
+  createdAt   DateTime           @default(now())
+  resolvedAt  DateTime?
+  resolvedBy  String?
+}
+
+model QuestionComment {
+  id               Int               @id @default(autoincrement())
+  questionId       Int
+  question         Question          @relation(fields: [questionId], references: [id])
+
+  userId           String
+  body             String
+  isOfficial       Boolean           @default(false)
+
+  parentCommentId  Int?
+  parentComment    QuestionComment?  @relation("QuestionCommentThread", fields: [parentCommentId], references: [id])
+  replies          QuestionComment[] @relation("QuestionCommentThread")
+
+  createdAt        DateTime          @default(now())
 }
