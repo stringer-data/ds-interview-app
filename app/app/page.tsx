@@ -58,6 +58,13 @@ export default function AppPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [upsell, setUpsell] = useState<{ questionsUsed: number; cap: number } | null>(null);
   const [hint, setHint] = useState<string | null>(null);
+  const [noQuestionsForTopic, setNoQuestionsForTopic] = useState(false);
+  const [lastAttemptedQuestionSlug, setLastAttemptedQuestionSlug] = useState<string | null>(null);
+  const [lastAttemptedIsCustom, setLastAttemptedIsCustom] = useState(false);
+  const [ratingSubmittedOrSkipped, setRatingSubmittedOrSkipped] = useState(false);
+  const [insightText, setInsightText] = useState("");
+  const [insightSubmitted, setInsightSubmitted] = useState(false);
+  const [insightLoading, setInsightLoading] = useState(false);
 
   const fetchScorecard = useCallback(async () => {
     const tz = typeof Intl !== "undefined" && Intl.DateTimeFormat ? Intl.DateTimeFormat().resolvedOptions().timeZone : "UTC";
@@ -75,24 +82,67 @@ export default function AppPage() {
       else if (topicSlug) params.set("topic", topicSlug);
       const url = "/api/next-question" + (params.toString() ? "?" + params.toString() : "");
       const res = await fetch(url);
-      const data = await res.json();
-      if (data.upsell) {
+      const text = await res.text();
+
+      let data: any = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch {
+        console.error("Failed to parse /api/next-question response as JSON:", text);
+        setQuestion(null);
+        return;
+      }
+
+      if (!res.ok) {
+        // 401 means auth expired or missing – send user back to login
+        if (res.status === 401) {
+          router.replace("/login");
+          return;
+        }
+
+        // 404 with known shape: treat as "no questions"
+        if (data && typeof data === "object" && (data as any).error === "no_questions") {
+          setNoQuestionsForTopic(true);
+          setQuestion(null);
+          return;
+        }
+
+        // Other errors: fail silently in the UI (no question),
+        // to avoid noisy console errors when the API returns an empty body.
+        setNoQuestionsForTopic(false);
+        setQuestion(null);
+        return;
+      }
+
+      if (data && typeof data === "object" && data.upsell) {
+        setNoQuestionsForTopic(false);
         setUpsell({ questionsUsed: data.questionsUsed, cap: data.cap });
         setQuestion(null);
         return;
       }
-      if (data.error === "no_questions") {
+
+      if (data && typeof data === "object" && data.error === "no_questions") {
+        setNoQuestionsForTopic(true);
         setQuestion(null);
         return;
       }
+
+      if (!data || typeof data !== "object" || !("questionId" in data)) {
+        console.error("Unexpected /api/next-question payload:", data);
+        setNoQuestionsForTopic(false);
+        setQuestion(null);
+        return;
+      }
+
+      setNoQuestionsForTopic(false);
       setUpsell(null);
-      setQuestion(data);
+      setQuestion(data as Question);
       setAnswer("");
       setFeedback(null);
       setFollowUpAnswer("");
       setHint(null);
     },
-    [topicSlug]
+    [topicSlug, router]
   );
 
   useEffect(() => {
@@ -186,6 +236,10 @@ export default function AppPage() {
       }
       const feedbackData = data as Feedback;
       setLastTopic(question.topic);
+      setLastAttemptedQuestionSlug(question.questionId);
+      setLastAttemptedIsCustom(question.questionId === "custom");
+      setRatingSubmittedOrSkipped(false);
+      setInsightSubmitted(false);
       setFeedback(feedbackData);
       await fetchScorecard();
       if (feedbackData.upsell && !feedbackData.nextQuestion) {
@@ -265,7 +319,11 @@ export default function AppPage() {
       )}
 
       {!question && !feedback && !upsell && (
-        <p style={{ color: "var(--muted)" }}>No questions available. Check QUESTIONS_PATH.</p>
+        <p style={{ color: "var(--muted)" }}>
+          {noQuestionsForTopic
+            ? "No questions available for this topic yet. Try another topic or check back later."
+            : "Couldn't load a question. Please refresh or try again."}
+        </p>
       )}
 
       {question && !feedback && (
@@ -364,6 +422,100 @@ export default function AppPage() {
             </section>
           )}
 
+          {lastAttemptedQuestionSlug && !lastAttemptedIsCustom && !ratingSubmittedOrSkipped && (
+            <section style={{ marginBottom: "1.25rem" }}>
+              <h4 className="feedback-label">Rate this question</h4>
+              <p style={{ margin: "0 0 0.5rem 0", fontSize: "0.9rem", color: "var(--muted)" }}>
+                How helpful was this question? (optional)
+              </p>
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    className="btn btn-ghost"
+                    style={{ minWidth: "2.25rem" }}
+                    onClick={async () => {
+                      try {
+                        await fetch("/api/rate-question", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ question_id: lastAttemptedQuestionSlug, rating: n }),
+                        });
+                      } finally {
+                        setRatingSubmittedOrSkipped(true);
+                      }
+                    }}
+                  >
+                    {n}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  style={{ fontSize: "0.9rem" }}
+                  onClick={() => setRatingSubmittedOrSkipped(true)}
+                >
+                  Skip
+                </button>
+              </div>
+            </section>
+          )}
+
+          {lastAttemptedQuestionSlug && !lastAttemptedIsCustom && !insightSubmitted && (
+            <section style={{ marginBottom: "1.25rem" }}>
+              <h4 className="feedback-label">Add an insight</h4>
+              <p style={{ margin: "0 0 0.5rem 0", fontSize: "0.9rem", color: "var(--muted)" }}>
+                Share a tip, alternate approach, or note about this question (optional).
+              </p>
+              <textarea
+                value={insightText}
+                onChange={(e) => setInsightText(e.target.value)}
+                placeholder="e.g. I found it helped to think about..."
+                rows={3}
+                maxLength={2000}
+                style={{
+                  width: "100%",
+                  maxWidth: "32rem",
+                  padding: "0.5rem 0.75rem",
+                  fontSize: "0.9rem",
+                  marginBottom: "0.5rem",
+                  resize: "vertical",
+                }}
+              />
+              <button
+                type="button"
+                className="btn btn-ghost"
+                disabled={insightLoading || !insightText.trim()}
+                onClick={async () => {
+                  const text = insightText.trim();
+                  if (!text) return;
+                  setInsightLoading(true);
+                  try {
+                    const res = await fetch("/api/question-comment", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ question_id: lastAttemptedQuestionSlug, body: text }),
+                    });
+                    if (res.ok) {
+                      setInsightText("");
+                      setInsightSubmitted(true);
+                    }
+                  } finally {
+                    setInsightLoading(false);
+                  }
+                }}
+              >
+                {insightLoading ? "Submitting…" : "Submit insight"}
+              </button>
+            </section>
+          )}
+          {lastAttemptedQuestionSlug && !lastAttemptedIsCustom && insightSubmitted && (
+            <p style={{ margin: "0 0 1.25rem 0", fontSize: "0.9rem", color: "var(--muted)" }}>
+              Thanks, your insight was added.
+            </p>
+          )}
+
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
             {feedback.followUpQuestion && feedback.followUpQuestion.trim() !== "—" && (
               <button
@@ -394,6 +546,8 @@ export default function AppPage() {
                     }
                       const feedbackData = responseData as Feedback;
                       setLastTopic(lastTopic ?? "Custom");
+                      setLastAttemptedQuestionSlug(null);
+                      setLastAttemptedIsCustom(true);
                       setFeedback(feedbackData);
                       setHint(null);
                       await fetchScorecard();

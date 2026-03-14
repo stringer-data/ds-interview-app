@@ -1,11 +1,4 @@
-import fs from "fs";
-import path from "path";
-import YAML from "yaml";
-
-const QUESTIONS_PATH = process.env.QUESTIONS_PATH;
-if (!QUESTIONS_PATH) {
-  console.warn("QUESTIONS_PATH not set; question bank will be empty.");
-}
+import { prisma } from "./db";
 
 export type Dimension = "strategy" | "interpretation" | "math";
 
@@ -26,71 +19,58 @@ export type Question = QuestionMeta & {
   tags?: string[];
 };
 
-// Resolve QUESTIONS_PATH relative to cwd (run "npm run dev" from ds-trainer-app so cwd is correct)
-function getQuestionsDir(): string {
-  if (!QUESTIONS_PATH) return "";
-  return path.isAbsolute(QUESTIONS_PATH)
-    ? QUESTIONS_PATH
-    : path.resolve(process.cwd(), QUESTIONS_PATH);
-}
-
 let cachedBank: QuestionMeta[] | null = null;
 let cachedFullById: Map<string, Question> | null = null;
 let cachedParentByFollowUp: Map<string, string> | null = null;
 
-function loadBankAndMaps(): {
+function dimensionFromEnum(dim: string | null): Dimension | undefined {
+  if (!dim) return undefined;
+  const d = dim.toLowerCase();
+  if (d === "strategy") return "strategy";
+  if (d === "interpretation") return "interpretation";
+  if (d === "math") return "math";
+  return undefined;
+}
+
+async function loadBankAndMaps(): Promise<{
   bank: QuestionMeta[];
   fullById: Map<string, Question>;
   parentByFollowUp: Map<string, string>;
-} {
+}> {
   if (cachedBank && cachedFullById && cachedParentByFollowUp) {
     return { bank: cachedBank, fullById: cachedFullById, parentByFollowUp: cachedParentByFollowUp };
   }
-  const dir = getQuestionsDir();
+
+  const rows = await prisma.question.findMany({
+    where: { active: true },
+    include: {
+      topic: true,
+      theme: true,
+    },
+  });
+
   const bank: QuestionMeta[] = [];
   const fullById = new Map<string, Question>();
   const parentByFollowUp = new Map<string, string>();
 
-  if (!dir || !fs.existsSync(dir)) {
-    cachedBank = bank;
-    cachedFullById = fullById;
-    cachedParentByFollowUp = parentByFollowUp;
-    return { bank, fullById, parentByFollowUp };
-  }
+  for (const q of rows) {
 
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".yaml") && !f.startsWith(".")).sort();
-  for (const file of files) {
-    const filePath = path.join(dir, file);
-    const content = fs.readFileSync(filePath, "utf-8");
-    const list = YAML.parse(content);
-    if (!Array.isArray(list)) continue;
-    for (const q of list) {
-      if (!q?.id || q.topic == null || q.theme == null || q.difficulty == null) continue;
-      const dim = q.dimension;
-      const dimension: Dimension | undefined =
-        dim === "strategy" || dim === "interpretation" || dim === "math" ? dim : undefined;
-      const meta: QuestionMeta = {
-        id: q.id,
-        topic: q.topic,
-        theme: q.theme,
-        difficulty: Number(q.difficulty),
-        dimension,
-        follow_ups: Array.isArray(q.follow_ups) ? q.follow_ups : undefined,
-      };
-      bank.push(meta);
-      fullById.set(q.id, {
-        ...meta,
-        question: q.question ?? "",
-        reference_answer: q.reference_answer,
-        category: q.category,
-        tags: q.tags,
-      });
-      if (meta.follow_ups) {
-        for (const fid of meta.follow_ups) {
-          if (fid) parentByFollowUp.set(fid, q.id);
-        }
-      }
-    }
+    const meta: QuestionMeta = {
+      id: q.slug,
+      topic: q.topic.name,
+      theme: q.theme.name,
+      difficulty: q.difficultyLevel,
+      dimension: dimensionFromEnum(q.dimension),
+      follow_ups: undefined,
+    };
+    bank.push(meta);
+    fullById.set(q.slug, {
+      ...meta,
+      question: q.question,
+      reference_answer: q.referenceAnswer ?? undefined,
+      category: q.category ?? undefined,
+      tags: q.tags ?? undefined,
+    });
   }
 
   cachedBank = bank;
@@ -99,13 +79,14 @@ function loadBankAndMaps(): {
   return { bank, fullById, parentByFollowUp };
 }
 
-export function getQuestionById(id: string): Question | null {
-  const { fullById } = loadBankAndMaps();
+export async function getQuestionById(id: string): Promise<Question | null> {
+  const { fullById } = await loadBankAndMaps();
   return fullById.get(id) ?? null;
 }
 
-export function getQuestionBank(): QuestionMeta[] {
-  return loadBankAndMaps().bank;
+export async function getQuestionBank(): Promise<QuestionMeta[]> {
+  const { bank } = await loadBankAndMaps();
+  return bank;
 }
 
 export type AttemptRow = {
@@ -171,11 +152,11 @@ export type SelectNextQuestionOptions = {
   topic?: string;
 };
 
-export function selectNextQuestion(
+export async function selectNextQuestion(
   attempts: AttemptRow[],
   options: SelectNextQuestionOptions = {}
-): NextQuestionResult | null {
-  const { bank, fullById, parentByFollowUp } = loadBankAndMaps();
+): Promise<NextQuestionResult | null> {
+  const { bank, fullById, parentByFollowUp } = await loadBankAndMaps();
   if (bank.length === 0) return null;
 
   const { excludeTopic, topic: topicFilter } = options;

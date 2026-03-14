@@ -142,6 +142,18 @@ export default function AdminPage() {
   return (
     <>
       <section className="card" style={{ marginBottom: "1.5rem" }}>
+        <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Admin tools</h2>
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          <Link href="/admin/questions" className="btn btn-ghost">
+            View questions
+          </Link>
+          <Link href="/admin" className="btn btn-ghost">
+            View users
+          </Link>
+        </div>
+      </section>
+
+      <section className="card" style={{ marginBottom: "1.5rem" }}>
         <h2 style={{ fontSize: "1.1rem", marginBottom: "1rem" }}>Create invite</h2>
         <form onSubmit={createInvite} style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "flex-end" }}>
           <div className="form-group" style={{ marginBottom: 0 }}>

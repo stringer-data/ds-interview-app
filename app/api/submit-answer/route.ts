@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       difficulty = 1;
     } else {
       const displayId = body.follow_up_id ?? body.question_id;
-      const question = getQuestionById(displayId);
+      const question = await getQuestionById(displayId);
       if (!question) {
         return NextResponse.json({ error: "Question not found" }, { status: 404 });
       }
@@ -56,14 +56,14 @@ export async function POST(req: Request) {
       difficulty = question.difficulty;
     }
 
+    const reference = isCustom
+      ? undefined
+      : (await getQuestionById(body.follow_up_id ?? body.question_id))?.reference_answer;
+
     const grade = await gradeAnswer({
       question: questionText,
       answer: body.answer,
-      referenceAnswer: isCustom ? undefined : (() => {
-        const displayId = body.follow_up_id ?? body.question_id;
-        const q = getQuestionById(displayId);
-        return q?.reference_answer;
-      })(),
+      referenceAnswer: reference,
     });
     const attemptData = {
       userId: user.id,
@@ -113,7 +113,7 @@ export async function POST(req: Request) {
       loggedAt: a.loggedAt,
       topic: a.topic,
     }));
-    const next = overCap ? null : selectNextQuestion(rows);
+    const next = overCap ? null : await selectNextQuestion(rows);
     return NextResponse.json({
       score: grade.score,
       maxScore: grade.maxScore,
