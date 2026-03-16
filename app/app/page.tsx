@@ -17,6 +17,7 @@ type Scorecard = {
   todayPct: number;
   questionsAnsweredToday: number;
   streak: number;
+  streakEndsOn: string | null;
   accuracyByTopic: Record<string, number>;
 };
 
@@ -29,6 +30,9 @@ type Question = {
   difficulty: number;
   question: string;
   reference_answer?: string;
+  lastAttemptAt?: string;
+  lastScore?: number;
+  lastMaxScore?: number;
 };
 
 type Feedback = {
@@ -284,6 +288,13 @@ export default function AppPage() {
             </span>
             <span>
               <strong>Streak:</strong> {scorecard.streak} {scorecard.streak === 1 ? "day" : "days"}
+              {scorecard.streak > 0 &&
+                scorecard.streakEndsOn &&
+                scorecard.streakEndsOn !== new Date().toLocaleDateString("en-CA") && (
+                  <span style={{ color: "var(--muted)", fontWeight: "normal", fontSize: "0.85em", marginLeft: "0.35rem" }}>
+                    — do one today to extend
+                  </span>
+                )}
             </span>
             <span>
               <strong>Today:</strong> {scorecard.questionsAnsweredToday} {scorecard.questionsAnsweredToday === 1 ? "question" : "questions"}
@@ -336,6 +347,29 @@ export default function AppPage() {
           <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
             {question.topic} · {question.theme} · Difficulty {question.difficulty}
           </p>
+          {(question.lastAttemptAt != null || (question.lastScore != null && question.lastMaxScore != null)) && (
+            <p style={{ color: "var(--muted)", fontSize: "0.8rem", marginBottom: "0.5rem" }}>
+              {question.lastAttemptAt != null && (
+                <>
+                  Last asked{" "}
+                  {(() => {
+                    const then = new Date(question.lastAttemptAt!).getTime();
+                    const now = Date.now();
+                    const days = Math.floor((now - then) / (1000 * 60 * 60 * 24));
+                    if (days === 0) return "today";
+                    if (days === 1) return "1 day ago";
+                    return `${days} days ago`;
+                  })()}
+                </>
+              )}
+              {question.lastAttemptAt != null && question.lastScore != null && question.lastMaxScore != null && " · "}
+              {question.lastScore != null && question.lastMaxScore != null && (
+                <>
+                  Last score: {question.lastScore}/{question.lastMaxScore}
+                </>
+              )}
+            </p>
+          )}
           <p style={{ marginBottom: "1rem", whiteSpace: "pre-wrap" }}>{question.question}</p>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
