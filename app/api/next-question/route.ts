@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 
     const attempts = await prisma.attempt.findMany({
       where: { userId: user.id },
-      select: { questionId: true, followUpId: true, score: true, loggedAt: true, topic: true },
+      select: { questionId: true, followUpId: true, score: true, maxScore: true, loggedAt: true, topic: true },
       orderBy: { loggedAt: "asc" },
     });
     const questionsUsed = attempts.length;
@@ -59,6 +59,12 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "no_questions" }, { status: 404 });
       }
 
+      const lastAttempt = await prisma.attempt.findFirst({
+        where: { userId: user.id, questionId: q.slug, followUpId: null },
+        orderBy: { loggedAt: "desc" },
+        select: { score: true, maxScore: true, loggedAt: true },
+      });
+
       return NextResponse.json({
         questionId: q.slug,
         followUpId: null,
@@ -68,6 +74,11 @@ export async function GET(req: Request) {
         difficulty: q.difficultyLevel,
         question: q.question,
         reference_answer: q.referenceAnswer ?? undefined,
+        ...(lastAttempt && {
+          lastAttemptAt: lastAttempt.loggedAt.toISOString(),
+          lastScore: lastAttempt.score,
+          lastMaxScore: lastAttempt.maxScore,
+        }),
       });
     }
 
@@ -77,7 +88,18 @@ export async function GET(req: Request) {
     if (!next) {
       return NextResponse.json({ error: "no_questions" }, { status: 404 });
     }
-    return NextResponse.json(next);
+    const effectiveId = next.followUpId ?? next.questionId;
+    const lastForQuestion = attempts
+      .filter((a) => (a.followUpId ?? a.questionId) === effectiveId)
+      .sort((a, b) => b.loggedAt.getTime() - a.loggedAt.getTime())[0];
+    return NextResponse.json({
+      ...next,
+      ...(lastForQuestion && {
+        lastAttemptAt: lastForQuestion.loggedAt.toISOString(),
+        lastScore: lastForQuestion.score,
+        lastMaxScore: lastForQuestion.maxScore,
+      }),
+    });
   } catch (err) {
     console.error("next-question error:", err);
     return NextResponse.json(

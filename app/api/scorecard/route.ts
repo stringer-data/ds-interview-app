@@ -43,10 +43,12 @@ export async function GET(req: Request) {
   const isPaid = user.tier === "paid";
   const questionsLeft = isPaid || !PAYMENTS_ENABLED ? null : Math.max(0, FREE_CAP - questionsUsed);
 
-  // Streak: consecutive days (in user's timezone) with at least one attempt, ending with today
+  // Streak: consecutive days (in user's timezone) with at least one attempt, ending on the most recent activity day
   const uniqueDates = [...new Set(attempts.map((a) => toLocalDateString(a.loggedAt, timezone)))].sort().reverse();
   let streak = 0;
-  if (uniqueDates.length > 0 && uniqueDates[0] === today) {
+  let streakEndsOn: string | null = null;
+  if (uniqueDates.length > 0) {
+    streakEndsOn = uniqueDates[0];
     streak = 1;
     for (let i = 1; i < uniqueDates.length; i++) {
       const prev = new Date(uniqueDates[i - 1] + "T12:00:00Z");
@@ -69,6 +71,7 @@ export async function GET(req: Request) {
     todayPct: todayMax ? todayPoints / todayMax : 0,
     questionsAnsweredToday: todayAttempts.length,
     streak,
+    streakEndsOn,
     accuracyByTopic,
   });
 }
