@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
@@ -86,8 +87,8 @@ export async function PATCH(
     if (!current) {
       return NextResponse.json({ error: "Question not found" }, { status: 404 });
     }
-    const oldValue: Record<string, unknown> = {};
-    const newValue: Record<string, unknown> = {};
+    const oldValue: Record<string, Prisma.JsonValue> = {};
+    const newValue: Record<string, Prisma.JsonValue> = {};
     if (data.question !== undefined) {
       oldValue.question = current.question;
       newValue.question = data.question;
