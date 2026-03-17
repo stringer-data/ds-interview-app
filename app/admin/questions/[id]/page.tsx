@@ -149,10 +149,13 @@ export default async function AdminQuestionDetailPage({ params, searchParams }: 
   }
 
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const showCreatedBanner =
-    question &&
+  const fromQuery =
     resolvedSearchParams &&
     (resolvedSearchParams.created === "1" || resolvedSearchParams.created?.[0] === "1");
+  const createdRecently =
+    question?.createdAt &&
+    Date.now() - new Date(question.createdAt).getTime() < 2 * 60 * 1000;
+  const showCreatedBanner = question && (fromQuery || createdRecently);
 
   return (
     <section className="card">
