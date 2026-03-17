@@ -23,13 +23,17 @@ export function RelatedQuestionsSection({ questionId }: { questionId: number }) 
     setLoading(true);
     setError(null);
     fetch(`/api/admin/questions/${questionId}/related?k=5`)
-      .then((res) => {
-        if (!res.ok) throw new Error(res.statusText);
-        return res.json();
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const msg = (data as { error?: string }).error ?? res.statusText;
+          throw new Error(msg);
+        }
+        return data as { related?: RelatedItem[]; slugs?: string[] };
       })
-      .then((data: { related?: RelatedItem[]; slugs?: string[] }) => {
+      .then((data) => {
         if (cancelled) return;
-        const list = data.related ?? (data.slugs ?? []).map((slug, i) => ({ id: 0, slug })); // fallback if API only returns slugs
+        const list = data.related ?? (data.slugs ?? []).map((slug) => ({ id: 0, slug }));
         setRelated(Array.isArray(list) ? list : []);
       })
       .catch((e) => {
@@ -56,7 +60,9 @@ export function RelatedQuestionsSection({ questionId }: { questionId: number }) 
         <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--error, #c00)" }}>{error}</p>
       )}
       {!loading && !error && related.length === 0 && (
-        <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--muted)" }}>No related questions.</p>
+        <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--muted)" }}>
+          No related questions. Run the backfill script or add more questions (with embeddings) to see similar questions.
+        </p>
       )}
       {!loading && !error && related.length > 0 && (
         <ul style={{ margin: 0, paddingLeft: "1.25rem", fontSize: "0.9rem", listStyle: "disc" }}>
