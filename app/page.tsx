@@ -1,5 +1,13 @@
 import Link from "next/link";
 
+const TOPICS = [
+  "A/B testing & experimentation",
+  "Causal inference",
+  "Statistics",
+  "Machine learning",
+  "Product sense",
+];
+
 export default function HomePage() {
   return (
     <div className="container" style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
@@ -7,26 +15,35 @@ export default function HomePage() {
         <h1 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.5rem" }}>
           DS Interview Trainer
         </h1>
-        <p style={{ color: "var(--muted)", fontSize: "1.1rem" }}>
-          Interview-ready in 30 minutes a day. DS interview drill that adapts to you.
+        <p style={{ color: "var(--muted)", fontSize: "1.1rem", lineHeight: 1.5 }}>
+          Get interview-ready in about 30 minutes a day. Practice that adapts to your level and focuses on what you miss.
         </p>
       </header>
 
       <section className="card" style={{ marginBottom: "2rem" }}>
         <h2 style={{ fontSize: "1.15rem", marginBottom: "0.75rem" }}>How it works</h2>
-        <ol style={{ margin: 0, paddingLeft: "1.25rem", color: "var(--muted)" }}>
-          <li>Get a question matched to your level</li>
-          <li>Answer and get instant feedback</li>
-          <li>Questions adapt to your weak spots</li>
+        <ol style={{ margin: 0, paddingLeft: "1.25rem", color: "var(--muted)", lineHeight: 1.7 }}>
+          <li>Answer questions matched to your level — no cookie-cutter drills</li>
+          <li>Get instant feedback so you know what’s strong and what to fix</li>
+          <li>Spaced repetition on weak spots so it actually sticks</li>
         </ol>
       </section>
 
-      <section style={{ marginBottom: "2rem" }}>
-        <p style={{ color: "var(--muted)", marginBottom: "1rem" }}>
-          Spaced repetition on what you miss. A/B testing, causal inference, stats, ML, product sense — no fluff, just practice.
+      <section className="card" style={{ marginBottom: "2rem" }}>
+        <h2 style={{ fontSize: "1.15rem", marginBottom: "0.75rem" }}>What you’ll practice</h2>
+        <ul style={{ margin: 0, paddingLeft: "1.25rem", color: "var(--muted)", lineHeight: 1.8 }}>
+          {TOPICS.map((topic) => (
+            <li key={topic}>{topic}</li>
+          ))}
+        </ul>
+        <p style={{ marginTop: "0.75rem", marginBottom: 0, color: "var(--muted)", fontSize: "0.95rem" }}>
+          No fluff — just practice that builds real intuition.
         </p>
+      </section>
+
+      <section style={{ marginBottom: "2rem" }}>
         <Link href="/signup" className="btn btn-primary">
-          Start free
+          Start free — no credit card
         </Link>
         <span style={{ marginLeft: "1rem" }}>
           Already have an account? <Link href="/login">Log in</Link>
