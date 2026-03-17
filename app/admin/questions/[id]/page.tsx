@@ -2,14 +2,16 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { ALL_TOPICS, topicToSlug } from "@/lib/topics";
 import { QuestionEditForm } from "./QuestionEditForm";
+import { RelatedQuestionsSection } from "./RelatedQuestionsSection";
 
 const ALLOWED_SLUGS = ALL_TOPICS.map((t) => topicToSlug(t));
 
 type Props = {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default async function AdminQuestionDetailPage({ params }: Props) {
+export default async function AdminQuestionDetailPage({ params, searchParams }: Props) {
   let id: string;
   let idNum: number;
   try {
@@ -86,9 +88,12 @@ export default async function AdminQuestionDetailPage({ params }: Props) {
   let comments: { id: number; userId: string; body: string; isOfficial: boolean; createdAt: Date }[] = [];
   let openFlags: { id: number; userId: string; reason: string; notes: string | null; createdAt: Date }[] = [];
   let statsError: string | null = null;
+  let embeddingIndexed = false;
+  let embeddingUpdatedAt: Date | null = null;
+  let embeddingModelVersion: string | null = null;
   if (question) {
     try {
-      const [agg, scoreByScore, ratingsAgg, commentsList, flagsList] = await Promise.all([
+      const [agg, scoreByScore, ratingsAgg, commentsList, flagsList, embeddingRow] = await Promise.all([
         prisma.attempt.aggregate({
           where: { questionId: question.slug },
           _count: true,
@@ -115,6 +120,10 @@ export default async function AdminQuestionDetailPage({ params }: Props) {
           orderBy: { createdAt: "desc" },
           select: { id: true, userId: true, reason: true, notes: true, createdAt: true },
         }),
+        prisma.$queryRawUnsafe<{ model_version: string; updated_at: Date }[]>(
+          `SELECT model_version, updated_at FROM "QuestionEmbedding" WHERE question_id = $1 LIMIT 1`,
+          question.id
+        ),
       ]);
       timesAsked = agg._count;
       lastAsked = agg._max.loggedAt;
@@ -127,14 +136,51 @@ export default async function AdminQuestionDetailPage({ params }: Props) {
       ratingsAvg = ratingsAgg._avg.rating ?? null;
       comments = commentsList;
       openFlags = flagsList;
+      const row = embeddingRow?.[0];
+      if (row) {
+        embeddingIndexed = true;
+        embeddingUpdatedAt = row.updated_at ?? null;
+        embeddingModelVersion = row.model_version ?? null;
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       statsError = msg;
     }
   }
 
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const fromQuery =
+    resolvedSearchParams &&
+    (resolvedSearchParams.created === "1" || resolvedSearchParams.created?.[0] === "1");
+  const createdRecently =
+    question?.createdAt &&
+    Date.now() - new Date(question.createdAt).getTime() < 2 * 60 * 1000;
+  const showCreatedBanner = question && (fromQuery || createdRecently);
+
   return (
     <section className="card">
+      {showCreatedBanner && (
+        <div
+          role="alert"
+          style={{
+            marginBottom: "1rem",
+            padding: "0.75rem 1rem",
+            borderRadius: "var(--radius, 6px)",
+            background: embeddingIndexed ? "var(--success-bg, #e8f5e9)" : "var(--warning-bg, #fff3e0)",
+            border: `1px solid ${embeddingIndexed ? "var(--success-border, #a5d6a7)" : "var(--warning-border, #ffcc80)"}`,
+            fontSize: "0.9rem",
+          }}
+        >
+          <p style={{ margin: 0, fontWeight: 600 }}>
+            Question created.
+          </p>
+          <p style={{ margin: "0.25rem 0 0 0" }}>
+            {embeddingIndexed
+              ? "Successfully indexed for related questions."
+              : "Not indexed — embedding failed. Check Embedding status below or run the backfill script."}
+          </p>
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -157,6 +203,34 @@ export default async function AdminQuestionDetailPage({ params }: Props) {
         </p>
       ) : (
         <>
+          <RelatedQuestionsSection questionId={question.id} />
+          <section style={{ marginBottom: "1.25rem" }}>
+            <h3 style={{ fontSize: "1rem", margin: "0 0 0.5rem 0", color: "var(--muted)" }}>Embedding status</h3>
+            {statsError ? (
+              <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--muted)" }}>
+                Unknown (stats failed to load).
+              </p>
+            ) : embeddingIndexed ? (
+              <>
+                <p style={{ margin: 0, fontSize: "0.9rem" }}>
+                  <strong>Indexed:</strong> Yes
+                </p>
+                <p style={{ margin: "0.25rem 0 0 0", fontSize: "0.9rem" }}>
+                  <strong>Model:</strong> {embeddingModelVersion ?? "—"}
+                </p>
+                <p style={{ margin: "0.25rem 0 0 0", fontSize: "0.9rem" }}>
+                  <strong>Last indexed:</strong>{" "}
+                  {embeddingUpdatedAt
+                    ? embeddingUpdatedAt.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })
+                    : "—"}
+                </p>
+              </>
+            ) : (
+              <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--muted)" }}>
+                <strong>Not indexed</strong> (run the backfill to populate embeddings).
+              </p>
+            )}
+          </section>
           <section style={{ marginBottom: "1.25rem" }}>
             <h3 style={{ fontSize: "1rem", margin: "0 0 0.5rem 0", color: "var(--muted)" }}>Stats</h3>
             {statsError ? (

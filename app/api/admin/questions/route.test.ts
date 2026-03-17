@@ -13,13 +13,19 @@ vi.mock("@/lib/db", () => ({
   },
 }));
 
+vi.mock("@/lib/embedding-index", () => ({
+  indexQuestionEmbedding: vi.fn(),
+}));
+
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { indexQuestionEmbedding } from "@/lib/embedding-index";
 
 const mockRequireAdmin = vi.mocked(requireAdmin);
 const mockTopicFindUnique = vi.mocked(prisma.topic.findUnique);
 const mockThemeFindUnique = vi.mocked(prisma.theme.findUnique);
 const mockQuestionCreate = vi.mocked(prisma.question.create);
+const mockIndexQuestionEmbedding = vi.mocked(indexQuestionEmbedding);
 
 function jsonRequest(body: object) {
   return new Request("http://localhost/api/admin/questions", {
@@ -35,6 +41,7 @@ describe("POST /api/admin/questions", () => {
     mockRequireAdmin.mockResolvedValue({ user: { id: "admin-1", email: "admin@test.com" } } as never);
     mockTopicFindUnique.mockResolvedValue({ id: 1, name: "Causal", slug: "causal" } as never);
     mockThemeFindUnique.mockResolvedValue({ id: 1, name: "Basics", slug: "basics" } as never);
+    mockIndexQuestionEmbedding.mockResolvedValue(undefined as never);
   });
 
   it("creates question and returns 201 with question", async () => {
@@ -89,6 +96,7 @@ describe("POST /api/admin/questions", () => {
         active: true,
       }),
     });
+    expect(mockIndexQuestionEmbedding).toHaveBeenCalledWith(99);
   });
 
   it("returns 400 when topic_slug is not allowed", async () => {

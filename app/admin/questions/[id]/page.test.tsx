@@ -17,6 +17,7 @@ vi.mock("@/lib/db", () => ({
     questionRating: { aggregate: vi.fn() },
     questionComment: { findMany: vi.fn() },
     questionFlag: { findMany: vi.fn() },
+    $queryRawUnsafe: vi.fn(),
   },
 }));
 
@@ -34,6 +35,7 @@ const mockAttemptGroupBy = vi.mocked(prisma.attempt.groupBy);
 const mockQuestionRatingAggregate = vi.mocked(prisma.questionRating.aggregate);
 const mockQuestionCommentFindMany = vi.mocked(prisma.questionComment.findMany);
 const mockQuestionFlagFindMany = vi.mocked(prisma.questionFlag.findMany);
+const mockQueryRawUnsafe = vi.mocked(prisma.$queryRawUnsafe);
 
 function makeQuestion(overrides: Record<string, unknown> = {}) {
   return {
@@ -66,6 +68,7 @@ describe("Admin question detail page", () => {
     mockQuestionRatingAggregate.mockResolvedValue({ _count: 0, _avg: { rating: null } } as never);
     mockQuestionCommentFindMany.mockResolvedValue([] as never);
     mockQuestionFlagFindMany.mockResolvedValue([] as never);
+    mockQueryRawUnsafe.mockResolvedValue([] as never);
   });
 
   it("renders question text and topic/theme in a single details section (no duplication)", async () => {
@@ -275,5 +278,41 @@ describe("Admin question detail page", () => {
     const html = renderToStaticMarkup(element);
     expect(html).toContain("Flags");
     expect(html).toContain("No open flags.");
+  });
+
+  it("shows Related questions section", async () => {
+    mockFindUnique.mockResolvedValue(makeQuestion() as never);
+    mockAttemptAggregate.mockResolvedValue({ _count: 0, _max: { loggedAt: null } } as never);
+    mockAttemptGroupBy.mockResolvedValue([] as never);
+    mockQuestionRatingAggregate.mockResolvedValue({ _count: 0, _avg: { rating: null } } as never);
+    mockQuestionCommentFindMany.mockResolvedValue([] as never);
+    mockQuestionFlagFindMany.mockResolvedValue([] as never);
+    const params = Promise.resolve({ id: "4" });
+    const element = await AdminQuestionDetailPage({ params });
+    const html = renderToStaticMarkup(element);
+    expect(html).toContain("Related questions");
+  });
+
+  it("shows Embedding status as Not indexed when no embedding row exists", async () => {
+    mockFindUnique.mockResolvedValue(makeQuestion() as never);
+    mockAttemptAggregate.mockResolvedValue({ _count: 0, _max: { loggedAt: null } } as never);
+    mockQueryRawUnsafe.mockResolvedValue([] as never);
+    const params = Promise.resolve({ id: "4" });
+    const element = await AdminQuestionDetailPage({ params });
+    const html = renderToStaticMarkup(element);
+    expect(html).toContain("Embedding status");
+    expect(html).toContain("Not indexed");
+  });
+
+  it("shows Embedding status as Indexed with model version when embedding row exists", async () => {
+    mockFindUnique.mockResolvedValue(makeQuestion() as never);
+    mockAttemptAggregate.mockResolvedValue({ _count: 0, _max: { loggedAt: null } } as never);
+    mockQueryRawUnsafe.mockResolvedValue([{ model_version: "text-embedding-3-small", updated_at: new Date() }] as never);
+    const params = Promise.resolve({ id: "4" });
+    const element = await AdminQuestionDetailPage({ params });
+    const html = renderToStaticMarkup(element);
+    expect(html).toContain("Embedding status");
+    expect(html).toContain("Indexed");
+    expect(html).toContain("text-embedding-3-small");
   });
 });
