@@ -131,6 +131,7 @@ model Question {
   ratings         QuestionRating[]
   flags           QuestionFlag[]
   comments        QuestionComment[]
+  embeddings     QuestionEmbedding[]
 }
 
 model QuestionRevision {
@@ -184,7 +185,20 @@ model QuestionComment {
 
   parentCommentId  Int?
   parentComment    QuestionComment?  @relation("QuestionCommentThread", fields: [parentCommentId], references: [id])
-  replies          QuestionComment[] @relation("QuestionCommentThread")
+  replies          QuestionComment[]  @relation("QuestionCommentThread")
 
   createdAt        DateTime          @default(now())
+}
+
+model QuestionEmbedding {
+  id           Int      @id @default(autoincrement())
+  questionId   Int      @map("question_id")
+  embedding    Unsupported("vector(1536)")
+  modelVersion String   @map("model_version")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId])
+  @@index([questionId])
 }

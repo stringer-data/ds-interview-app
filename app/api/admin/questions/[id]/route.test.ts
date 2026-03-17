@@ -7,19 +7,42 @@ vi.mock("@/lib/auth", () => ({
 
 vi.mock("@/lib/db", () => ({
   prisma: {
-    question: { update: vi.fn() },
+    question: { findUnique: vi.fn(), update: vi.fn() },
     topic: { findUnique: vi.fn() },
     theme: { findUnique: vi.fn() },
+    questionRevision: { create: vi.fn() },
   },
+}));
+
+vi.mock("@/lib/embedding-index", () => ({
+  indexQuestionEmbedding: vi.fn(),
 }));
 
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { indexQuestionEmbedding } from "@/lib/embedding-index";
 
 const mockRequireAdmin = vi.mocked(requireAdmin);
+const mockQuestionFindUnique = vi.mocked(prisma.question.findUnique);
 const mockQuestionUpdate = vi.mocked(prisma.question.update);
 const mockTopicFindUnique = vi.mocked(prisma.topic.findUnique);
 const mockThemeFindUnique = vi.mocked(prisma.theme.findUnique);
+const mockQuestionRevisionCreate = vi.mocked(prisma.questionRevision.create);
+const mockIndexQuestionEmbedding = vi.mocked(indexQuestionEmbedding);
+
+function currentQuestion(overrides: Record<string, unknown> = {}) {
+  return {
+    question: "Q",
+    referenceAnswer: null,
+    difficultyLevel: 3,
+    active: true,
+    category: null,
+    tags: [] as string[],
+    topicId: 1,
+    themeId: 1,
+    ...overrides,
+  };
+}
 
 function jsonRequest(body: object, id = "4") {
   return new Request(`http://localhost/api/admin/questions/${id}`, {
@@ -33,6 +56,9 @@ describe("PATCH /api/admin/questions/[id]", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockRequireAdmin.mockResolvedValue({ user: { id: "admin-1", email: "admin@test.com" } } as never);
+    mockQuestionFindUnique.mockResolvedValue(currentQuestion() as never);
+    mockQuestionRevisionCreate.mockResolvedValue({} as never);
+    mockIndexQuestionEmbedding.mockResolvedValue(undefined as never);
   });
 
   it("updates question with category and tags", async () => {
@@ -66,6 +92,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
       where: { id: 4 },
       data: { category: "New Category", tags: ["tag1", "tag2"] },
     });
+    expect(mockIndexQuestionEmbedding).toHaveBeenCalledWith(4);
   });
 
   it("allows clearing tags with empty array", async () => {

@@ -64,7 +64,7 @@ export function CreateQuestionForm({ topics, themes }: Props) {
         setError((data as { error?: string }).error ?? res.statusText ?? "Create failed");
         return;
       }
-      router.push(`/admin/questions/${(data as { id: number }).id}`);
+      router.push(`/admin/questions/${(data as { id: number }).id}?created=1`);
       router.refresh();
     } finally {
       setSaving(false);

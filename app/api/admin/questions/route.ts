@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { indexQuestionEmbedding } from "@/lib/embedding-index";
 import { normalizeTags, difficultyLevelToStep } from "@/lib/question-admin";
 import { ALL_TOPICS, topicToSlug } from "@/lib/topics";
 
@@ -59,6 +60,11 @@ export async function POST(req: Request) {
         active: body.active ?? true,
       },
     });
+    try {
+      await indexQuestionEmbedding(question.id);
+    } catch (e) {
+      console.error("Failed to index question embedding:", e);
+    }
     return NextResponse.json(question, { status: 201 });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
