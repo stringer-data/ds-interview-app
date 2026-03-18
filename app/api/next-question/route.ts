@@ -43,48 +43,12 @@ export async function GET(req: Request) {
       topic: a.topic,
     }));
 
-    // If a specific topic is requested, pick a question directly from the DB
-    // rather than going through selectNextQuestion. This is simpler and avoids
-    // any issues in the generic selection logic when topic is fixed.
-    if (topicFilter) {
-      const q = await prisma.question.findFirst({
-        where: {
-          active: true,
-          topic: { name: topicFilter },
-        },
-        include: { topic: true, theme: true },
-      });
-
-      if (!q) {
-        return NextResponse.json({ error: "no_questions" }, { status: 404 });
-      }
-
-      const lastAttempt = await prisma.attempt.findFirst({
-        where: { userId: user.id, questionId: q.slug, followUpId: null },
-        orderBy: { loggedAt: "desc" },
-        select: { score: true, maxScore: true, loggedAt: true },
-      });
-
-      return NextResponse.json({
-        questionId: q.slug,
-        followUpId: null,
-        questionDisplayId: q.slug,
-        topic: q.topic.name,
-        theme: q.theme.name,
-        difficulty: q.difficultyLevel,
-        question: q.question,
-        reference_answer: q.referenceAnswer ?? undefined,
-        ...(lastAttempt && {
-          lastAttemptAt: lastAttempt.loggedAt.toISOString(),
-          lastScore: lastAttempt.score,
-          lastMaxScore: lastAttempt.maxScore,
-        }),
-      });
-    }
-
     const excludeTopic =
       randomTopic && rows.length > 0 ? rows[rows.length - 1].topic ?? undefined : undefined;
-    const next = await selectNextQuestion(rows, { excludeTopic, topic: undefined });
+    const next = await selectNextQuestion(rows, {
+      excludeTopic,
+      topic: topicFilter,
+    });
     if (!next) {
       return NextResponse.json({ error: "no_questions" }, { status: 404 });
     }
