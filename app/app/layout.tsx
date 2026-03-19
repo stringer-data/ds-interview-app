@@ -28,6 +28,9 @@ export default async function AppLayout({
           DS Trainer
         </Link>
         <nav style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <Link href="/app/insights" style={{ fontSize: "0.9rem" }}>
+            Insights
+          </Link>
           <Link href="/app/scorecard" style={{ fontSize: "0.9rem" }}>
             Scorecard
           </Link>

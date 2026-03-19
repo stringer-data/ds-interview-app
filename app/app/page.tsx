@@ -52,6 +52,7 @@ export default function AppPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const topicSlug = searchParams.get("topic");
+  const questionSlug = searchParams.get("question");
   const [scorecard, setScorecard] = useState<Scorecard | null>(null);
   const [question, setQuestion] = useState<Question | null>(null);
   const [answer, setAnswer] = useState("");
@@ -80,7 +81,21 @@ export default function AppPage() {
   }, []);
 
   const fetchNextQuestion = useCallback(
-    async (randomTopic = false) => {
+    async (randomTopic = false, specificSlug?: string | null) => {
+      if (specificSlug) {
+        const res = await fetch("/api/question?slug=" + encodeURIComponent(specificSlug));
+        if (res.ok) {
+          const data = await res.json();
+          setNoQuestionsForTopic(false);
+          setUpsell(null);
+          setQuestion(data as Question);
+          setAnswer("");
+          setFeedback(null);
+          setFollowUpAnswer("");
+          setHint(null);
+          return;
+        }
+      }
       const params = new URLSearchParams();
       if (randomTopic) params.set("random_topic", "true");
       else if (topicSlug) params.set("topic", topicSlug);
@@ -154,12 +169,12 @@ export default function AppPage() {
     (async () => {
       await fetchScorecard();
       if (cancelled) return;
-      await fetchNextQuestion();
+      await fetchNextQuestion(false, questionSlug || undefined);
       if (cancelled) return;
       setLoading(false);
     })();
     return () => { cancelled = true; };
-  }, [fetchScorecard, fetchNextQuestion]);
+  }, [fetchScorecard, fetchNextQuestion, questionSlug]);
 
   async function handleNext() {
     setActionLoading(true);
