@@ -1,0 +1,27 @@
+---
+description: Testing rules — regression tests, feature tests, test layers, behavior not implementation
+alwaysApply: true
+---
+
+# Testing Rules
+
+Every bug fix must include a regression test.
+
+Workflow:
+1. Reproduce the bug with a failing test first whenever feasible
+2. Implement the smallest fix
+3. Verify the test passes
+
+New features must include tests for the main behavior.
+
+Prefer the lowest reliable test layer:
+1. unit
+2. component
+3. integration
+4. e2e
+
+Test behavior, not implementation details.
+
+If code behavior changes and no test exists, add one.
+
+Explain the test and the fix clearly because the repo owner is still learning.
