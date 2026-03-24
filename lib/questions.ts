@@ -191,7 +191,7 @@ export async function selectNextQuestion(
   };
 
   let chosen: QuestionMeta | null = null;
-  const useRetry = retryPool.length > 0 && (neverAsked.length === 0 || Math.random() < 0.5);
+  const useRetry = retryPool.length > 0 && neverAsked.length === 0;
   if (useRetry) {
     chosen = pickFromRetry();
   } else {
