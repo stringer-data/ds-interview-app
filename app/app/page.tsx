@@ -48,6 +48,22 @@ type Feedback = {
   nextQuestion: Question | null;
 };
 
+/** Lines like `0. ...` / `1. ...` → structured rows; otherwise null (render as plain paragraph). */
+function parseExampleAnswerLines(text: string): { level: number; body: string }[] | null {
+  const lines = text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  if (lines.length === 0) return null;
+  const rows: { level: number; body: string }[] = [];
+  for (const line of lines) {
+    const m = line.match(/^(\d+)\.\s*(.+)$/);
+    if (!m) return null;
+    rows.push({ level: parseInt(m[1], 10), body: m[2] });
+  }
+  return rows;
+}
+
 export default function AppPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -56,6 +72,8 @@ export default function AppPage() {
   const [scorecard, setScorecard] = useState<Scorecard | null>(null);
   const [question, setQuestion] = useState<Question | null>(null);
   const [answer, setAnswer] = useState("");
+  const [submittedQuestion, setSubmittedQuestion] = useState("");
+  const [submittedAnswer, setSubmittedAnswer] = useState("");
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [followUpAnswer, setFollowUpAnswer] = useState("");
   const [lastTopic, setLastTopic] = useState<string | null>(null);
@@ -81,7 +99,7 @@ export default function AppPage() {
   }, []);
 
   const fetchNextQuestion = useCallback(
-    async (randomTopic = false, specificSlug?: string | null) => {
+    async (randomTopic = false, specificSlug?: string | null, excludeQuestionId?: string | null) => {
       if (specificSlug) {
         const res = await fetch("/api/question?slug=" + encodeURIComponent(specificSlug));
         if (res.ok) {
@@ -99,6 +117,7 @@ export default function AppPage() {
       const params = new URLSearchParams();
       if (randomTopic) params.set("random_topic", "true");
       else if (topicSlug) params.set("topic", topicSlug);
+      if (excludeQuestionId) params.set("exclude_question_id", excludeQuestionId);
       const url = "/api/next-question" + (params.toString() ? "?" + params.toString() : "");
       const res = await fetch(url);
       const text = await res.text();
@@ -179,7 +198,7 @@ export default function AppPage() {
   async function handleNext() {
     setActionLoading(true);
     await fetchScorecard();
-    await fetchNextQuestion(false);
+    await fetchNextQuestion(false, undefined, question?.questionDisplayId ?? null);
     setActionLoading(false);
   }
 
@@ -202,6 +221,9 @@ export default function AppPage() {
     setActionLoading(true);
     setFeedback(null);
     setHint(null);
+    const trimmedAnswer = answer.trim();
+    setSubmittedQuestion(question.question);
+    setSubmittedAnswer(trimmedAnswer);
     try {
       const res = await fetch("/api/submit-answer", {
         method: "POST",
@@ -209,7 +231,7 @@ export default function AppPage() {
         body: JSON.stringify({
           question_id: question.questionId,
           follow_up_id: question.followUpId,
-          answer: answer.trim(),
+          answer: trimmedAnswer,
           ...(question.questionId === "custom" && {
             custom_question: question.question,
             custom_topic: question.topic,
@@ -430,6 +452,23 @@ export default function AppPage() {
             </h3>
           </div>
 
+          {submittedAnswer && (
+            <section style={{ marginBottom: "1.25rem" }}>
+              {submittedQuestion && (
+                <>
+                  <h4 className="feedback-label">Question</h4>
+                  <p className="feedback-text" style={{ whiteSpace: "pre-wrap", marginBottom: "0.75rem" }}>
+                    {submittedQuestion}
+                  </p>
+                </>
+              )}
+              <h4 className="feedback-label">Your submitted answer</h4>
+              <p className="feedback-text" style={{ whiteSpace: "pre-wrap" }}>
+                {submittedAnswer}
+              </p>
+            </section>
+          )}
+
           <section style={{ marginBottom: "1.25rem" }}>
             <h4 className="feedback-label">What was good</h4>
             <p className="feedback-text">{feedback.whatWasGood}</p>
@@ -443,7 +482,28 @@ export default function AppPage() {
           {feedback.exampleAnswers && feedback.exampleAnswers.trim() !== "—" && (
             <section style={{ marginBottom: "1.25rem" }}>
               <h4 className="feedback-label">Example answers</h4>
-              <pre className="feedback-block">{feedback.exampleAnswers}</pre>
+              {(() => {
+                const parsed = parseExampleAnswerLines(feedback.exampleAnswers);
+                if (parsed) {
+                  return (
+                    <ul className="feedback-example-list" role="list">
+                      {parsed.map((row, i) => (
+                        <li key={`${row.level}-${i}`} className="feedback-example-item">
+                          <span className="feedback-example-level" aria-hidden>
+                            {row.level}
+                          </span>
+                          <p className="feedback-example-body">{row.body}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  );
+                }
+                return (
+                  <p className="feedback-text" style={{ whiteSpace: "pre-wrap" }}>
+                    {feedback.exampleAnswers}
+                  </p>
+                );
+              })()}
             </section>
           )}
 
@@ -575,6 +635,8 @@ export default function AppPage() {
                   const text = followUpAnswer.trim();
                   if (!text || !feedback.followUpQuestion) return;
                   setActionLoading(true);
+                  setSubmittedQuestion(feedback.followUpQuestion);
+                  setSubmittedAnswer(text);
                   setFollowUpAnswer("");
                   try {
                     const res = await fetch("/api/submit-answer", {
@@ -626,7 +688,7 @@ export default function AppPage() {
                 setFeedback(null);
                 setFollowUpAnswer("");
                 if (topicSlug) router.replace("/app");
-                await fetchNextQuestion(true);
+        await fetchNextQuestion(true, undefined, question?.questionDisplayId ?? null);
                 setActionLoading(false);
               }}
             >
@@ -662,7 +724,7 @@ export default function AppPage() {
                 onClick={() => {
                   setFeedback(null);
                   setHint(null);
-                  fetchNextQuestion();
+                  fetchNextQuestion(false, undefined, question?.questionDisplayId ?? null);
                 }}
                 disabled={actionLoading}
               >

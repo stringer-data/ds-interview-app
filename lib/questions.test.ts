@@ -60,4 +60,38 @@ describe("selectNextQuestion", () => {
     expect(next).not.toBeNull();
     expect(next?.questionDisplayId).toBe("q-new");
   });
+
+  it("avoids returning excluded question id when alternatives exist", async () => {
+    mockQuestionFindMany.mockResolvedValue([
+      {
+        slug: "q-same",
+        difficultyLevel: 2,
+        dimension: null,
+        question: "Question A",
+        referenceAnswer: "A",
+        category: null,
+        tags: [],
+        topic: { name: "Experimentation" },
+        theme: { name: "Design" },
+      },
+      {
+        slug: "q-other",
+        difficultyLevel: 2,
+        dimension: null,
+        question: "Question B",
+        referenceAnswer: "B",
+        category: null,
+        tags: [],
+        topic: { name: "Experimentation" },
+        theme: { name: "Design" },
+      },
+    ] as never);
+
+    const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
+    const next = await selectNextQuestion([], { excludeQuestionId: "q-same" });
+    randomSpy.mockRestore();
+
+    expect(next).not.toBeNull();
+    expect(next?.questionDisplayId).toBe("q-other");
+  });
 });
