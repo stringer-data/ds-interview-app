@@ -19,6 +19,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const randomTopic = searchParams.get("random_topic") === "true";
     const topicSlug = searchParams.get("topic");
+    const excludeQuestionId = searchParams.get("exclude_question_id") ?? undefined;
     const topicFilter = topicSlug ? topicFromSlug(topicSlug) : undefined;
 
     const attempts = await prisma.attempt.findMany({
@@ -48,6 +49,7 @@ export async function GET(req: Request) {
     const next = await selectNextQuestion(rows, {
       excludeTopic,
       topic: topicFilter ?? undefined,
+      excludeQuestionId,
     });
     if (!next) {
       return NextResponse.json({ error: "no_questions" }, { status: 404 });

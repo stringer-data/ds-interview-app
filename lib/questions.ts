@@ -150,6 +150,8 @@ export type SelectNextQuestionOptions = {
   excludeTopic?: string;
   /** When set, only choose questions from this topic (display name). */
   topic?: string;
+  /** When set, avoid returning the same question id when alternatives exist. */
+  excludeQuestionId?: string;
 };
 
 export async function selectNextQuestion(
@@ -159,7 +161,7 @@ export async function selectNextQuestion(
   const { bank, fullById, parentByFollowUp } = await loadBankAndMaps();
   if (bank.length === 0) return null;
 
-  const { excludeTopic, topic: topicFilter } = options;
+  const { excludeTopic, topic: topicFilter, excludeQuestionId } = options;
   let bankFiltered = bank;
   if (topicFilter != null && topicFilter !== "") {
     bankFiltered = bankFiltered.filter((q) => q.topic === topicFilter);
@@ -168,10 +170,15 @@ export async function selectNextQuestion(
     bankFiltered = bankFiltered.filter((q) => q.topic !== excludeTopic);
   }
   if (bankFiltered.length === 0) return null;
+  const withoutExcludedQuestion =
+    excludeQuestionId != null && excludeQuestionId !== ""
+      ? bankFiltered.filter((q) => q.id !== excludeQuestionId)
+      : bankFiltered;
+  const pool = withoutExcludedQuestion.length > 0 ? withoutExcludedQuestion : bankFiltered;
 
   const lastById = lastByEffectiveId(attempts);
-  const neverAsked = bankFiltered.filter((q) => !lastById.has(q.id));
-  const retryPool = bankFiltered.filter((q) => {
+  const neverAsked = pool.filter((q) => !lastById.has(q.id));
+  const retryPool = pool.filter((q) => {
     const last = lastById.get(q.id);
     return last && last.score >= 0 && last.score <= 2;
   });
@@ -198,7 +205,7 @@ export async function selectNextQuestion(
     chosen = pickFromNeverAsked();
   }
   if (!chosen) chosen = pickFromNeverAsked() ?? pickFromRetry();
-  if (!chosen) chosen = bankFiltered[Math.floor(Math.random() * bankFiltered.length)];
+  if (!chosen) chosen = pool[Math.floor(Math.random() * pool.length)];
 
   const parentId = parentByFollowUp.get(chosen.id);
   const questionId = parentId ?? chosen.id;

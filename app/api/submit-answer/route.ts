@@ -113,7 +113,11 @@ export async function POST(req: Request) {
       loggedAt: a.loggedAt,
       topic: a.topic,
     }));
-    const next = overCap ? null : await selectNextQuestion(rows);
+    const next = overCap
+      ? null
+      : await selectNextQuestion(rows, {
+          excludeQuestionId: body.follow_up_id ?? body.question_id,
+        });
     return NextResponse.json({
       score: grade.score,
       maxScore: grade.maxScore,
