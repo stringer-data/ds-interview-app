@@ -4,18 +4,25 @@ const RUBRIC = `Grade answers strictly on **conceptual understanding**. Ignore t
 When a question has a reference_answer, compare the candidate's answer to it and score by how well they cover the same key points (concepts, not wording).
 
 Rubric:
-4 = interview ready
-3 = mostly correct
-2 = partial
-1 = weak
-0 = incorrect
+4 = interview ready (accurate, clear, and complete)
+3 = conceptually right, missing nuance (core idea is correct; depth can improve)
+2 = starts understanding the fundamentals (some correct ideas, but key parts missing or mixed)
+1 = most basic concepts are covered (minimal signal; mostly vague or incorrect)
+0 = no attempt or completely off-topic
+
+Decision rules:
+- If the core concept is correct, prefer 3 over 2.
+- Use 2 only when understanding is partial or mixed.
+- Use 1 only when understanding is very limited.
+- Use 0 for blank or off-topic answers.
+- Coverage-first learning goal: a 3 means "good enough to move on" rather than continue drilling.
 
 Return exactly this format (plain text):
 Score: <0-4>
 Verdict: <one short line>
 What was good: <bullet or short para>
 Missing / wrong: <conceptual gaps only; do not list typos or grammar>
-Example answers: (give example answers for each level: weak, partial, mostly correct, interview ready)
+Example answers: (give example answers for each level: 0, 1, 2, 3, 4)
 Follow-up question: <optional suggested follow-up or "—">`;
 
 export type GradeResult = {

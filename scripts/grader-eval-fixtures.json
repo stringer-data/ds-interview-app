@@ -1,0 +1,37 @@
+[
+  {
+    "id": "standard-deviation-formula",
+    "question": "What is standard deviation?",
+    "answer": "sqrt(sum((xi - mean(x))^2)) / n",
+    "expectedScore": 4,
+    "notes": "Formula-first answer; conceptual structure is correct."
+  },
+  {
+    "id": "stratified-sample-definition",
+    "question": "What is a stratified sample?",
+    "answer": "A sampling method that samples a population based on certain criteria (strata), for example, characteristics like gender, age, etc.",
+    "expectedScore": 3,
+    "notes": "Core definition is correct with valid examples."
+  },
+  {
+    "id": "causal-matching-definition",
+    "question": "What is matching in causal inference?",
+    "answer": "It is a causal inference technique where you compare two groups. You try to control for all other variables by matching control and treatment on similar variables.",
+    "expectedScore": 3,
+    "notes": "Core mechanism is right; concise answer missing deeper caveats."
+  },
+  {
+    "id": "north-star-metric-definition",
+    "question": "What is a North Star metric?",
+    "answer": "It is a key metric that indicates the success of the company often a financial success metric. Often it is referred to as an output metric and and all other metrics are either guardrails to it or inputs into it.",
+    "expectedScore": 3,
+    "notes": "Strong input/output/guardrail framing; nuance gap: North Star is not always financial; could stress one aligned primary metric."
+  },
+  {
+    "id": "ols-squared-vs-absolute-errors",
+    "question": "Why does OLS minimize squared errors instead of absolute errors?",
+    "answer": "Squaring does a few useful things:\n\nIt penalizes large residuals more than small ones (large errors dominate the objective more than in L1).\nIt gives a smooth loss — differentiable everywhere — so you get a clean closed-form solution (normal equations) that's easy to compute and reason about. Minimizing absolute errors (L1) has a kink at zero, so the optimization is messier and the solution is less \"nice\" in closed form.\nUnder the usual assumption that errors are roughly Gaussian, minimizing squared error lines up with maximum likelihood for the normal model — so there's a statistical story, not just a convenience story.",
+    "expectedScore": 4,
+    "notes": "Interview-ready: L2 vs L1, smoothness/closed form, Gaussian MLE link."
+  }
+]
