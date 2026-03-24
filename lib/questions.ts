@@ -226,7 +226,7 @@ export async function selectNextQuestion(
   };
 }
 
-/** Invalidate cache (e.g. after QUESTIONS_PATH change); useful for dev */
+/** Clears the in-memory question bank so the next load reads from the DB. Call after admin create/update (and after imports that bypass the admin API). */
 export function invalidateQuestionCache(): void {
   cachedBank = null;
   cachedFullById = null;

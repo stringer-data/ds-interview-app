@@ -18,9 +18,14 @@ vi.mock("@/lib/embedding-index", () => ({
   indexQuestionEmbedding: vi.fn(),
 }));
 
+vi.mock("@/lib/questions", () => ({
+  invalidateQuestionCache: vi.fn(),
+}));
+
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { indexQuestionEmbedding } from "@/lib/embedding-index";
+import { invalidateQuestionCache } from "@/lib/questions";
 
 const mockRequireAdmin = vi.mocked(requireAdmin);
 const mockQuestionFindUnique = vi.mocked(prisma.question.findUnique);
@@ -29,6 +34,7 @@ const mockTopicFindUnique = vi.mocked(prisma.topic.findUnique);
 const mockThemeFindUnique = vi.mocked(prisma.theme.findUnique);
 const mockQuestionRevisionCreate = vi.mocked(prisma.questionRevision.create);
 const mockIndexQuestionEmbedding = vi.mocked(indexQuestionEmbedding);
+const mockInvalidateQuestionCache = vi.mocked(invalidateQuestionCache);
 
 function currentQuestion(overrides: Record<string, unknown> = {}) {
   return {
@@ -93,6 +99,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
       data: { category: "New Category", tags: ["tag1", "tag2"] },
     });
     expect(mockIndexQuestionEmbedding).toHaveBeenCalledWith(4);
+    expect(mockInvalidateQuestionCache).toHaveBeenCalledTimes(1);
   });
 
   it("allows clearing tags with empty array", async () => {
@@ -125,6 +132,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
       where: { id: 4 },
       data: { tags: [] },
     });
+    expect(mockInvalidateQuestionCache).toHaveBeenCalledTimes(1);
   });
 
   it("normalizes tags: trim, spaces to hyphens, lowercase, dedupe, sort", async () => {
@@ -158,6 +166,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
       where: { id: 4 },
       data: { tags: ["experimentation", "gen-ai"] },
     });
+    expect(mockInvalidateQuestionCache).toHaveBeenCalledTimes(1);
   });
 
   it("updates topic and theme when topic_id and theme_id are valid", async () => {
@@ -192,6 +201,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
       where: { id: 4 },
       data: { topicId: 2, themeId: 2 },
     });
+    expect(mockInvalidateQuestionCache).toHaveBeenCalledTimes(1);
   });
 
   it("returns 400 when topic_id is not found", async () => {
@@ -203,6 +213,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
     const data = await res.json();
     expect(data.error).toBe("Topic not found");
     expect(mockQuestionUpdate).not.toHaveBeenCalled();
+    expect(mockInvalidateQuestionCache).not.toHaveBeenCalled();
   });
 
   it("returns 400 when theme_id is not found", async () => {
@@ -215,6 +226,7 @@ describe("PATCH /api/admin/questions/[id]", () => {
     const data = await res.json();
     expect(data.error).toBe("Theme not found");
     expect(mockQuestionUpdate).not.toHaveBeenCalled();
+    expect(mockInvalidateQuestionCache).not.toHaveBeenCalled();
   });
 
   it("allows clearing category with null", async () => {
@@ -247,5 +259,6 @@ describe("PATCH /api/admin/questions/[id]", () => {
       where: { id: 4 },
       data: { category: null },
     });
+    expect(mockInvalidateQuestionCache).toHaveBeenCalledTimes(1);
   });
 });
