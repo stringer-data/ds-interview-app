@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { indexQuestionEmbedding } from "@/lib/embedding-index";
 import { normalizeTags, difficultyLevelToStep } from "@/lib/question-admin";
+import { invalidateQuestionCache } from "@/lib/questions";
 import { ALL_TOPICS, topicToSlug } from "@/lib/topics";
 
 const ALLOWED_TOPIC_SLUGS = ALL_TOPICS.map((t) => topicToSlug(t));
@@ -65,6 +66,7 @@ export async function POST(req: Request) {
     } catch (e) {
       console.error("Failed to index question embedding:", e);
     }
+    invalidateQuestionCache();
     return NextResponse.json(question, { status: 201 });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);

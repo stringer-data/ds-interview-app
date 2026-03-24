@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { indexQuestionEmbedding } from "@/lib/embedding-index";
 import { normalizeTags } from "@/lib/question-admin";
+import { invalidateQuestionCache } from "@/lib/questions";
 
 const bodySchema = z.object({
   question: z.string().min(1).optional(),
@@ -138,6 +139,7 @@ export async function PATCH(
     } catch (e) {
       console.error("Failed to index question embedding:", e);
     }
+    invalidateQuestionCache();
     return NextResponse.json(question);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);

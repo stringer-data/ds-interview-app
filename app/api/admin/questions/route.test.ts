@@ -17,15 +17,21 @@ vi.mock("@/lib/embedding-index", () => ({
   indexQuestionEmbedding: vi.fn(),
 }));
 
+vi.mock("@/lib/questions", () => ({
+  invalidateQuestionCache: vi.fn(),
+}));
+
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { indexQuestionEmbedding } from "@/lib/embedding-index";
+import { invalidateQuestionCache } from "@/lib/questions";
 
 const mockRequireAdmin = vi.mocked(requireAdmin);
 const mockTopicFindUnique = vi.mocked(prisma.topic.findUnique);
 const mockThemeFindUnique = vi.mocked(prisma.theme.findUnique);
 const mockQuestionCreate = vi.mocked(prisma.question.create);
 const mockIndexQuestionEmbedding = vi.mocked(indexQuestionEmbedding);
+const mockInvalidateQuestionCache = vi.mocked(invalidateQuestionCache);
 
 function jsonRequest(body: object) {
   return new Request("http://localhost/api/admin/questions", {
@@ -97,6 +103,7 @@ describe("POST /api/admin/questions", () => {
       }),
     });
     expect(mockIndexQuestionEmbedding).toHaveBeenCalledWith(99);
+    expect(mockInvalidateQuestionCache).toHaveBeenCalledTimes(1);
   });
 
   it("returns 400 when topic_slug is not allowed", async () => {
@@ -113,6 +120,7 @@ describe("POST /api/admin/questions", () => {
     const data = await res.json();
     expect(data.error).toMatch(/invalid topic|topic_slug/i);
     expect(mockQuestionCreate).not.toHaveBeenCalled();
+    expect(mockInvalidateQuestionCache).not.toHaveBeenCalled();
   });
 
   it("returns 400 when topic not found in DB", async () => {
@@ -128,6 +136,7 @@ describe("POST /api/admin/questions", () => {
     );
     expect(res.status).toBe(400);
     expect(mockQuestionCreate).not.toHaveBeenCalled();
+    expect(mockInvalidateQuestionCache).not.toHaveBeenCalled();
   });
 
   it("returns 409 when slug already in use", async () => {
@@ -144,5 +153,6 @@ describe("POST /api/admin/questions", () => {
     expect(res.status).toBe(409);
     const data = await res.json();
     expect(data.error).toMatch(/slug|unique|already/i);
+    expect(mockInvalidateQuestionCache).not.toHaveBeenCalled();
   });
 });
